@@ -7,6 +7,8 @@ package sistematutoriasfx;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
@@ -21,47 +23,22 @@ import sistematutoriasfx.modelo.pojo.Usuario;
  */
 public class SistemaTutoriasFx extends Application {
     
-    @Override
-    public void start(Stage primaryStage) {
-        Button btn = new Button();
-        btn.setText("Say 'Hello World'");
-        btn.setOnAction(new EventHandler<ActionEvent>() {
-            
-            @Override
-            public void handle(ActionEvent event) {
-                System.out.println("Hello World!");
-            }
-        });
+@Override
+    public void start(Stage stage) throws Exception {
+        // Asegúrate que la ruta al FXML sea correcta. 
+        // Si tu FXML está en el paquete 'vista', la ruta es así:
+        Parent root = FXMLLoader.load(getClass().getResource("vista/FXMLInicioSesion.fxml"));
         
-        StackPane root = new StackPane();
-        root.getChildren().add(btn);
-        
-        Scene scene = new Scene(root, 300, 250);
-        
-        primaryStage.setTitle("Hello World!");
-        primaryStage.setScene(scene);
-        primaryStage.show();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
     }
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-
-       //PRUEBA
-       System.out.println("--- Probando conexión y Login ---");
-        
-       // Intenta poner el usuario y contraseña que creaste en MySQL
-       String usuarioPrueba = "admin";
-       String passwordPrueba = "1234"; 
-
-       Usuario usuarioSesion = UsuarioDAO.verificarSesion(usuarioPrueba, passwordPrueba);
-       if (usuarioSesion != null) {
-           System.out.println("¡ÉXITO! Bienvenido: " + usuarioSesion.getUsername());
-           System.out.println("Tu rol es: " + usuarioSesion.getNombreRol());
-       } else {
-           System.out.println("ERROR: Usuario o contraseña incorrectos, o falla en la BD.");
-        }
+      launch(args);
     }
 }
         
