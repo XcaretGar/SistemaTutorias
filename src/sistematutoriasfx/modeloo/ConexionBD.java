@@ -22,8 +22,7 @@ public class ConexionBD {
     private static final String PUERTO = "3306";
     private static final String USUARIO = "root"; // Tu usuario de MySQL (usualmente root)
     private static final String PASSWORD = "REOA040715"; // PON AQUÍ TU CONTRASEÑA DE MYSQL
-    private static final String URL = "jdbc:mysql://" + HOST + ":" + PUERTO + "/" + BD + "?allowPublicKeyRetrieval=true&useSSL=false";
-
+    private static final String URL = "jdbc:mysql://" + HOST + ":" + PUERTO + "/" + BD + "?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=America/Mexico_City";
     public static Connection abrirConexion() throws SQLException {
         try {
             Class.forName(DRIVER);

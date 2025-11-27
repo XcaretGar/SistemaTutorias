@@ -12,6 +12,9 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
+import sistematutoriasfx.modelo.dao.UsuarioDAO;
+import sistematutoriasfx.modelo.pojo.Usuario;
+
 /**
  *
  * @author JOANA XCARET
@@ -44,7 +47,25 @@ public class SistemaTutoriasFx extends Application {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        launch(args);
+
+       //PRUEBA
+       System.out.println("--- Probando conexión y Login ---");
+        
+       // Intenta poner el usuario y contraseña que creaste en MySQL
+       String usuarioPrueba = "admin";
+       String passwordPrueba = "1234"; 
+
+       Usuario usuarioSesion = UsuarioDAO.verificarSesion(usuarioPrueba, passwordPrueba);
+       if (usuarioSesion != null) {
+           System.out.println("¡ÉXITO! Bienvenido: " + usuarioSesion.getUsername());
+           System.out.println("Tu rol es: " + usuarioSesion.getNombreRol());
+       } else {
+           System.out.println("ERROR: Usuario o contraseña incorrectos, o falla en la BD.");
+        }
     }
-    
 }
+        
+        
+    
+    
+
