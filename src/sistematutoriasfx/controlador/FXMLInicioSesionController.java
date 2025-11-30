@@ -4,17 +4,23 @@
  */
 package sistematutoriasfx.controlador;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import sistematutoriasfx.modelo.dao.UsuarioDAO; // Asegúrate de que este import sea correcto
-import sistematutoriasfx.modelo.pojo.Usuario; // Asegúrate de que este import sea correcto
-import utilidad.Utilidades; // Asegúrate de que este import sea correcto
+import javafx.stage.Stage;
+import sistematutoriasfx.modelo.dao.UsuarioDAO; 
+import sistematutoriasfx.modelo.pojo.Usuario; 
+import sistematutoriasfx.controlador.FXMLPrincipalTutorController;
+import utilidad.Utilidades; 
 
 /**
  * FXML Controller class
@@ -71,9 +77,62 @@ public class FXMLInicioSesionController implements Initializable {
         }
     }
     
-    // Método temporal para preparar la navegación
     private void irPantallaPrincipal(Usuario usuarioLogin) {
-        // Aquí pondremos el código para cerrar esta ventana y abrir la otra
-        System.out.println("El usuario " + usuarioLogin.getUsername() + " ha entrado.");
+        Stage escenarioActual = (Stage) tfUsuario.getScene().getWindow();
+        
+        try {
+            String ruta = "";
+            String titulo = "";
+            
+            // Validamos el rol para saber qué pantalla abrir
+            // 1: Admin, 2: Coordinador, 3: Tutor
+            switch (usuarioLogin.getIdRol()) {
+                case 1:
+                    // ruta = "/sistematutoriasfx/vista/FXMLPrincipalAdmin.fxml";
+                    Utilidades.mostrarAlertaSimple("Pendiente", "La vista de Administrador aún no está creada.", Alert.AlertType.INFORMATION);
+                    return; 
+                    
+                case 2:
+                    // ruta = "/sistematutoriasfx/vista/FXMLPrincipalCoordinador.fxml";
+                    Utilidades.mostrarAlertaSimple("Pendiente", "La vista de Coordinador aún no está creada.", Alert.AlertType.INFORMATION);
+                    return; 
+                    
+                case 3: // TUTOR
+                    ruta = "/sistematutoriasfx/vista/FXMLPrincipalTutor.fxml";
+                    titulo = "Menú Principal - Tutor";
+                    break;
+                    
+                default:
+                    Utilidades.mostrarAlertaSimple("Error", "Rol no reconocido en el sistema.", Alert.AlertType.ERROR);
+                    return;
+            }
+
+            // 1. Cargamos el archivo FXML
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(ruta));
+            Parent root = loader.load();
+            
+            // 2. Configuración específica por Rol
+            // Si es Tutor, obtenemos su controlador y le pasamos el usuario para que busque el nombre
+            if (usuarioLogin.getIdRol() == 3) {
+                FXMLPrincipalTutorController controlador = loader.getController();
+                controlador.configurarVista(usuarioLogin);
+            }
+            
+            // 3. Mostramos la nueva ventana
+            Scene escena = new Scene(root);
+            Stage nuevoEscenario = new Stage();
+            nuevoEscenario.setScene(escena);
+            nuevoEscenario.setTitle(titulo);
+            nuevoEscenario.show();
+            
+            // 4. Cerramos la ventana de Login
+            escenarioActual.close();
+            
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            Utilidades.mostrarAlertaSimple("Error de navegación", 
+                    "No se pudo cargar la ventana principal: " + ex.getMessage(), 
+                    Alert.AlertType.ERROR);
+        }
     }
 }
