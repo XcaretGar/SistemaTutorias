@@ -19,7 +19,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import sistematutoriasfx.modelo.dao.UsuarioDAO; 
 import sistematutoriasfx.modelo.pojo.Usuario; 
-import sistematutoriasfx.controlador.FXMLPrincipalTutorController;
+import sistematutoriasfx.controlador.tutor.FXMLPrincipalTutorController;
 import utilidad.Utilidades; 
 
 /**

@@ -7,7 +7,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sistematutoriasfx.controlador.FXMLRegistrarHorarioTutorController">
+<AnchorPane id="AnchorPane" prefHeight="500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sistematutoriasfx.controlador.tutor.FXMLRegistrarHorarioTutorController">
    <children>
       <Pane layoutX="-1.0" layoutY="81.0" prefHeight="425.0" prefWidth="603.0">
          <children>
