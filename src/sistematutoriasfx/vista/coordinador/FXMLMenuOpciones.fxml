@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="500.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="sistematutoriasfx.controlador.coordinador.FXMLMenuOpcionesController">
+   <children>
+      <Pane prefHeight="420.0" prefWidth="600.0">
+         <children>
+            <Pane prefHeight="71.0" prefWidth="606.0" style="-fx-background-color: #063596;">
+               <children>
+                  <Label layoutX="30.0" layoutY="25.0" text="Sistema de Gestión de Tutorías" textFill="WHITE">
+                     <effect>
+                        <Blend />
+                     </effect>
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="338.0" layoutY="25.0" text="Coordinador:" textFill="WHITE">
+                     <effect>
+                        <Blend />
+                     </effect>
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+            <Label layoutX="186.0" layoutY="84.0" text="Seleccione una opción del menú">
+               <effect>
+                  <Blend />
+               </effect>
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <Button layoutX="159.0" layoutY="123.0" mnemonicParsing="false" onAction="#clicAsignarTutorado" prefHeight="71.0" prefWidth="302.0" style="-fx-background-color: #417C9E;" text="Asignar Tutorado" textFill="WHITE">
+               <effect>
+                  <Blend />
+               </effect>
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Button>
+            <Label layoutX="228.0" layoutY="171.0" text="Asignar estudiantes a tutorados" textFill="WHITE" />
+            <Button layoutX="161.0" layoutY="221.0" mnemonicParsing="false" onAction="#clicRegistrarFechaTutoria" prefHeight="71.0" prefWidth="302.0" style="-fx-background-color: #417C9E;" text="Registrar Fecha de Tutoría" textFill="WHITE">
+               <effect>
+                  <Blend />
+               </effect>
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Button>
+            <Label layoutX="210.0" layoutY="268.0" text="Programar nuevas sesiones de tutorías" textFill="WHITE" />
+            <Button layoutX="161.0" layoutY="316.0" mnemonicParsing="false" onAction="#clicRevisarReporteTutoria" prefHeight="71.0" prefWidth="302.0" style="-fx-background-color: #417C9E;" text="Revisar Reporte de Tutoría" textFill="WHITE">
+               <effect>
+                  <Blend />
+               </effect>
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Button>
+            <Label layoutX="229.0" layoutY="364.0" text="Consultar reportes de tutorías " textFill="WHITE" />
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>

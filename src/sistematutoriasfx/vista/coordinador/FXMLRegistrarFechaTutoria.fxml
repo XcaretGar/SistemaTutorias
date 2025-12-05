@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sistematutoriasfx.controlador.FXMLRegistrarFechaTutoriaController">
+   <children>
+      <Pane prefHeight="407.0" prefWidth="600.0">
+         <children>
+            <Pane prefHeight="70.0" prefWidth="650.0" style="-fx-background-color: #063596;">
+               <children>
+                  <Label layoutX="30.0" layoutY="25.0" text="Sistema de Gestión de Tutorías" textFill="WHITE">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <effect>
+                        <Blend />
+                     </effect>
+                  </Label>
+                  <Label layoutX="338.0" layoutY="25.0" text="Coordinador:" textFill="WHITE">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <effect>
+                        <Blend />
+                     </effect>
+                  </Label>
+               </children>
+            </Pane>
+            <Label layoutX="35.0" layoutY="85.0" text="Registrar Fecha de Tutoría">
+               <effect>
+                  <Blend />
+               </effect>
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <Button layoutX="29.0" layoutY="123.0" mnemonicParsing="false" onAction="#clicEstablecerNuevaFecha" prefHeight="25.0" prefWidth="153.0" style="-fx-background-color: #38AB3B;" text="Establecer Nueva Fecha" textFill="WHITE" />
+            <Button layoutX="226.0" layoutY="123.0" mnemonicParsing="false" onAction="#clicActualizarFecha" prefHeight="25.0" prefWidth="110.0" style="-fx-background-color: #38AB3B;" text="Actualizar Fecha" textFill="WHITE" />
+            <Label layoutX="35.0" layoutY="177.0" text="Fechas Registradas">
+               <effect>
+                  <Blend />
+               </effect>
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Label>
+            <TableView layoutX="35.0" layoutY="211.0" prefHeight="162.0" prefWidth="454.0">
+              <columns>
+                <TableColumn fx:id="colSesion" prefWidth="75.0" text="Sesión" />
+                <TableColumn fx:id="colPeriodo" prefWidth="118.0" text="Periodo" />
+                  <TableColumn fx:id="colFecha" prefWidth="111.0" text="Fecha" />
+                  <TableColumn fx:id="colDescripcion" minWidth="8.0" prefWidth="149.0" text="Descripción" />
+              </columns>
+            </TableView>
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>
