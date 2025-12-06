@@ -58,33 +58,24 @@ public class FXMLPrincipalTutorController implements Initializable {
 @FXML
     private void clicHorarioTutoria(ActionEvent event) {
         try {
-            // 1. Cargar la vista de Registrar Horario
+            // 1. Cargamos el FXML de la TABLA (No del formulario)
+            // Asegúrate que el nombre del archivo FXML sea correcto (ej. FXMLRegistrarHorario.fxml)
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/sistematutoriasfx/vista/tutor/FXMLRegistrarHorarioTutor.fxml"));
             Parent root = loader.load();
             
-            // 2. Obtener el controlador de la ventana NUEVA
-            FXMLRegistrarHorarioTutorController controladorH = loader.getController();
+            // 2. Obtenemos el controlador de la TABLA
+            FXMLRegistrarHorarioTutorController controlador = loader.getController();
             
-            // 3. PASAR EL ID DEL TUTOR (Esta es la parte clave que faltaba)
-            if (this.academicoSesion != null) {
-                controladorH.inicializarTutor(this.academicoSesion.getIdAcademico());
-            } else {
-                // Por seguridad, si por alguna razón falló la carga del académico, usamos el del usuario o mandamos error
-               Utilidades.mostrarAlertaSimple("Error", "No se identificó al académico.", Alert.AlertType.ERROR);
-               return;
-            }
+            // 3. Le pasamos el usuario actual para que sepa qué datos cargar
+            controlador.configurarEscena(this.usuarioSesion);
             
-            // 4. Crear el escenario (ventana)
-            Scene escena = new Scene(root);
-            Stage escenarioHorario = new Stage();
-            escenarioHorario.setScene(escena);
-            escenarioHorario.setTitle("Registrar Horario de Tutoría");
-            
-            // 5. Configurar como MODAL (Bloquea la ventana de atrás)
-            escenarioHorario.initModality(Modality.APPLICATION_MODAL);
-            
-            // 6. Mostrar
-            escenarioHorario.showAndWait();
+            // 4. Mostramos la ventana
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setScene(scene);
+            stage.setTitle("Gestión de Horarios");
+            stage.showAndWait();
             
         } catch (IOException ex) {
             ex.printStackTrace();

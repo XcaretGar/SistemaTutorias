@@ -4,154 +4,148 @@
  */
 package sistematutoriasfx.controlador.tutor;
 
+import java.net.URL;
+import java.util.ResourceBundle;
+import javafx.fxml.Initializable;
+
 /**
  * FXML Controller class
  *
  * @author Ana Georgina
  */
 
+import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
-import sistematutoriasfx.modelo.dao.FechasTutoriaDAO;
-import sistematutoriasfx.modelo.dao.PeriodoEscolarDAO;
+import sistematutoriasfx.modelo.dao.AcademicoDAO;
 import sistematutoriasfx.modelo.dao.SesionTutoriaDAO;
-import sistematutoriasfx.modelo.pojo.FechasTutoria;
-import sistematutoriasfx.modelo.pojo.PeriodoEscolar;
+import sistematutoriasfx.modelo.pojo.Academico;
 import sistematutoriasfx.modelo.pojo.SesionTutoria;
+import sistematutoriasfx.modelo.pojo.Usuario;
 import utilidad.Utilidades;
 
 public class FXMLRegistrarHorarioTutorController implements Initializable {
 
     @FXML
-    private Label lbNombreTutor;
+    private TableView<SesionTutoria> tvHorarios;
     @FXML
-    private ComboBox<PeriodoEscolar> cbPeriodo;
+    private TableColumn colPeriodo;
+    @FXML
+    private TableColumn colFechaTutoria;
+    @FXML
+    private TableColumn colSesion;
+    @FXML
+    private TableColumn colHora;
+    @FXML
+    private TableColumn colLugar;
+    @FXML
+    private TableColumn colComentarios;
     
-    // CAMBIO: Este es el combo importante ahora
-    @FXML
-    private ComboBox<FechasTutoria> cbFechaBase;
-    @FXML
-    private Label lbFechaMostrada; 
-    
-    @FXML
-    private ComboBox<String> cbHora;
-    @FXML
-    private ComboBox<String> cbMinutos;
-    @FXML
-    private ComboBox<String> cbAmPm;
-    @FXML
-    private TextField tfLugar;
-    @FXML
-    private TextArea taComentarios;
-    
-    private int idAcademico = 0; 
+    private Usuario usuarioSesion;
+    private Academico academicoSesion;
 
-    public void inicializarTutor(int idAcademicoRecibido){
-        this.idAcademico = idAcademicoRecibido;
+    // Este método lo llama el Menú Principal para pasar los datos
+    public void configurarEscena(Usuario usuario) {
+        this.usuarioSesion = usuario;
+        this.academicoSesion = AcademicoDAO.obtenerAcademicoPorIdUsuario(usuario.getIdUsuario());
+        
+        // Una vez que tenemos al académico, cargamos SU tabla
+        if(academicoSesion != null){
+            cargarTabla();
+        }
     }
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        cargarDatosIniciales();
-        configurarListeners();
+        configurarColumnas();
     }    
     
-    private void cargarDatosIniciales() {
-        // 1. Periodos
-        cbPeriodo.setItems(FXCollections.observableArrayList(PeriodoEscolarDAO.obtenerPeriodos()));
-        
-        // 2. Horas (01 - 12)
-        ObservableList<String> horas = FXCollections.observableArrayList();
-        for(int i=1; i<=12; i++) horas.add(i < 10 ? "0"+i : String.valueOf(i));
-        cbHora.setItems(horas);
-        
-        // 3. Minutos (Intervalos de 10)
-        ObservableList<String> minutos = FXCollections.observableArrayList();
-        for(int i=0; i<60; i+=10) minutos.add(String.format("%02d", i));
-        cbMinutos.setItems(minutos);
-        
-        cbAmPm.setItems(FXCollections.observableArrayList("AM", "PM"));
+    private void configurarColumnas() {
+        // Enlazar columnas con los atributos del POJO SesionTutoria
+        colPeriodo.setCellValueFactory(new PropertyValueFactory("periodo"));
+        colFechaTutoria.setCellValueFactory(new PropertyValueFactory("fecha"));
+        colSesion.setCellValueFactory(new PropertyValueFactory("numSesion"));
+        colHora.setCellValueFactory(new PropertyValueFactory("horaInicio"));
+        colLugar.setCellValueFactory(new PropertyValueFactory("lugar"));
+        colComentarios.setCellValueFactory(new PropertyValueFactory("comentarios"));
     }
     
-    private void configurarListeners() {
-        // Cuando cambia el periodo -> Cargar las fechas oficiales de ese periodo
-        cbPeriodo.valueProperty().addListener((obs, oldVal, newVal) -> {
-            if(newVal != null) {
-                cargarFechasOficiales(newVal.getIdPeriodo());
-                lbFechaMostrada.setText("");
-            }
-        });
-        
-        // Cuando selecciona una sesión -> Mostrar la fecha en el label azul
-        cbFechaBase.valueProperty().addListener((obs, oldVal, newVal) -> {
-            if (newVal != null) {
-                lbFechaMostrada.setText(newVal.getFechaSesion());
-            }
-        });
-    }
-    
-    private void cargarFechasOficiales(int idPeriodo) {
-        ObservableList<FechasTutoria> fechas = FXCollections.observableArrayList(
-                FechasTutoriaDAO.obtenerFechasPorPeriodo(idPeriodo)
-        );
-        cbFechaBase.setItems(fechas);
+    private void cargarTabla() {
+        if(academicoSesion != null){
+            ArrayList<SesionTutoria> respuesta = SesionTutoriaDAO.obtenerSesionesPorTutor(academicoSesion.getIdAcademico());
+            ObservableList<SesionTutoria> listaSesiones = FXCollections.observableArrayList(respuesta);
+            tvHorarios.setItems(listaSesiones);
+        }
     }
 
     @FXML
-    private void clicGuardar(ActionEvent event) {
-        // Validar vacíos (Ahora validamos cbFechaBase, no dpFecha)
-        if(cbPeriodo.getValue() == null || cbFechaBase.getValue() == null ||
-           cbHora.getValue() == null || cbMinutos.getValue() == null || cbAmPm.getValue() == null || 
-           tfLugar.getText().isEmpty()){
-            Utilidades.mostrarAlertaSimple("Faltan datos", "Por favor llena todos los campos.", Alert.AlertType.WARNING);
-            return;
-        }
+    private void clicRegistrarHorario(ActionEvent event) {
+        // Enviar NULL significa "Quiero uno NUEVO"
+        abrirFormulario(null); 
+    }
+
+    @FXML
+    private void clicActualizarHorario(ActionEvent event) {
+        // 1. Obtenemos la fila que el usuario seleccionó en la tabla
+        SesionTutoria sesionSeleccionada = tvHorarios.getSelectionModel().getSelectedItem();
         
-        // Conversión Hora
-        String horaSel = cbHora.getValue();
-        int horaInt = Integer.parseInt(horaSel);
-        if(cbAmPm.getValue().equals("PM") && horaInt != 12) horaInt += 12;
-        else if (cbAmPm.getValue().equals("AM") && horaInt == 12) horaInt = 0;
-        
-        String horaInicio = String.format("%02d:%s:00", horaInt, cbMinutos.getValue());
-        
-        // Crear objeto para guardar
-        SesionTutoria sesion = new SesionTutoria();
-        sesion.setIdAcademico(this.idAcademico);
-        sesion.setIdPeriodo(cbPeriodo.getValue().getIdPeriodo());
-        
-        // AQUÍ EL CAMBIO CLAVE: Guardamos el ID de la fecha oficial
-        sesion.setIdFechaTutoria(cbFechaBase.getValue().getIdFechaTutoria());
-        
-        sesion.setHora(horaInicio);
-        sesion.setLugar(tfLugar.getText());
-        sesion.setComentarios(taComentarios.getText());
-        
-        boolean exito = SesionTutoriaDAO.registrarSesion(sesion);
-        
-        if(exito){
-            Utilidades.mostrarAlertaSimple("Registro Exitoso", "Horario agendado correctamente.", Alert.AlertType.INFORMATION);
-            cerrarVentana();
+        // 2. Verificamos que sí haya seleccionado algo
+        if (sesionSeleccionada != null) {
+            // Enviar EL OBJETO significa "Quiero EDITAR este"
+            abrirFormulario(sesionSeleccionada); 
         } else {
-            Utilidades.mostrarAlertaSimple("Error", "No se pudo guardar.", Alert.AlertType.ERROR);
+            Utilidades.mostrarAlertaSimple("Selección requerida", 
+                "Selecciona un horario de la tabla para actualizar.", 
+                Alert.AlertType.WARNING);
         }
     }
 
-    @FXML private void clicCancelar(ActionEvent event) { cerrarVentana(); }
-    
-    private void cerrarVentana() {
-        // Usamos cualquier componente visual para obtener la ventana y cerrarla
-        ((Stage) cbPeriodo.getScene().getWindow()).close();
+    // Este es el método "Cartero" que abre la ventana y entrega el paquete
+    private void abrirFormulario(SesionTutoria sesionParaEditar) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/sistematutoriasfx/vista/tutor/FXMLFormularioRegistrarHorarioTutor.fxml"));
+            Parent root = loader.load();
+            
+            // Obtenemos el controlador de la OTRA ventana (el Formulario)
+            FXMLFormularioRegistrarHorarioTutorController controladorFormulario = loader.getController();
+            
+            // Le pasamos el ID del tutor (siempre necesario)
+            controladorFormulario.inicializarTutor(academicoSesion.getIdAcademico());
+            
+            // AQUÍ ESTÁ LA CLAVE:
+            // Si le mandamos una sesión (Actualizar), llamamos al método especial para llenar campos
+            if (sesionParaEditar != null) {
+                //controladorFormulario.inicializarSesionEdicion(sesionParaEditar);
+            }
+            
+            // Mostramos la ventana
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setScene(scene);
+            stage.setTitle(sesionParaEditar == null ? "Registrar Horario" : "Editar Horario");
+            stage.showAndWait();
+            
+            // Cuando se cierre, recargamos la tabla para ver cambios
+            cargarTabla();
+            
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 }
