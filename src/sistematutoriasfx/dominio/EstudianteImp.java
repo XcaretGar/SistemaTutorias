@@ -20,30 +20,14 @@ import sistematutoriasfx.modeloo.ConexionBD;
  * @author JOANA XCARET
  */
 public class EstudianteImp {
+    
     public static HashMap<String, Object> obtenerEstudiantes() {
         HashMap<String, Object> respuesta = new LinkedHashMap<>();
         try {
-            ResultSet resultado =
-                    EstudianteDAO.obtenerEstudiantes(ConexionBD.abrirConexionBD());
-            ArrayList<Estudiante> estudiantes = new ArrayList();
-            while (resultado.next()) {
-                Estudiante estudiante = new Estudiante();
-                estudiante.setIdEstudiante(resultado.getInt("idEstudiante"));
-                estudiante.setMatricula(resultado.getString("matricula"));
-                estudiante.setNombreEstudiante(resultado.getString("nombreEstudiante"));
-                estudiante.setApellidoPaterno(resultado.getString("apellidoPaterno"));
-                estudiante.setApellidoMaterno(resultado.getString("apellidoMaterno"));
-                estudiante.setCorreoInstitucional(resultado.getString("correoInstitucional"));
-                estudiante.setIdProgramaEducativo(resultado.getInt("idProgramaEducativo"));
-                estudiante.setProgramaEducativo(resultado.getString("programaEducativo"));
-                //Mapeo del enum estatus
-                estudiante.setEstatus(Estatus.valueOf(resultado.getString("estatus")));
-                estudiantes.add(estudiante);
-            }
+            ArrayList<Estudiante> estudiantes = EstudianteDAO.obtenerEstudiantes();
             respuesta.put("error", false);
             respuesta.put("estudiantes", estudiantes);
-            ConexionBD.cerrarConexionBD();
-        } catch (SQLException e) {
+        } catch (Exception e) {
             respuesta.put("error", true);
             respuesta.put("mensaje", e.getMessage());
         }
@@ -54,15 +38,14 @@ public class EstudianteImp {
         Respuesta respuesta = new Respuesta();
         respuesta.setError(true);
         try {
-            int filasAfectadas = EstudianteDAO.registrar(estudiante, ConexionBD.abrirConexionBD());
-            if (filasAfectadas > 0) {
+            boolean exito = EstudianteDAO.registrar(estudiante);
+            if (exito) {
                 respuesta.setError(false);
-                respuesta.setMensaje("Información del tutorado(a) guardado correctamente");
+                respuesta.setMensaje("Información del tutorado(a) guardada correctamente");
             } else {
-                respuesta.setMensaje("Lo sentimos hubo un error al guardar la información");
+                respuesta.setMensaje("Lo sentimos, hubo un error al guardar la información");
             }
-            ConexionBD.cerrarConexionBD();
-        } catch (SQLException e) {
+        } catch (Exception e) {
             respuesta.setMensaje(e.getMessage());
         }
         return respuesta;
@@ -71,8 +54,8 @@ public class EstudianteImp {
     public static HashMap<String, Object> editar(Estudiante estudiante) {
         HashMap<String, Object> respuesta = new LinkedHashMap<>();
         try {
-            int filasAfectadas = EstudianteDAO.editar(estudiante, ConexionBD.abrirConexionBD());
-            if (filasAfectadas > 0) {
+            boolean exito = EstudianteDAO.editar(estudiante);
+            if (exito) {
                 respuesta.put("error", false);
                 respuesta.put("mensaje", "El registro del tutorado(a) " 
                         + estudiante.getNombreEstudiante() + " fue guardado correctamente");
@@ -81,8 +64,7 @@ public class EstudianteImp {
                 respuesta.put("mensaje", "Lo sentimos, no se pudo modificar la información "
                             + " del tutorado, por favor inténtelo más tarde");
             }
-            ConexionBD.cerrarConexionBD();
-        } catch (SQLException e) {
+        } catch (Exception e) {
             respuesta.put("error", true);
             respuesta.put("mensaje", e.getMessage());
         }

@@ -8,7 +8,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import sistematutoriasfx.modelo.pojo.Estudiante;
+import sistematutoriasfx.modeloo.ConexionBD;
 
 /**
  *
@@ -16,53 +18,100 @@ import sistematutoriasfx.modelo.pojo.Estudiante;
  */
 public class EstudianteDAO {
     
-   // XCA CHECA ESTA PARTE!!! NO USES CONEXIONBD, USA LOS QUE TIENES Y CIERRAS LA CONEXION
-    public static ResultSet obtenerEstudiantes(Connection conexionBD) throws SQLException {
-        if (conexionBD != null) {
+    public static ArrayList<Estudiante> obtenerEstudiantes() {
+        ArrayList<Estudiante> estudiantes = new ArrayList<>();
+        Connection conexion = null;
+        try {
+            conexion = ConexionBD.abrirConexion();
+          
             String query = "SELECT idEstudiante, matricula, nombreEstudiante, apellidoPaterno, " +
                 "apellidoMaterno, correoInstitucional, idProgramaEducativo, programaEducativo.nombre, estatus " +
                 "FROM estudiante " +
                 "INNER JOIN programaEducativo programaEducativo ON programaEducativo.idPrograma = estudiante.idProgramaEducativo";
-            PreparedStatement sentencia = conexionBD.prepareStatement(query);
-            return sentencia.executeQuery();
+            PreparedStatement ps = conexion.prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+            
+            while (rs.next()) {
+                Estudiante estudiante = new Estudiante();
+                estudiante.setIdEstudiante(rs.getInt("idEstudiante"));
+                estudiante.setMatricula(rs.getString("matricula"));
+                estudiante.setNombreEstudiante(rs.getString("nombreEstudiante"));
+                estudiante.setApellidoPaterno(rs.getString("apellidoPaterno"));
+                estudiante.setApellidoMaterno(rs.getString("apellidoMaterno"));
+                estudiante.setCorreoInstitucional(rs.getString("correoInstitucional"));
+                estudiante.setIdProgramaEducativo(rs.getInt("idProgramaEducativo"));
+                estudiante.setProgramaEducativo(rs.getString("programaEducativo"));
+                estudiante.setEstatus(Estudiante.Estatus.valueOf(rs.getString("nombre")));
+                estudiantes.add(estudiante);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if(conexion != null){ try { conexion.close(); } catch (SQLException e) { e.printStackTrace(); } }
         }
-        throw new SQLException("No hay conexión a la Base de Datos");
+        return estudiantes;
     }
     
-    public static int registrar(Estudiante estudiante, Connection conexionBD) throws SQLException {
-        if (conexionBD != null) {
+    public static boolean registrar(Estudiante estudiante) {
+        boolean respuesta = false;
+        Connection conexion = null;
+        try {
+            conexion = ConexionBD.abrirConexion();
+
             String query = "INSERT INTO estudiante (matricula, nombreEstudiante, apellidoPaterno, apellidoMaterno, " +
-                "correoInstitucional, idProgramaEducativo, estatus) VALUES " +
-                "(?,?,?,?,?,?,?)";
-            PreparedStatement sentencia = conexionBD.prepareStatement(query);
-            sentencia.setString(1, estudiante.getMatricula());
-            sentencia.setString(2, estudiante.getNombreEstudiante());
-            sentencia.setString(3, estudiante.getApellidoPaterno());
-            sentencia.setString(4, estudiante.getApellidoMaterno());
-            sentencia.setString(5, estudiante.getCorreoInstitucional());
-            sentencia.setInt(6, estudiante.getIdProgramaEducativo());
-            sentencia.setString(7, estudiante.getEstatus().name());
-            return sentencia.executeUpdate();
+                           "correoInstitucional, idProgramaEducativo, estatus) VALUES (?,?,?,?,?,?,?)";
+
+            PreparedStatement ps = conexion.prepareStatement(query);
+            ps.setString(1, estudiante.getMatricula());
+            ps.setString(2, estudiante.getNombreEstudiante());
+            ps.setString(3, estudiante.getApellidoPaterno());
+            ps.setString(4, estudiante.getApellidoMaterno());
+            ps.setString(5, estudiante.getCorreoInstitucional());
+            ps.setInt(6, estudiante.getIdProgramaEducativo());
+            ps.setString(7, estudiante.getEstatus().name());
+
+            int filasAfectadas = ps.executeUpdate();
+            respuesta = (filasAfectadas > 0);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (conexion != null) {
+                try { conexion.close(); } catch (SQLException e) { e.printStackTrace(); }
+            }
         }
-        throw new SQLException("No hay conexión a la base de datos");
+        return respuesta;
     }
+
     
-    public static int editar(Estudiante estudiante, Connection conexionBD) throws SQLException {
-        if (conexionBD != null) {
+    public static boolean editar(Estudiante estudiante) {
+        boolean respuesta = false;
+        Connection conexion = null;
+        try {
+            conexion = ConexionBD.abrirConexion();
+
             String query = "UPDATE estudiante SET matricula = ?, nombreEstudiante = ?, apellidoPaterno = ?, " +
-                "apellidoMaterno = ?, correoInstitucional = ?, idProgramaEducativo = ?, " +
-                "estatus = ? WHERE idEstudiante = ?";
-            PreparedStatement sentencia = conexionBD.prepareStatement(query);
-            sentencia.setString(1, estudiante.getMatricula());
-            sentencia.setString(2, estudiante.getNombreEstudiante());
-            sentencia.setString(3, estudiante.getApellidoPaterno());
-            sentencia.setString(4, estudiante.getApellidoMaterno());
-            sentencia.setString(5, estudiante.getCorreoInstitucional());
-            sentencia.setInt(6, estudiante.getIdProgramaEducativo());
-            sentencia.setString(7, estudiante.getEstatus().name());
-            sentencia.setInt(8, estudiante.getIdEstudiante());
-            return sentencia.executeUpdate();
+                           "apellidoMaterno = ?, correoInstitucional = ?, idProgramaEducativo = ?, estatus = ? " +
+                           "WHERE idEstudiante = ?";
+
+            PreparedStatement ps = conexion.prepareStatement(query);
+            ps.setString(1, estudiante.getMatricula());
+            ps.setString(2, estudiante.getNombreEstudiante());
+            ps.setString(3, estudiante.getApellidoPaterno());
+            ps.setString(4, estudiante.getApellidoMaterno());
+            ps.setString(5, estudiante.getCorreoInstitucional());
+            ps.setInt(6, estudiante.getIdProgramaEducativo());
+            ps.setString(7, estudiante.getEstatus().name());
+            ps.setInt(8, estudiante.getIdEstudiante());
+
+            int filasAfectadas = ps.executeUpdate();
+            respuesta = (filasAfectadas > 0);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (conexion != null) {
+                try { conexion.close(); } catch (SQLException e) { e.printStackTrace(); }
+            }
         }
-        throw new SQLException("No hay conexión a la base de datos");
+        return respuesta;
     }
 }

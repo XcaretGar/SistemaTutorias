@@ -20,11 +20,10 @@ public class ConexionBD {
     private static final String HOST = "localhost";
     private static final String PUERTO = "3306";
     private static final String USUARIO = "root";
-    private static final String PASSWORD = "REOA040715"; // CONTRASEÑA DE MYSQL
+    private static final String PASSWORD = "bobyyxcaa"; // CONTRASEÑA DE MYSQL
     private static final String URL = "jdbc:mysql://" + HOST + ":" + PUERTO + "/" + BD + "?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=America/Mexico_City";
     private static Connection CONEXION = null;
     
-    //Yoryi
     public static Connection abrirConexion() throws SQLException {
         try {
             Class.forName(DRIVER);
@@ -34,20 +33,7 @@ public class ConexionBD {
             throw new SQLException("No se encontró el driver de MySQL.");
         }
     }
-    /*
-    //Xca CHECA AQUI!!
-    public static Connection abrirConexionBD(){
-        try {
-            Class.forName(DRIVER);
-            CONEXION = DriverManager.getConnection(URL, USUARIO, PASSWORD);
-        } catch (ClassNotFoundException e){
-            e.printStackTrace();
-        } catch (SQLException ex){
-            ex.printStackTrace();
-        }
-        return CONEXION;
-    }
-    */
+    
     public static void cerrarConexionBD() {
         try {
             if (CONEXION != null) {
