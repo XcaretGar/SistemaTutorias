@@ -4,6 +4,7 @@
  */
 package sistematutoriasfx.controlador.administrador;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,12 +17,17 @@ import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import sistematutoriasfx.dominio.EstudianteImp;
 import sistematutoriasfx.interfaces.IObservador;
 import sistematutoriasfx.modelo.pojo.Estudiante;
@@ -62,7 +68,7 @@ public class FXMLGestionarTutoradoController  implements Initializable, IObserva
     public void initialize(URL url, ResourceBundle rb) {
         configurarTabla();
         cargarInformacion();
-      
+        configurarBusqueda();
     }    
 
     private void configurarTabla() {
@@ -92,10 +98,36 @@ public class FXMLGestionarTutoradoController  implements Initializable, IObserva
     
     @FXML
     private void clicActualizarTutorado(ActionEvent event) {
+        Estudiante estudianteSeleccion = tvTutorados.getSelectionModel().getSelectedItem();
+        if (estudianteSeleccion != null) {
+            irFormulario(estudianteSeleccion);
+        } else {
+            Utilidades.mostrarAlertaSimple("", "Selecciona un estudiante, para modificar la información"
+                    + " de un estudiante primero debes seleccionarlo", Alert.AlertType.WARNING);
+        }
     }
 
     @FXML
     private void clicAsignarTutorado(ActionEvent event) {
+        irFormulario(null);
+    }
+    
+    private void irFormulario(Estudiante estudiante) {
+        try {
+            FXMLLoader cargador = 
+                    Utilidades.obtenerVista("vista/FXMLFormularioTutorado.fxml");
+            Parent vista = cargador.load();
+            FXMLFormularioTutoradoController controlador = cargador.getController();
+            controlador.inicializarDatos(this, estudiante);
+            Scene scene = new Scene(vista);
+            Stage stage = new Stage();
+            stage.setTitle("Formulario Tutorado");
+            stage.setScene(scene);
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }       
     }
     
     @Override

@@ -99,4 +99,8 @@ public class Estudiante {
         EnRiesgo,
         Baja
     }
+    
+    public String getNombreCompleto() {
+        return nombreEstudiante + " " + apellidoPaterno + " " + (apellidoMaterno != null ? apellidoMaterno : "");
+    }
 }
