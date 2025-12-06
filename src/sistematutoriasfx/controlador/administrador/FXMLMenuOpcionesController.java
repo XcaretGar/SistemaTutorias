@@ -13,7 +13,7 @@ import javafx.fxml.Initializable;
  *
  * @author JOANA XCARET
  */
-public class FXMLDarBajaTutoradoMotivoController implements Initializable {
+public class FXMLMenuOpcionesController implements Initializable {
 
     /**
      * Initializes the controller class.

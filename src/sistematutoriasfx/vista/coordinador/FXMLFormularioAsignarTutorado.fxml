@@ -49,12 +49,9 @@
                </effect>
             </Label>
             <Label layoutX="29.0" layoutY="155.0" text="Nombre:" />
-            <Label layoutX="27.0" layoutY="207.0" text="Programa Educativo:" />
+            <Label layoutX="28.0" layoutY="216.0" text="Programa Educativo:" />
             <Label layoutX="27.0" layoutY="184.0" text="Matrícula:" />
-            <Label fx:id="lbNombreCompletoTutorado" layoutX="86.0" layoutY="155.0" />
-            <Label fx:id="lbMatricula" layoutX="86.0" layoutY="192.0" />
-            <Label fx:id="lbProgramaEducativo" layoutX="319.0" layoutY="192.0" />
-            <Label layoutX="28.0" layoutY="246.0" text="Seleccione el Tutor">
+            <Label layoutX="28.0" layoutY="250.0" text="Seleccione el Tutor">
                <effect>
                   <Blend />
                </effect>
@@ -62,7 +59,7 @@
                   <Font size="13.0" />
                </font>
             </Label>
-            <TableView layoutX="25.0" layoutY="315.0" prefHeight="101.0" prefWidth="652.0">
+            <TableView fx:id="tvTutores" layoutX="25.0" layoutY="315.0" prefHeight="101.0" prefWidth="652.0">
               <columns>
                 <TableColumn fx:id="colNombre" prefWidth="90.0" text="Nombre" />
                 <TableColumn fx:id="colApPaterno" prefWidth="100.0" text="Apellido Paterno" />
@@ -73,6 +70,9 @@
               </columns>
             </TableView>
             <Button layoutX="25.0" layoutY="276.0" mnemonicParsing="false" onAction="#clicSeleccionar" prefHeight="17.0" prefWidth="102.0" style="-fx-background-color: #38AB3B;" text="Seleccionar" textFill="WHITE" />
+            <TextField fx:id="tfProgramaEducativo" layoutX="147.0" layoutY="212.0" />
+            <TextField fx:id="tfMatricula" layoutX="96.0" layoutY="180.0" />
+            <TextField fx:id="tfNombreCompleto" layoutX="96.0" layoutY="151.0" />
          </children>
       </Pane>
    </children>

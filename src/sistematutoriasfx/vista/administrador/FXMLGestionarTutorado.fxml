@@ -1,11 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.text.*?>
 <?import java.lang.*?>
 <?import java.util.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sistematutoriasfx.controlador.FXMLGestionarTutoradoController">
-    
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="800.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="sistematutoriasfx.controlador.FXMLGestionarUsuarioController">
+   <children>
+      <Pane layoutX="-28.0" layoutY="-21.0" prefHeight="421.0" prefWidth="831.0">
+         <children>
+            <Pane layoutX="25.0" layoutY="14.0" prefHeight="71.0" prefWidth="806.0" style="-fx-background-color: #063596;">
+               <children>
+                  <Label layoutX="30.0" layoutY="25.0" text="Sistema de Gestión de Tutorías" textFill="WHITE">
+                     <effect>
+                        <Blend />
+                     </effect>
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="338.0" layoutY="25.0" text="Administrador:" textFill="WHITE">
+                     <effect>
+                        <Blend />
+                     </effect>
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+         </children>
+      </Pane>
+      <Button layoutX="331.0" layoutY="129.0" mnemonicParsing="false" onAction="#clicActualizarTutorado" prefHeight="25.0" prefWidth="82.0" style="-fx-background-color: #38AB3B;" text="Actualizar" textFill="WHITE" />
+      <Button layoutX="214.0" layoutY="129.0" mnemonicParsing="false" onAction="#clicAsignarTutorado" prefHeight="25.0" prefWidth="82.0" style="-fx-background-color: #38AB3B;" text="Asignar" textFill="WHITE" />
+      <TableView fx:id="tvTutorados" layoutX="19.0" layoutY="177.0" prefHeight="200.0" prefWidth="759.0">
+         <columns>
+            <TableColumn fx:id="colNombre" text="Nombre" />
+            <TableColumn fx:id="colApPaterno" prefWidth="103.0" text="Apellido Paterno" />
+            <TableColumn fx:id="colApMaterno" prefWidth="104.0" text="Apellido Materno" />
+            <TableColumn fx:id="colMatricula" prefWidth="95.0" text="Matrícula" />
+            <TableColumn fx:id="colProgramaEducativo" prefWidth="130.0" text="Programa Educativo" />
+            <TableColumn fx:id="colEstadoAcademico" prefWidth="123.0" text="Estado Académico" />
+            <TableColumn fx:id="colCorreo" prefWidth="123.0" text="Correo" />
+         </columns>
+      </TableView>
+      <TextField fx:id="tfBuscar" layoutX="19.0" layoutY="129.0" promptText="Buscar" />
+      <Label layoutX="19.0" layoutY="78.0" text="Gestionar Tutorado">
+         <effect>
+            <Blend />
+         </effect>
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+   </children>
 </AnchorPane>

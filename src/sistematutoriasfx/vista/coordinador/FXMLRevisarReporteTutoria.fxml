@@ -41,7 +41,7 @@
                </font>
             </Label>
             <TextField fx:id="tfBuscar" layoutX="33.0" layoutY="126.0" promptText="Buscar" />
-            <TableView layoutX="33.0" layoutY="173.0" prefHeight="200.0" prefWidth="600.0">
+            <TableView fx:id="tvRevisarReportes" layoutX="33.0" layoutY="173.0" prefHeight="200.0" prefWidth="600.0">
               <columns>
                 <TableColumn fx:id="colNombre" prefWidth="75.0" text="Nombre" />
                 <TableColumn fx:id="colApPaterno" prefWidth="101.0" text="Apellido Paterno" />
