@@ -4,11 +4,14 @@
  */
 package sistematutoriasfx.dominio;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import sistematutoriasfx.modelo.dao.EstudianteDAO;
 import sistematutoriasfx.modelo.pojo.Estudiante;
 import sistematutoriasfx.modelo.pojo.Estudiante.Estatus;

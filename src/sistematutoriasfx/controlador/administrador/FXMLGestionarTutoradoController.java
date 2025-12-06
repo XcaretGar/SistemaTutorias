@@ -72,7 +72,7 @@ public class FXMLGestionarTutoradoController  implements Initializable, IObserva
     }    
 
     private void configurarTabla() {
-        colNombre.setCellValueFactory(new PropertyValueFactory("nombre"));
+        colNombre.setCellValueFactory(new PropertyValueFactory("nombreEstudiante"));
         colApPaterno.setCellValueFactory(new PropertyValueFactory("apellidoPaterno"));
         colApMaterno.setCellValueFactory(new PropertyValueFactory("apellidoMaterno"));
         colMatricula.setCellValueFactory(new PropertyValueFactory("matricula"));

@@ -25,7 +25,7 @@ public class EstudianteDAO {
             conexion = ConexionBD.abrirConexion();
           
             String query = "SELECT idEstudiante, matricula, nombreEstudiante, apellidoPaterno, " +
-                "apellidoMaterno, correoInstitucional, idProgramaEducativo, programaEducativo.nombre, estatus " +
+                "apellidoMaterno, correoInstitucional, idProgramaEducativo, programaEducativo.nombre AS programaEducativo, estatus " +
                 "FROM estudiante " +
                 "INNER JOIN programaEducativo programaEducativo ON programaEducativo.idPrograma = estudiante.idProgramaEducativo";
             PreparedStatement ps = conexion.prepareStatement(query);
@@ -41,7 +41,7 @@ public class EstudianteDAO {
                 estudiante.setCorreoInstitucional(rs.getString("correoInstitucional"));
                 estudiante.setIdProgramaEducativo(rs.getInt("idProgramaEducativo"));
                 estudiante.setProgramaEducativo(rs.getString("programaEducativo"));
-                estudiante.setEstatus(Estudiante.Estatus.valueOf(rs.getString("nombre")));
+                estudiante.setEstatus(Estudiante.Estatus.valueOf(rs.getString("estatus")));
                 estudiantes.add(estudiante);
             }
         } catch (SQLException e) {

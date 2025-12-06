@@ -33,6 +33,6 @@ public class Utilidades {
     }
     
     public static FXMLLoader obtenerVista(String url) {
-        return new FXMLLoader (SistemaTutoriasFx.class.getResource(url));
+        return new FXMLLoader (SistemaTutoriasFx.class.getResource("/sistematutoriasfx/vista/administrador/FXMLFormularioTutorado.fxml"));
     }
 }
