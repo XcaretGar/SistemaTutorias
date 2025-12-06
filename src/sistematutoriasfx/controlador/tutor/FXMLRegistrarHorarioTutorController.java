@@ -19,13 +19,14 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import sistematutoriasfx.modelo.dao.FechasTutoriaDAO;
 import sistematutoriasfx.modelo.dao.PeriodoEscolarDAO;
 import sistematutoriasfx.modelo.dao.SesionTutoriaDAO;
+import sistematutoriasfx.modelo.pojo.FechasTutoria;
 import sistematutoriasfx.modelo.pojo.PeriodoEscolar;
 import sistematutoriasfx.modelo.pojo.SesionTutoria;
 import utilidad.Utilidades;
@@ -35,11 +36,14 @@ public class FXMLRegistrarHorarioTutorController implements Initializable {
     @FXML
     private Label lbNombreTutor;
     @FXML
-    private ComboBox<Integer> cbNoSesion;
-    @FXML
     private ComboBox<PeriodoEscolar> cbPeriodo;
+    
+    // CAMBIO: Este es el combo importante ahora
     @FXML
-    private DatePicker dpFecha;
+    private ComboBox<FechasTutoria> cbFechaBase;
+    @FXML
+    private Label lbFechaMostrada; 
+    
     @FXML
     private ComboBox<String> cbHora;
     @FXML
@@ -59,86 +63,95 @@ public class FXMLRegistrarHorarioTutorController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        cargarDatos();
+        cargarDatosIniciales();
+        configurarListeners();
     }    
     
-    private void cargarDatos() {
+    private void cargarDatosIniciales() {
+        // 1. Periodos
         cbPeriodo.setItems(FXCollections.observableArrayList(PeriodoEscolarDAO.obtenerPeriodos()));
-        cbNoSesion.setItems(FXCollections.observableArrayList(1, 2, 3));
         
-        // Horas (01 - 12)
+        // 2. Horas (01 - 12)
         ObservableList<String> horas = FXCollections.observableArrayList();
-        for(int i=1; i<=12; i++) {
-            horas.add(i < 10 ? "0"+i : String.valueOf(i));
-        }
+        for(int i=1; i<=12; i++) horas.add(i < 10 ? "0"+i : String.valueOf(i));
         cbHora.setItems(horas);
         
-        // --- CAMBIO: MINUTOS DE 10 EN 10 ---
+        // 3. Minutos (Intervalos de 10)
         ObservableList<String> minutos = FXCollections.observableArrayList();
-        for(int i=0; i<60; i+=10){
-            minutos.add(String.format("%02d", i)); // 00, 10, 20, 30, 40, 50
-        }
+        for(int i=0; i<60; i+=10) minutos.add(String.format("%02d", i));
         cbMinutos.setItems(minutos);
         
         cbAmPm.setItems(FXCollections.observableArrayList("AM", "PM"));
     }
+    
+    private void configurarListeners() {
+        // Cuando cambia el periodo -> Cargar las fechas oficiales de ese periodo
+        cbPeriodo.valueProperty().addListener((obs, oldVal, newVal) -> {
+            if(newVal != null) {
+                cargarFechasOficiales(newVal.getIdPeriodo());
+                lbFechaMostrada.setText("");
+            }
+        });
+        
+        // Cuando selecciona una sesión -> Mostrar la fecha en el label azul
+        cbFechaBase.valueProperty().addListener((obs, oldVal, newVal) -> {
+            if (newVal != null) {
+                lbFechaMostrada.setText(newVal.getFechaSesion());
+            }
+        });
+    }
+    
+    private void cargarFechasOficiales(int idPeriodo) {
+        ObservableList<FechasTutoria> fechas = FXCollections.observableArrayList(
+                FechasTutoriaDAO.obtenerFechasPorPeriodo(idPeriodo)
+        );
+        cbFechaBase.setItems(fechas);
+    }
 
     @FXML
     private void clicGuardar(ActionEvent event) {
-        if(cbNoSesion.getValue() == null || cbPeriodo.getValue() == null || dpFecha.getValue() == null ||
+        // Validar vacíos (Ahora validamos cbFechaBase, no dpFecha)
+        if(cbPeriodo.getValue() == null || cbFechaBase.getValue() == null ||
            cbHora.getValue() == null || cbMinutos.getValue() == null || cbAmPm.getValue() == null || 
            tfLugar.getText().isEmpty()){
             Utilidades.mostrarAlertaSimple("Faltan datos", "Por favor llena todos los campos.", Alert.AlertType.WARNING);
             return;
         }
         
-        // Conversión AM/PM a 24 Horas
+        // Conversión Hora
         String horaSel = cbHora.getValue();
-        String minutoSel = cbMinutos.getValue();
-        String ampmSel = cbAmPm.getValue();
         int horaInt = Integer.parseInt(horaSel);
+        if(cbAmPm.getValue().equals("PM") && horaInt != 12) horaInt += 12;
+        else if (cbAmPm.getValue().equals("AM") && horaInt == 12) horaInt = 0;
         
-        if(ampmSel.equals("PM") && horaInt != 12){
-            horaInt += 12; 
-        } else if (ampmSel.equals("AM") && horaInt == 12){
-            horaInt = 0;
-        }
+        String horaInicio = String.format("%02d:%s:00", horaInt, cbMinutos.getValue());
         
-        // Formato para MySQL (HH:mm:ss)
-        String hora = String.format("%02d:%s:00", horaInt, minutoSel);
-        
-        // Crear objeto 
+        // Crear objeto para guardar
         SesionTutoria sesion = new SesionTutoria();
+        sesion.setIdAcademico(this.idAcademico);
         sesion.setIdPeriodo(cbPeriodo.getValue().getIdPeriodo());
-        sesion.setNumSesion(cbNoSesion.getValue());
-        sesion.setFecha(dpFecha.getValue().toString());
-        sesion.setHora(hora);
+        
+        // AQUÍ EL CAMBIO CLAVE: Guardamos el ID de la fecha oficial
+        sesion.setIdFechaTutoria(cbFechaBase.getValue().getIdFechaTutoria());
+        
+        sesion.setHora(horaInicio);
         sesion.setLugar(tfLugar.getText());
         sesion.setComentarios(taComentarios.getText());
-        sesion.setIdAcademico(this.idAcademico); // Usamos el ID real recibido
         
         boolean exito = SesionTutoriaDAO.registrarSesion(sesion);
         
         if(exito){
-            Utilidades.mostrarAlertaSimple("Registro Exitoso", "La sesión de tutoría ha sido agendada.", Alert.AlertType.INFORMATION);
+            Utilidades.mostrarAlertaSimple("Registro Exitoso", "Horario agendado correctamente.", Alert.AlertType.INFORMATION);
             cerrarVentana();
         } else {
-            Utilidades.mostrarAlertaSimple("Error", "No se pudo guardar la sesión en la base de datos.", Alert.AlertType.ERROR);
+            Utilidades.mostrarAlertaSimple("Error", "No se pudo guardar.", Alert.AlertType.ERROR);
         }
     }
 
-    @FXML
-    private void clicSalir(ActionEvent event) {
-        cerrarVentana();
-    }
-    
-    @FXML
-    private void clicCancelar(ActionEvent event) {
-        cerrarVentana(); 
-    }
+    @FXML private void clicCancelar(ActionEvent event) { cerrarVentana(); }
     
     private void cerrarVentana() {
-        Stage escenario = (Stage) cbNoSesion.getScene().getWindow();
-        escenario.close();
+        // Usamos cualquier componente visual para obtener la ventana y cerrarla
+        ((Stage) cbPeriodo.getScene().getWindow()).close();
     }
 }

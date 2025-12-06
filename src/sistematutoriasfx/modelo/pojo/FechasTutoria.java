@@ -58,7 +58,7 @@ public class FechasTutoria {
     
     @Override
     public String toString() {
-        return "Sesión " + numSesion + " - " + fechaSesion;
+        return "Sesión " + numSesion; 
     }
 }
 

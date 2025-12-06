@@ -104,8 +104,8 @@ public class FXMLPrincipalTutorController implements Initializable {
     }
 
     @FXML
-    private void clicSalir(ActionEvent event) {
-        try {
+    private void clicCerrarSesion(ActionEvent event) {
+             try {
             // Regresar al Login
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/sistematutoriasfx/vista/FXMLInicioSesion.fxml"));
             Parent root = loader.load();

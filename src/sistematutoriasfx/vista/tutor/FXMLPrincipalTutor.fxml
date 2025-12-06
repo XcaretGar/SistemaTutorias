@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.paint.*?>
-<?import javafx.scene.image.*?>
+<?import javafx.scene.effect.*?>
 <?import javafx.scene.text.*?>
 <?import java.lang.*?>
 <?import java.util.*?>
@@ -11,61 +10,73 @@
 
 <AnchorPane id="AnchorPane" prefHeight="500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sistematutoriasfx.controlador.tutor.FXMLPrincipalTutorController">
    <children>
-      <Pane prefHeight="87.0" prefWidth="600.0" style="-fx-background-color: #294229;">
+      <Pane prefHeight="500.0" prefWidth="600.0" style="-fx-background-color: white;">
          <children>
-            <Label layoutX="35.0" layoutY="33.0" text="Sistema de Gestión de Tutorías" textFill="WHITE">
-               <font>
-                  <Font size="15.0" />
-               </font>
+            <Pane prefHeight="70.0" prefWidth="600.0" style="-fx-background-color: #063596;">
+               <children>
+                  <Label layoutX="30.0" layoutY="25.0" text="Sistema de Gestión de Tutorías" textFill="WHITE">
+                     <font><Font size="16.0" /></font>
+                     <effect><Blend /></effect>
+                  </Label>
+                  <Label fx:id="lbNombreTutor" layoutX="350.0" layoutY="25.0" prefWidth="220.0" text="Tutor: ..." textFill="WHITE" alignment="CENTER_RIGHT">
+                     <font><Font size="16.0" /></font>
+                     <effect><Blend /></effect>
+                  </Label>
+               </children>
+            </Pane>
+
+            <Label layoutX="90.0" layoutY="90.0" text="Módulo de Tutorías">
+               <font><Font size="16.0" /></font>
+               <effect><Blend /></effect>
             </Label>
-            <Label fx:id="lbNombreTutor" layoutX="389.0" layoutY="33.0" text="Tutor:" textFill="WHITE">
-               <font>
-                  <Font size="15.0" />
-               </font>
+            
+            <Label layoutX="360.0" layoutY="90.0" text="Módulo de Problemáticas">
+               <font><Font size="16.0" /></font>
+               <effect><Blend /></effect>
             </Label>
-         </children>
-      </Pane>
-      <Pane layoutY="85.0" prefHeight="418.0" prefWidth="600.0">
-         <children>
-            <Label layoutX="91.0" layoutY="65.0" text="Módulo de Tutorías" textAlignment="CENTER">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Label>
-            <Label layoutX="345.0" layoutY="65.0" text="Módulo de Problematicas" textAlignment="CENTER">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Label>
-            <Button layoutX="23.0" layoutY="21.0" mnemonicParsing="false" onAction="#clicSalir" prefHeight="25.0" prefWidth="59.0" text="&lt; Salir" textAlignment="CENTER" underline="true">
-               <font>
-                  <Font size="10.0" />
-               </font>
+
+            <Button layoutX="60.0" layoutY="140.0" mnemonicParsing="false" onAction="#clicHorarioTutoria" prefHeight="60.0" prefWidth="200.0" style="-fx-background-color: #417C9E;" text="Horarios de Tutoría" textFill="WHITE">
+               <font><Font size="16.0" /></font>
+               <effect><Blend /></effect>
+               <cursor><Cursor fx:constant="HAND" /></cursor>
             </Button>
-            <Button layoutX="61.0" layoutY="120.0" mnemonicParsing="false" onAction="#clicHorarioTutoria" prefHeight="37.0" prefWidth="182.0" text="Horarios de Tutoría" />
-            <Button layoutX="61.0" layoutY="192.0" mnemonicParsing="false" onAction="#clicEvidenciaTutoria" prefHeight="37.0" prefWidth="182.0" text="Evidencia de Tutoría" />
-            <Button layoutX="61.0" layoutY="266.0" mnemonicParsing="false" onAction="#clicReporteTutoria" prefHeight="37.0" prefWidth="182.0" text="Reporte de Tutoría" />
-            <Button layoutX="61.0" layoutY="339.0" mnemonicParsing="false" onAction="#clicAsistenciaTutoria" prefHeight="37.0" prefWidth="182.0" text="Asistencia de Tutoría" />
-            <Label layoutX="66.0" layoutY="97.0" prefHeight="17.0" prefWidth="173.0" text="Configura el horario y fecha de tutoría" textAlignment="CENTER">
-               <font>
-                  <Font size="10.0" />
-               </font>
+            <Label layoutX="60.0" layoutY="205.0" prefWidth="200.0" text="Configura fecha y hora" textFill="#7f8c8d" wrapText="true">
+               <font><Font size="11.0" /></font>
             </Label>
-            <Label layoutX="70.0" layoutY="169.0" prefHeight="17.0" prefWidth="165.0" text="Sube archivos y fotos de las sesiones" textAlignment="CENTER">
-               <font>
-                  <Font size="10.0" />
-               </font>
+
+            <Button layoutX="60.0" layoutY="240.0" mnemonicParsing="false" onAction="#clicEvidenciaTutoria" prefHeight="60.0" prefWidth="200.0" style="-fx-background-color: #417C9E;" text="Evidencia de Tutoría" textFill="WHITE">
+               <font><Font size="16.0" /></font>
+               <effect><Blend /></effect>
+               <cursor><Cursor fx:constant="HAND" /></cursor>
+            </Button>
+            <Label layoutX="60.0" layoutY="305.0" prefWidth="200.0" text="Sube archivos y fotos" textFill="#7f8c8d" wrapText="true">
+               <font><Font size="11.0" /></font>
             </Label>
-            <Label layoutX="78.0" layoutY="242.0" prefHeight="17.0" prefWidth="147.0" text="Genera, edita, exporta o elimina">
-               <font>
-                  <Font size="10.0" />
-               </font>
+
+            <Button layoutX="340.0" layoutY="140.0" mnemonicParsing="false" onAction="#clicReporteTutoria" prefHeight="60.0" prefWidth="200.0" style="-fx-background-color: #417C9E;" text="Reporte de Tutoría" textFill="WHITE">
+               <font><Font size="16.0" /></font>
+               <effect><Blend /></effect>
+               <cursor><Cursor fx:constant="HAND" /></cursor>
+            </Button>
+            <Label layoutX="340.0" layoutY="205.0" prefWidth="200.0" text="Genera, edita y exporta" textFill="#7f8c8d" wrapText="true">
+               <font><Font size="11.0" /></font>
             </Label>
-            <Label layoutX="53.0" layoutY="316.0" prefHeight="17.0" prefWidth="197.0" text="Registra la asistencia de alumnos por sesión" textAlignment="CENTER">
-               <font>
-                  <Font size="10.0" />
-               </font>
+
+            <Button layoutX="340.0" layoutY="240.0" mnemonicParsing="false" onAction="#clicAsistenciaTutoria" prefHeight="60.0" prefWidth="200.0" style="-fx-background-color: #417C9E;" text="Asistencia" textFill="WHITE">
+               <font><Font size="16.0" /></font>
+               <effect><Blend /></effect>
+               <cursor><Cursor fx:constant="HAND" /></cursor>
+            </Button>
+            <Label layoutX="340.0" layoutY="305.0" prefWidth="200.0" text="Registra alumnos asistentes" textFill="#7f8c8d" wrapText="true">
+               <font><Font size="11.0" /></font>
             </Label>
+
+            <Button layoutX="200.0" layoutY="420.0" mnemonicParsing="false" onAction="#clicCerrarSesion" prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: #d9534f;" text="Cerrar Sesión" textFill="WHITE">
+               <font><Font size="14.0" /></font>
+               <effect><Blend /></effect>
+               <cursor><Cursor fx:constant="HAND" /></cursor>
+            </Button>
+
          </children>
       </Pane>
    </children>
