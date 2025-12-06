@@ -20,8 +20,8 @@ public class ConexionBD {
     private static final String BD = "sistema_tutorias"; 
     private static final String HOST = "localhost";
     private static final String PUERTO = "3306";
-    private static final String USUARIO = "root"; // Tu usuario de MySQL (usualmente root)
-    private static final String PASSWORD = "bobyyxcaa"; // CONTRASEÑA DE MYSQL
+    private static final String USUARIO = "root";
+    private static final String PASSWORD = "REOA040715"; // CONTRASEÑA DE MYSQL
     private static final String URL = "jdbc:mysql://" + HOST + ":" + PUERTO + "/" + BD + "?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=America/Mexico_City";
     public static Connection abrirConexion() throws SQLException {
         try {

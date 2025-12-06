@@ -13,49 +13,65 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import sistematutoriasfx.modeloo.ConexionBD;
+import sistematutoriasfx.modelo.pojo.Rol;
 import sistematutoriasfx.modelo.pojo.Usuario;
 
 public class UsuarioDAO {
 
+    // 1. Verifica si el usuario existe 
     public static Usuario verificarSesion(String username, String password) {
         Usuario usuarioVerificado = null;
         Connection conexion = null;
         try {
             conexion = ConexionBD.abrirConexion();
-            // Hacemos un JOIN con Rol para saber qué permisos tendrá
-            String consulta = "SELECT u.idUsuario, u.username, u.password, u.idRol, r.nombre AS nombreRol " +
-                              "FROM Usuario u " +
-                              "INNER JOIN Rol r ON u.idRol = r.idRol " +
-                              "WHERE u.username = ? AND u.password = ?";
+            String query = "SELECT idUsuario, username, password FROM usuario WHERE username = ? AND password = ?";
+            PreparedStatement ps = conexion.prepareStatement(query);
+            ps.setString(1, username);
+            ps.setString(2, password);
+            ResultSet rs = ps.executeQuery();
             
-            PreparedStatement preparedStatement = conexion.prepareStatement(consulta);
-            preparedStatement.setString(1, username);
-            preparedStatement.setString(2, password);
-            
-            ResultSet resultado = preparedStatement.executeQuery();
-            
-            if (resultado.next()) {
+            if (rs.next()) {
                 usuarioVerificado = new Usuario();
-                usuarioVerificado.setIdUsuario(resultado.getInt("idUsuario"));
-                usuarioVerificado.setUsername(resultado.getString("username"));
-                usuarioVerificado.setPassword(resultado.getString("password"));
-                usuarioVerificado.setIdRol(resultado.getInt("idRol"));
-                usuarioVerificado.setNombreRol(resultado.getString("nombreRol"));
+                usuarioVerificado.setIdUsuario(rs.getInt("idUsuario"));
+                usuarioVerificado.setUsername(rs.getString("username"));
+                usuarioVerificado.setPassword(rs.getString("password"));
+                // El rol se queda pendiente (0) hasta que el usuario elija
             }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
         } finally {
-            // Es buena práctica cerrar la conexión, aunque para este ejemplo 
-            // simple lo dejaremos así por ahora para no complicar el código
-            if (conexion != null) {
-                try {
-                    conexion.close();
-                } catch (SQLException ex) {
-                    ex.printStackTrace();
-                }
-            }
+            if(conexion != null){ try { conexion.close(); } catch (SQLException e) { e.printStackTrace(); } }
         }
         return usuarioVerificado;
+    }
+    
+    // 2. Obtiene la lista de roles asignados a ese usuario
+    public static ArrayList<Rol> obtenerRolesDeUsuario(int idUsuario) {
+        ArrayList<Rol> roles = new ArrayList<>();
+        Connection conexion = null;
+        try {
+            conexion = ConexionBD.abrirConexion();
+            // JOIN entre Rol y UsuarioRol para sacar los nombres reales
+            String query = "SELECT r.idRol, r.nombre FROM rol r " +
+                           "INNER JOIN usuariorol ur ON r.idRol = ur.idRol " +
+                           "WHERE ur.idUsuario = ?";
+            PreparedStatement ps = conexion.prepareStatement(query);
+            ps.setInt(1, idUsuario);
+            ResultSet rs = ps.executeQuery();
+            
+            while (rs.next()) {
+                Rol rol = new Rol();
+                rol.setIdRol(rs.getInt("idRol"));
+                rol.setNombre(rs.getString("nombre"));
+                roles.add(rol);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if(conexion != null){ try { conexion.close(); } catch (SQLException e) { e.printStackTrace(); } }
+        }
+        return roles;
     }
 }

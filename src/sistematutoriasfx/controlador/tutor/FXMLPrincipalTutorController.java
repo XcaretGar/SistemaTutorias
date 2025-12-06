@@ -59,7 +59,7 @@ public class FXMLPrincipalTutorController implements Initializable {
     private void clicHorarioTutoria(ActionEvent event) {
         try {
             // 1. Cargar la vista de Registrar Horario
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/sistematutoriasfx/vista/FXMLRegistrarHorarioTutor.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/sistematutoriasfx/vista/tutor/FXMLRegistrarHorarioTutor.fxml"));
             Parent root = loader.load();
             
             // 2. Obtener el controlador de la ventana NUEVA

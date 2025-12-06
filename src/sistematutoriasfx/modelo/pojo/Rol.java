@@ -37,7 +37,6 @@ public class Rol {
         this.nombre = nombre;
     }
     
-    // Este toString es vital para llenar los ComboBox en la interfaz más adelante
     @Override
     public String toString() {
         return nombre;
