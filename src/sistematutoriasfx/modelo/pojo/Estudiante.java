@@ -11,11 +11,12 @@ package sistematutoriasfx.modelo.pojo;
 public class Estudiante {
     private int idEstudiante;
     private String matricula;
-    private String nombre;
+    private String nombreEstudiante;
     private String apellidoPaterno;
     private String apellidoMaterno;
     private String correoInstitucional;
     private int idProgramaEducativo;
+    private String programaEducativo;
     private Estatus estatus; 
 
     public Estudiante() {
@@ -37,12 +38,12 @@ public class Estudiante {
         this.matricula = matricula;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getNombreEstudiante() {
+        return nombreEstudiante;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setNombreEstudiante(String nombreEstudiante) {
+        this.nombreEstudiante = nombreEstudiante;
     }
 
     public String getApellidoPaterno() {
@@ -75,6 +76,14 @@ public class Estudiante {
 
     public void setIdProgramaEducativo(int idProgramaEducativo) {
         this.idProgramaEducativo = idProgramaEducativo;
+    }
+
+    public String getProgramaEducativo() {
+        return programaEducativo;
+    }
+
+    public void setProgramaEducativo(String programaEducativo) {
+        this.programaEducativo = programaEducativo;
     }
 
     public Estatus getEstatus() {

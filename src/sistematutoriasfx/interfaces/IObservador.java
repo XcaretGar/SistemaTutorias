@@ -9,5 +9,6 @@ package sistematutoriasfx.interfaces;
  * @author JOANA XCARET
  */
 public interface IObservador {
+    public void notificarOperacionExitosa(String tipoOperacion, String nombre);
     
 }

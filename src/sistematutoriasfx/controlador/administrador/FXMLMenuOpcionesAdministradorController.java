@@ -60,10 +60,10 @@ public class FXMLMenuOpcionesAdministradorController implements Initializable {
     private void clicGestionarTutorado(ActionEvent event) {
         try {
             Parent vista = FXMLLoader.load(
-                     SistemaTutoriasFx.class.getResource("vista/FXMLGestionarTutorado.fxml")); 
-            Scene escenaAdmin = new Scene(vista);
+                    SistemaTutoriasFx.class.getResource("/sistematutoriasfx/vista/administrador/FXMLGestionarTutorado.fxml")); 
+            Scene escenaGestionarTutorado = new Scene(vista);
             Stage stAdmin = new Stage();
-            stAdmin.setScene(escenaAdmin);
+            stAdmin.setScene(escenaGestionarTutorado);
             stAdmin.setTitle("Gestionar Tutorado");
             stAdmin.initModality(Modality.APPLICATION_MODAL);
             stAdmin.showAndWait();
@@ -76,10 +76,10 @@ public class FXMLMenuOpcionesAdministradorController implements Initializable {
     private void clicGestionarUsuario(ActionEvent event) {
         try {
             Parent vista = FXMLLoader.load(
-                     SistemaTutoriasFx.class.getResource("vista/FXMLGestionarUsuario.fxml")); 
-            Scene escenaAdmin = new Scene(vista);
+                    SistemaTutoriasFx.class.getResource("vista/FXMLGestionarUsuario.fxml")); 
+            Scene escenaGestionarUsuario = new Scene(vista);
             Stage stAdmin = new Stage();
-            stAdmin.setScene(escenaAdmin);
+            stAdmin.setScene(escenaGestionarUsuario);
             stAdmin.setTitle("Gestionar Usuario");
             stAdmin.initModality(Modality.APPLICATION_MODAL);
             stAdmin.showAndWait();

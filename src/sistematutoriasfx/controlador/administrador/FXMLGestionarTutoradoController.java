@@ -5,22 +5,142 @@
 package sistematutoriasfx.controlador.administrador;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.ResourceBundle;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
+import sistematutoriasfx.dominio.EstudianteImp;
+import sistematutoriasfx.interfaces.IObservador;
+import sistematutoriasfx.modelo.pojo.Estudiante;
+import utilidad.Utilidades;
 
 /**
  * FXML Controller class
  * 
  * @author JOANA XCARET
  */
-public class FXMLGestionarTutoradoController  implements Initializable {
+public class FXMLGestionarTutoradoController  implements Initializable, IObservador {
+
+    @FXML
+    private TableView<Estudiante> tvTutorados;
+    @FXML
+    private TableColumn colNombre;
+    @FXML
+    private TableColumn colApPaterno;
+    @FXML
+    private TableColumn colApMaterno;
+    @FXML
+    private TableColumn colMatricula;
+    @FXML
+    private TableColumn colProgramaEducativo;
+    @FXML
+    private TableColumn colEstatus;
+    @FXML
+    private TableColumn colCorreoInstitucional;
+    @FXML
+    private TextField tfBuscar;
+    
+    private ObservableList<Estudiante> estudiantes;
     
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        configurarTabla();
+        cargarInformacion();
+      
     }    
+
+    private void configurarTabla() {
+        colNombre.setCellValueFactory(new PropertyValueFactory("nombre"));
+        colApPaterno.setCellValueFactory(new PropertyValueFactory("apellidoPaterno"));
+        colApMaterno.setCellValueFactory(new PropertyValueFactory("apellidoMaterno"));
+        colMatricula.setCellValueFactory(new PropertyValueFactory("matricula"));
+        colProgramaEducativo.setCellValueFactory(new PropertyValueFactory("programaEducativo"));
+        colEstatus.setCellValueFactory(new PropertyValueFactory("estatus"));
+        colCorreoInstitucional.setCellValueFactory(new PropertyValueFactory("correoInstitucional"));
+    }
     
+    private void cargarInformacion() {
+        HashMap<String, Object> respuesta = EstudianteImp.obtenerEstudiantes();
+        //Casteo con paréntesis
+        boolean error = (boolean) respuesta.get("error");
+        if (!error) {
+            ArrayList<Estudiante> estudiantesBD = (ArrayList<Estudiante>) respuesta.get("estudiantes");
+            estudiantes = FXCollections.observableArrayList();
+            estudiantes.addAll(estudiantesBD);
+            tvTutorados.setItems(estudiantes);
+        } else {
+            Utilidades.mostrarAlertaSimple("error", 
+                    (String) respuesta.get("mensaje"), Alert.AlertType.ERROR);
+        }
+    }
+    
+    @FXML
+    private void clicActualizarTutorado(ActionEvent event) {
+    }
+
+    @FXML
+    private void clicAsignarTutorado(ActionEvent event) {
+    }
+    
+    @Override
+    public void notificarOperacionExitosa(String tipoOperacion, String nombre) {
+        System.out.println("Operación: " + tipoOperacion);
+        System.out.println("Nombre tutorado: " + nombre);
+        tfBuscar.setText("");
+        cargarInformacion();
+        configurarBusqueda();
+    }
+    
+    private void configurarBusqueda() {
+        if (estudiantes != null && estudiantes.size() > 0) {
+            FilteredList<Estudiante> filtradoEstudiantes =
+                    //a representa cada alumno que hay en el list y si lo cumple(true) va en la lista filtrada
+                    new FilteredList<>(estudiantes, a -> true);
+            tfBuscar.textProperty().addListener(new ChangeListener<String>() {
+                
+                @Override
+                public void changed(ObservableValue<? extends String> observable, 
+                        String oldValue, String newValue) {
+                    filtradoEstudiantes.setPredicate(estudiante -> {
+                        //CASO DEFAULT VACÍO DEVOLVER TODOS
+                        if (newValue == null || newValue.isEmpty()) {
+                            return true;
+                        }
+                        String lowerNewValue = newValue.toLowerCase();
+                        
+                        //Criterio 1 de búsqueda por nombre
+                        if (estudiante.getNombreEstudiante().toLowerCase().contains(lowerNewValue)) {
+                            return true;
+                        }
+                        
+                        //Criterio 2 de búsqueda por matrícula
+                        if (estudiante.getMatricula().toLowerCase().contains(lowerNewValue)) {
+                            return true;
+                        }
+                        
+                        return false;
+                    });
+                }
+            });
+            SortedList<Estudiante> sortedEstudiante = new SortedList<>(filtradoEstudiantes);
+            sortedEstudiante.comparatorProperty().bind(tvTutorados.comparatorProperty());
+            tvTutorados.setItems(sortedEstudiante);
+        }
+    }
 }
