@@ -4,10 +4,23 @@
  */
 package sistematutoriasfx.controlador.administrador;
 
+import java.net.URL;
+import java.util.ResourceBundle;
+import javafx.fxml.Initializable;
+
 /**
- *
+ * FXML Controller class
+ * 
  * @author JOANA XCARET
  */
-public class FXMLGestionarTutoradoController {
+public class FXMLGestionarTutoradoController  implements Initializable {
+    
+    /**
+     * Initializes the controller class.
+     */
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        // TODO
+    }    
     
 }

@@ -16,6 +16,8 @@ public class Academico {
     private String apellidoPaterno;
     private String apellidoMaterno;
     private String correoInstitucional;
+    private TipoContrato tipoContrato;
+    private String estudios;
     private int idUsuario;
 
     public Academico() {
@@ -75,6 +77,27 @@ public class Academico {
 
     public void setIdUsuario(int idUsuario) {
         this.idUsuario = idUsuario;
+    }
+
+    public TipoContrato getTipoContrato() {
+        return tipoContrato;
+    }
+
+    public void setTipoContrato(TipoContrato tipoContrato) {
+        this.tipoContrato = tipoContrato;
+    }
+
+    public String getEstudios() {
+        return estudios;
+    }
+
+    public void setEstudios(String estudios) {
+        this.estudios = estudios;
+    }
+    
+    public enum TipoContrato {
+        TiempoCompleto,
+        MedioTiempo
     }
     
     public String getNombreCompleto() {

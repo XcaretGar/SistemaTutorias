@@ -8,10 +8,9 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="320.0" prefWidth="596.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="sistematutoriasfx.controlador.administrador.FXMLMenuOpcionesController">
+<AnchorPane id="AnchorPane" prefHeight="320.0" prefWidth="596.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sistematutoriasfx.controlador.administrador.FXMLMenuOpcionesAdministradorController">
    <children>
-      <Pane layoutX="10.0" layoutY="10.0" prefHeight="320.0" prefWidth="600.0">
+      <Pane layoutX="10.0" layoutY="10.0" prefHeight="430.0" prefWidth="600.0">
          <children>
             <Label layoutX="186.0" layoutY="84.0" text="Seleccione una opción del menú">
                <effect>
@@ -48,7 +47,7 @@
                         <Font size="16.0" />
                      </font>
                   </Label>
-                  <Label layoutX="338.0" layoutY="25.0" text="Administrador:" textFill="WHITE">
+                  <Label fx:id="lbNombreAdministrador" layoutX="338.0" layoutY="25.0" text="Administrador:" textFill="WHITE">
                      <effect>
                         <Blend />
                      </effect>
@@ -59,6 +58,14 @@
                </children>
             </Pane>
             <Label layoutX="200.0" layoutY="267.0" prefHeight="25.0" prefWidth="286.0" text="Administrar la información de los usuarios" textFill="WHITE" />
+            <Button layoutX="161.0" layoutY="316.0" mnemonicParsing="false" onAction="#clicCerrarSesion" prefHeight="71.0" prefWidth="302.0" style="-fx-background-color: #417C9E;" text="Cerrar Sesión" textFill="WHITE">
+               <effect>
+                  <Blend />
+               </effect>
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Button>
          </children>
       </Pane>
    </children>

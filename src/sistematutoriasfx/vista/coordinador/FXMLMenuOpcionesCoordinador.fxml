@@ -8,10 +8,9 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="500.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="sistematutoriasfx.controlador.coordinador.FXMLMenuOpcionesController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sistematutoriasfx.controlador.coordinador.FXMLMenuOpcionesCoordinadorController">
    <children>
-      <Pane prefHeight="420.0" prefWidth="600.0">
+      <Pane prefHeight="500.0" prefWidth="600.0">
          <children>
             <Pane prefHeight="71.0" prefWidth="606.0" style="-fx-background-color: #063596;">
                <children>
@@ -23,7 +22,7 @@
                         <Font size="16.0" />
                      </font>
                   </Label>
-                  <Label layoutX="338.0" layoutY="25.0" text="Coordinador:" textFill="WHITE">
+                  <Label fx:id="lbNombreCoordinador" layoutX="338.0" layoutY="25.0" text="Coordinador:" textFill="WHITE">
                      <effect>
                         <Blend />
                      </effect>
@@ -68,6 +67,14 @@
                </font>
             </Button>
             <Label layoutX="229.0" layoutY="364.0" text="Consultar reportes de tutorías " textFill="WHITE" />
+            <Button layoutX="161.0" layoutY="415.0" mnemonicParsing="false" onAction="#clicCerrarSesion" prefHeight="71.0" prefWidth="302.0" style="-fx-background-color: #417C9E;" text="Cerrar Sesión" textFill="WHITE">
+               <effect>
+                  <Blend />
+               </effect>
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Button>
          </children>
       </Pane>
    </children>

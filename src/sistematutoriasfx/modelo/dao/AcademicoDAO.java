@@ -14,6 +14,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import sistematutoriasfx.modelo.pojo.Academico;
+import sistematutoriasfx.modelo.pojo.Academico.TipoContrato;
 import sistematutoriasfx.modeloo.ConexionBD;
 
 public class AcademicoDAO {
@@ -36,6 +37,8 @@ public class AcademicoDAO {
                 academico.setApellidoMaterno(rs.getString("apellidoMaterno"));
                 academico.setNoPersonal(rs.getString("noPersonal"));
                 academico.setCorreoInstitucional(rs.getString("correoInstitucional"));
+                academico.setTipoContrato(TipoContrato.valueOf(rs.getString("tipoContrato")));
+                academico.setEstudios(rs.getString("estudios"));
                 academico.setIdUsuario(rs.getInt("idUsuario"));
             }
         } catch (SQLException e) {

@@ -9,7 +9,6 @@ package sistematutoriasfx.modelo.pojo;
  * @author JOANA XCARET
  */
 public class Estudiante {
-    
     private int idEstudiante;
     private String matricula;
     private String nombre;

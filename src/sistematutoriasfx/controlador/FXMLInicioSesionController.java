@@ -19,6 +19,8 @@ import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import sistematutoriasfx.controlador.administrador.FXMLMenuOpcionesAdministradorController;
+import sistematutoriasfx.controlador.coordinador.FXMLMenuOpcionesCoordinadorController;
 import sistematutoriasfx.modelo.dao.UsuarioDAO; 
 import sistematutoriasfx.modelo.pojo.Usuario; 
 import sistematutoriasfx.controlador.tutor.FXMLPrincipalTutorController;
@@ -114,11 +116,13 @@ public class FXMLInicioSesionController implements Initializable {
             // Redirección según el Rol seleccionado
             switch (usuarioLogin.getIdRol()) {
                 case 1: // ADMIN
-                    Utilidades.mostrarAlertaSimple("Pendiente", "Vista de Admin en construcción.", Alert.AlertType.INFORMATION);
-                    return; 
+                    ruta = "/sistematutoriasfx/vista/administrador/FXMLMenuOpcionesAdministrador.fxml";
+                    titulo = "Menú Principal - Administrador";
+                    break; 
                 case 2: // COORDINADOR
-                    Utilidades.mostrarAlertaSimple("Pendiente", "Vista de Coordinador en construcción.", Alert.AlertType.INFORMATION);
-                    return; 
+                    ruta = "/sistematutoriasfx/vista/coordinador/FXMLMenuOpcionesCoordinador.fxml";
+                    titulo = "Menú Principal - Coordinador";
+                    break;
                 case 3: // TUTOR
                     ruta = "/sistematutoriasfx/vista/tutor/FXMLPrincipalTutor.fxml";
                     titulo = "Menú Principal - Tutor";
@@ -131,8 +135,13 @@ public class FXMLInicioSesionController implements Initializable {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(ruta));
             Parent root = loader.load();
             
-            // Configuración específica para Tutor
-            if (usuarioLogin.getIdRol() == 3) {
+            if (usuarioLogin.getIdRol() == 1) {
+                FXMLMenuOpcionesAdministradorController controlador = loader.getController();
+                controlador.configurarVista(usuarioLogin);
+            } else if (usuarioLogin.getIdRol() == 2) {
+                FXMLMenuOpcionesCoordinadorController controlador = loader.getController();
+                controlador.configurarVista(usuarioLogin);
+            } else if (usuarioLogin.getIdRol() == 3) {
                 FXMLPrincipalTutorController controlador = loader.getController();
                 controlador.configurarVista(usuarioLogin);
             }
