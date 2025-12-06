@@ -97,7 +97,7 @@ public class FXMLRegistrarHorarioTutorController implements Initializable {
 
     private void abrirFormulario(SesionTutoria sesionParaEditar) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLFormularioRegistrarHorarioTutor.fxml"));            
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/sistematutoriasfx/vista/tutor/FXMLFormularioHorario.fxml"));            
             Parent root = loader.load();
             FXMLFormularioHorarioController controladorFormulario = loader.getController();
             
