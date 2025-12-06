@@ -50,7 +50,6 @@ public class PeriodoEscolar {
         this.fechaFin = fechaFin;
     }
         
-    // ToString para que el ComboBox 
     @Override
     public String toString() {
         return nombre;

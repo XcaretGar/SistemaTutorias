@@ -44,8 +44,6 @@ public class FXMLPrincipalTutorController implements Initializable {
     // Método para recibir el usuario del Login y buscar su nombre real
     public void configurarVista(Usuario usuario) {
         this.usuarioSesion = usuario;
-        
-        // Buscamos los datos del Académico en la BD
         this.academicoSesion = AcademicoDAO.obtenerAcademicoPorIdUsuario(usuario.getIdUsuario());
         
         if(this.academicoSesion != null){
@@ -97,7 +95,6 @@ public class FXMLPrincipalTutorController implements Initializable {
     @FXML
     private void clicCerrarSesion(ActionEvent event) {
              try {
-            // Regresar al Login
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/sistematutoriasfx/vista/FXMLInicioSesion.fxml"));
             Parent root = loader.load();
             Stage escenarioBase = new Stage();
@@ -105,7 +102,6 @@ public class FXMLPrincipalTutorController implements Initializable {
             escenarioBase.setTitle("Inicio de Sesión");
             escenarioBase.show();
             
-            // Cerrar ventana actual
             Stage escenarioActual = (Stage) lbNombreTutor.getScene().getWindow();
             escenarioActual.close();
         } catch (Exception e) {
