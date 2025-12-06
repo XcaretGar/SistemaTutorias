@@ -16,8 +16,7 @@ import sistematutoriasfx.modelo.pojo.Estudiante;
  */
 public class EstudianteDAO {
     
-    
-    
+   // XCA CHECA ESTA PARTE!!! NO USES CONEXIONBD, USA LOS QUE TIENES Y CIERRAS LA CONEXION
     public static ResultSet obtenerEstudiantes(Connection conexionBD) throws SQLException {
         if (conexionBD != null) {
             String query = "SELECT idEstudiante, matricula, nombreEstudiante, apellidoPaterno, " +

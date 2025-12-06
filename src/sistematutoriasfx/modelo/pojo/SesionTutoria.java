@@ -13,16 +13,31 @@ public class SesionTutoria {
     private int idSesion;
     private int idAcademico;
     private int idPeriodo;
-    private int numSesion;
-    private String fecha;
-    private String hora;
+    private int idFechaTutoria; 
+    private String hora; 
     private String lugar;
     private String comentarios;
     
-    // Atributo extra para mostrar el nombre del periodo en tablas
-    private String periodo; 
+    //Atributos de fechastutoria
+    //Se llenan con los INNER JOIN del DAO
+    private int numSesion;      
+    private String fecha;       
+    private String periodo;
 
     public SesionTutoria() {
+    }
+
+    public SesionTutoria(int idSesion, int idAcademico, int idPeriodo, int idFechaTutoria, String hora, String lugar, String comentarios, int numSesion, String fecha, String periodo) {
+        this.idSesion = idSesion;
+        this.idAcademico = idAcademico;
+        this.idPeriodo = idPeriodo;
+        this.idFechaTutoria = idFechaTutoria;
+        this.hora = hora;
+        this.lugar = lugar;
+        this.comentarios = comentarios;
+        this.numSesion = numSesion;
+        this.fecha = fecha;
+        this.periodo = periodo;
     }
 
     public int getIdSesion() {
@@ -49,20 +64,12 @@ public class SesionTutoria {
         this.idPeriodo = idPeriodo;
     }
 
-    public int getNumSesion() {
-        return numSesion;
+    public int getIdFechaTutoria() {
+        return idFechaTutoria;
     }
 
-    public void setNumSesion(int numSesion) {
-        this.numSesion = numSesion;
-    }
-
-    public String getFecha() {
-        return fecha;
-    }
-
-    public void setFecha(String fecha) {
-        this.fecha = fecha;
+    public void setIdFechaTutoria(int idFechaTutoria) {
+        this.idFechaTutoria = idFechaTutoria;
     }
 
     public String getHora() {
@@ -87,6 +94,22 @@ public class SesionTutoria {
 
     public void setComentarios(String comentarios) {
         this.comentarios = comentarios;
+    }
+
+    public int getNumSesion() {
+        return numSesion;
+    }
+
+    public void setNumSesion(int numSesion) {
+        this.numSesion = numSesion;
+    }
+
+    public String getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(String fecha) {
+        this.fecha = fecha;
     }
 
     public String getPeriodo() {
