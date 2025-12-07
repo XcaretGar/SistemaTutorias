@@ -98,7 +98,23 @@ public class FXMLPrincipalTutorController implements Initializable {
 
     @FXML
     private void clicReporteTutoria(ActionEvent event) {
-    
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/sistematutoriasfx/vista/tutor/FXMLGestionarReporteTutoria.fxml"));
+            Parent root = loader.load();
+            FXMLGestionarReporteTutoriaController controlador = loader.getController();
+
+            controlador.configurarEscena(this.usuarioSesion);
+
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL); // Bloquea el menú de atrás
+            stage.setScene(scene);
+            stage.setTitle("Gestión de Reportes de Tutoría");
+            stage.showAndWait();
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 
     @FXML

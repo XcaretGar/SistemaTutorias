@@ -43,17 +43,23 @@ import utilidad.Utilidades;
 
 public class FXMLGestionarEvidenciaController implements Initializable {
 
-    @FXML private ComboBox<PeriodoEscolar> cbPeriodo;
-    @FXML private ComboBox<FechasTutoria> cbFechaSesion;
-    @FXML private TableView<Evidencia> tvEvidencias;
-    @FXML private TableColumn colFechaSubida;
-    @FXML private TableColumn colTamano; // Tipo de archivo
-    @FXML private TableColumn colNombreArchivo;
+    @FXML 
+    private ComboBox<PeriodoEscolar> cbPeriodo;
+    @FXML 
+    private ComboBox<FechasTutoria> cbFechaSesion;
+    @FXML 
+    private TableView<Evidencia> tvEvidencias;
+    @FXML  
+    private TableColumn colFechaSubida;
+    @FXML 
+    private TableColumn colTamano; // Tipo de archivo
+    @FXML 
+    private TableColumn colNombreArchivo;
 
     private Usuario usuarioSesion;
     private Academico academicoSesion;
     private int idReporteActual = 0; 
-
+    
     public void configurarEscena(Usuario usuario) {
         this.usuarioSesion = usuario;
         this.academicoSesion = AcademicoDAO.obtenerAcademicoPorIdUsuario(usuario.getIdUsuario());

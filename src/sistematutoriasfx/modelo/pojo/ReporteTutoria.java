@@ -18,6 +18,11 @@ public class ReporteTutoria {
     private String comentariosGenerales;
     private String estatus;     
     private String fechaEntrega; // Puede ser null si aun no se entrega
+    
+    //Campos auxiliares
+    private String periodoNombre;
+    private String fechaSesion;
+    private int numSesion;
 
     public ReporteTutoria() {
         
@@ -95,6 +100,30 @@ public class ReporteTutoria {
         this.fechaEntrega = fechaEntrega;
     }
 
+    public String getPeriodoNombre() {
+        return periodoNombre;
+    }
+
+    public void setPeriodoNombre(String periodoNombre) {
+        this.periodoNombre = periodoNombre;
+    }
+
+    public String getFechaSesion() {
+        return fechaSesion;
+    }
+
+    public void setFechaSesion(String fechaSesion) {
+        this.fechaSesion = fechaSesion;
+    }
+
+    public int getNumSesion() {
+        return numSesion;
+    }
+
+    public void setNumSesion(int numSesion) {
+        this.numSesion = numSesion;
+    }  
+    
     @Override
     public String toString() {
         return "Reporte #" + idReporte + " - " + estatus;
