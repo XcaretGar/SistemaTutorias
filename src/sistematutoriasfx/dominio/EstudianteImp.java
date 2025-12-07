@@ -54,10 +54,10 @@ public class EstudianteImp {
         return respuesta;
     }
     
-    public static HashMap<String, Object> editar(Estudiante estudiante) {
+    public static HashMap<String, Object> actualizar(Estudiante estudiante) {
         HashMap<String, Object> respuesta = new LinkedHashMap<>();
         try {
-            boolean exito = EstudianteDAO.editar(estudiante);
+            boolean exito = EstudianteDAO.actualizar(estudiante);
             if (exito) {
                 respuesta.put("error", false);
                 respuesta.put("mensaje", "El registro del tutorado(a) " 

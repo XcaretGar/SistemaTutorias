@@ -18,6 +18,7 @@ public class Estudiante {
     private int idProgramaEducativo;
     private String programaEducativo;
     private Estatus estatus; 
+    private String motivoBaja;
 
     public Estudiante() {
     }
@@ -98,6 +99,14 @@ public class Estudiante {
         Activo,
         EnRiesgo,
         Baja
+    }
+
+    public String getMotivoBaja() {
+        return motivoBaja;
+    }
+
+    public void setMotivoBaja(String motivoBaja) {
+        this.motivoBaja = motivoBaja;
     }
     
     public String getNombreCompleto() {

@@ -114,10 +114,9 @@ public class FXMLGestionarTutoradoController  implements Initializable, IObserva
     
     private void irFormulario(Estudiante estudiante) {
         try {
-            FXMLLoader cargador = 
-                    Utilidades.obtenerVista("vista/FXMLFormularioTutorado.fxml");
-            Parent vista = cargador.load();
-            FXMLFormularioTutoradoController controlador = cargador.getController();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/sistematutoriasfx/vista/administrador/FXMLFormularioTutorado.fxml"));  
+            Parent vista = loader.load();
+            FXMLFormularioTutoradoController controlador = loader.getController();
             controlador.inicializarDatos(this, estudiante);
             Scene scene = new Scene(vista);
             Stage stage = new Stage();
@@ -128,6 +127,35 @@ public class FXMLGestionarTutoradoController  implements Initializable, IObserva
         } catch (IOException ex) {
             ex.printStackTrace();
         }       
+    }
+    
+    @FXML
+    private void clicDarBaja(ActionEvent event) {
+        Estudiante estudianteSeleccion = tvTutorados.getSelectionModel().getSelectedItem();
+        if (estudianteSeleccion != null) {
+            irDarBaja(estudianteSeleccion);
+        } else {
+            Utilidades.mostrarAlertaSimple("Aviso", 
+                "Selecciona un estudiante para darlo de baja.", 
+                Alert.AlertType.WARNING);
+        }
+    }
+    
+    private void irDarBaja(Estudiante estudiante) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/sistematutoriasfx/vista/administrador/FXMLDarBajaTutorado.fxml"));           
+            Parent vista = loader.load();
+            FXMLDarBajaTutoradoController controlador = loader.getController();
+            controlador.inicializarDatos(this, estudiante);
+            Scene scene = new Scene(vista);
+            Stage stage = new Stage();
+            stage.setTitle("Dar de Baja Tutorado");
+            stage.setScene(scene);
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }  
     }
     
     @Override

@@ -72,7 +72,7 @@
                         <Font size="14.0" />
                      </font>
                   </Label>
-                  <TextArea layoutX="349.0" layoutY="137.0" prefHeight="136.0" prefWidth="228.0" />
+                  <TextArea fx:id="taMotivoBaja" layoutX="349.0" layoutY="137.0" prefHeight="136.0" prefWidth="228.0" />
                </children>
             </Pane>
          </children>

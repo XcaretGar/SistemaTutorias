@@ -25,7 +25,7 @@ public class EstudianteDAO {
             conexion = ConexionBD.abrirConexion();
           
             String query = "SELECT idEstudiante, matricula, nombreEstudiante, apellidoPaterno, " +
-                "apellidoMaterno, correoInstitucional, idProgramaEducativo, programaEducativo.nombre AS programaEducativo, estatus " +
+                "apellidoMaterno, correoInstitucional, idProgramaEducativo, programaEducativo.nombre AS programaEducativo, estatus, motivoBaja " +
                 "FROM estudiante " +
                 "INNER JOIN programaEducativo programaEducativo ON programaEducativo.idPrograma = estudiante.idProgramaEducativo";
             PreparedStatement ps = conexion.prepareStatement(query);
@@ -42,6 +42,7 @@ public class EstudianteDAO {
                 estudiante.setIdProgramaEducativo(rs.getInt("idProgramaEducativo"));
                 estudiante.setProgramaEducativo(rs.getString("programaEducativo"));
                 estudiante.setEstatus(Estudiante.Estatus.valueOf(rs.getString("estatus")));
+                estudiante.setMotivoBaja(rs.getString("motivoBaja"));
                 estudiantes.add(estudiante);
             }
         } catch (SQLException e) {
@@ -83,14 +84,14 @@ public class EstudianteDAO {
     }
 
     
-    public static boolean editar(Estudiante estudiante) {
+    public static boolean actualizar(Estudiante estudiante) {
         boolean respuesta = false;
         Connection conexion = null;
         try {
             conexion = ConexionBD.abrirConexion();
 
             String query = "UPDATE estudiante SET matricula = ?, nombreEstudiante = ?, apellidoPaterno = ?, " +
-                           "apellidoMaterno = ?, correoInstitucional = ?, idProgramaEducativo = ?, estatus = ? " +
+                           "apellidoMaterno = ?, correoInstitucional = ?, idProgramaEducativo = ?, estatus = ?, motivoBaja = ? " +
                            "WHERE idEstudiante = ?";
 
             PreparedStatement ps = conexion.prepareStatement(query);
@@ -101,7 +102,8 @@ public class EstudianteDAO {
             ps.setString(5, estudiante.getCorreoInstitucional());
             ps.setInt(6, estudiante.getIdProgramaEducativo());
             ps.setString(7, estudiante.getEstatus().name());
-            ps.setInt(8, estudiante.getIdEstudiante());
+            ps.setString(8, estudiante.getMotivoBaja());
+            ps.setInt(9, estudiante.getIdEstudiante());
 
             int filasAfectadas = ps.executeUpdate();
             respuesta = (filasAfectadas > 0);
@@ -113,5 +115,26 @@ public class EstudianteDAO {
             }
         }
         return respuesta;
+    }
+    
+    public static boolean darDeBaja(int idEstudiante, String motivo) {
+        boolean resultado = false;
+        Connection conexion = null;
+        try {
+            conexion = ConexionBD.abrirConexion();
+            String query = "UPDATE estudiante SET estatus = ?, motivoBaja = ? WHERE idEstudiante = ?";
+            PreparedStatement ps = conexion.prepareStatement(query);
+            ps.setString(1, "Baja");
+            ps.setString(2, motivo.isEmpty() ? null : motivo);
+            ps.setInt(3, idEstudiante);
+            resultado = ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (conexion != null) {
+                try { conexion.close(); } catch (SQLException e) { e.printStackTrace(); }
+            }
+        }
+        return resultado;
     }
 }

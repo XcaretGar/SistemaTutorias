@@ -90,7 +90,7 @@ public class FXMLFormularioTutoradoController implements Initializable {
             if (estudianteEdicion == null) {
                 registrarEstudiante();
             } else {
-                editarEstudiante();
+                actualizarEstudiante();
             }
         }
     }
@@ -157,22 +157,22 @@ public class FXMLFormularioTutoradoController implements Initializable {
             }
             cerrarVentana();
         } else {
-            Utilidades.mostrarAlertaSimple("Error al guardar",
+            Utilidades.mostrarAlertaSimple("Error al registrar",
                 respuesta.getMensaje(), Alert.AlertType.ERROR);
         }
     }
     
-    private void editarEstudiante() {
+    private void actualizarEstudiante() {
         Estudiante estudianteEdicion = obtenerEstudiante();
         estudianteEdicion.setIdEstudiante(this.estudianteEdicion.getIdEstudiante());
-        HashMap<String, Object> resultado = EstudianteImp.editar(estudianteEdicion);
+        HashMap<String, Object> resultado = EstudianteImp.actualizar(estudianteEdicion);
         if (!(boolean) resultado.get("error")) {
-            Utilidades.mostrarAlertaSimple("Tutorado editado correctamente", 
+            Utilidades.mostrarAlertaSimple("Tutorado actualizado correctamente", 
                     resultado.get("mensaje").toString(), Alert.AlertType.INFORMATION);
-            observador.notificarOperacionExitosa("editar", estudianteEdicion.getNombreCompleto());
+            observador.notificarOperacionExitosa("actualizar", estudianteEdicion.getNombreCompleto());
             cerrarVentana();
         } else {
-            Utilidades.mostrarAlertaSimple("Error al editar",
+            Utilidades.mostrarAlertaSimple("Error al actualizar",
                     resultado.get("mensaje").toString(), Alert.AlertType.ERROR);
         }
     }

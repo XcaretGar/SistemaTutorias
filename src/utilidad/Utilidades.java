@@ -31,8 +31,4 @@ public class Utilidades {
         Optional<ButtonType> btnSeleccion = alerta.showAndWait();
         return (btnSeleccion.get() == ButtonType.OK);
     }
-    
-    public static FXMLLoader obtenerVista(String url) {
-        return new FXMLLoader (SistemaTutoriasFx.class.getResource("/sistematutoriasfx/vista/administrador/FXMLFormularioTutorado.fxml"));
-    }
 }
