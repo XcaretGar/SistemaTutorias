@@ -65,7 +65,16 @@ public class Evidencia {
         this.fechaSubida = fechaSubida;
     }
     
-    
+    public String getTipoArchivo() {
+        if (this.rutaArchivo == null || this.rutaArchivo.isEmpty()) {
+            return "---";
+        }
+        int indicePunto = this.rutaArchivo.lastIndexOf(".");
+        if (indicePunto > 0 && indicePunto < this.rutaArchivo.length() - 1) {
+            return this.rutaArchivo.substring(indicePunto + 1).toUpperCase();
+        }
+        return "ARCHIVO"; 
+    }
     
     @Override
     public String toString() {
