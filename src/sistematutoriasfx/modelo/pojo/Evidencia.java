@@ -64,14 +64,8 @@ public class Evidencia {
     public void setFechaSubida(String fechaSubida) {
         this.fechaSubida = fechaSubida;
     }
-   
-    public String getTipoArchivo() {
-        if (nombreArchivo != null && nombreArchivo.contains(".")) {
-            // Devuelve lo que está después del . (ej. "PDF")
-            return nombreArchivo.substring(nombreArchivo.lastIndexOf(".") + 1).toUpperCase();
-        }
-        return "ARCHIVO";
-    }
+    
+    
     
     @Override
     public String toString() {

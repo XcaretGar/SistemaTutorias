@@ -53,9 +53,26 @@ public class FXMLPrincipalTutorController implements Initializable {
         }
     }
     
-@FXML
+    @FXML
     private void clicHorarioTutoria(ActionEvent event) {
-  
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/sistematutoriasfx/vista/tutor/FXMLRegistrarHorarioTutor.fxml"));
+            Parent root = loader.load();
+            
+            FXMLRegistrarHorarioTutorController controlador = loader.getController();
+            
+            controlador.configurarEscena(this.usuarioSesion);
+            
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setScene(scene);
+            stage.setTitle("Gestión de Horarios");
+            stage.showAndWait();
+            
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 
     @FXML

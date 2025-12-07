@@ -33,6 +33,7 @@ import sistematutoriasfx.modelo.dao.AcademicoDAO;
 import sistematutoriasfx.modelo.dao.EvidenciaDAO;
 import sistematutoriasfx.modelo.dao.FechasTutoriaDAO;
 import sistematutoriasfx.modelo.dao.PeriodoEscolarDAO;
+import sistematutoriasfx.modelo.dao.ReporteTutoriaDAO;
 import sistematutoriasfx.modelo.pojo.Academico;
 import sistematutoriasfx.modelo.pojo.Evidencia;
 import sistematutoriasfx.modelo.pojo.FechasTutoria;
@@ -53,7 +54,6 @@ public class FXMLGestionarEvidenciaController implements Initializable {
     private Academico academicoSesion;
     private int idReporteActual = 0; 
 
-    // Método llamado desde el menú principal
     public void configurarEscena(Usuario usuario) {
         this.usuarioSesion = usuario;
         this.academicoSesion = AcademicoDAO.obtenerAcademicoPorIdUsuario(usuario.getIdUsuario());
@@ -69,7 +69,6 @@ public class FXMLGestionarEvidenciaController implements Initializable {
     private void configurarColumnas() {
         colNombreArchivo.setCellValueFactory(new PropertyValueFactory("nombreArchivo"));
         colFechaSubida.setCellValueFactory(new PropertyValueFactory("fechaSubida"));
-        // Asegúrate de tener getTipoArchivo() en el POJO Evidencia
         colTamano.setCellValueFactory(new PropertyValueFactory("tipoArchivo")); 
     }
     
@@ -78,7 +77,6 @@ public class FXMLGestionarEvidenciaController implements Initializable {
     }
     
     private void configurarListeners() {
-        // Al cambiar periodo, cargar fechas
         cbPeriodo.valueProperty().addListener((obs, oldVal, newVal) -> {
             if(newVal != null) {
                 cbFechaSesion.setItems(FXCollections.observableArrayList(
@@ -89,53 +87,57 @@ public class FXMLGestionarEvidenciaController implements Initializable {
             }
         });
         
-        // Al cambiar fecha, buscar el reporte y cargar evidencias
         cbFechaSesion.valueProperty().addListener((obs, oldVal, newVal) -> {
             if(newVal != null && academicoSesion != null) {
                 buscarReporte(newVal.getIdFechaTutoria());
             }
         });
     }
-    
-    private void buscarReporte(int idFechaTutoria) {
-        // TODO: Aquí va la consulta real para obtener el idReporte
-        // Por ahora simulamos ID 1 para que funcione la prueba
-        this.idReporteActual = 1; 
-        
-        cargarTablaEvidencias();
-    }
-    
+      
     private void cargarTablaEvidencias() {
         if(idReporteActual > 0) {
-            ObservableList<Evidencia> lista = FXCollections.observableArrayList(
+            tvEvidencias.setItems(FXCollections.observableArrayList(
                 EvidenciaDAO.obtenerEvidenciasPorReporte(idReporteActual)
-            );
-            tvEvidencias.setItems(lista);
+            ));
         }
     }
 
-    // --- ACCIONES DE BOTONES ---
-
+    private void buscarReporte(int idFechaTutoria) {
+        // Usamos el DAO para buscar el ID real en la BD
+        this.idReporteActual = ReporteTutoriaDAO.obtenerIdReporte(
+                academicoSesion.getIdAcademico(), 
+                idFechaTutoria
+        );
+        
+        if (this.idReporteActual > 0) {
+            cargarTablaEvidencias();
+        } else {
+            // Si no hay reporte, limpiamos la tabla y avisamos (opcional)
+            tvEvidencias.getItems().clear();
+            // Utilidades.mostrarAlertaSimple("Aviso", "No se ha creado el reporte para esta fecha.", Alert.AlertType.INFORMATION);
+        }
+    }
+    
     @FXML
     private void clicSubirArchivo(ActionEvent event) {
         if (idReporteActual > 0) {
-            // Abrir formulario en modo REGISTRO (null)
-            //abrirFormulario(null); 
+            abrirFormulario(null); 
         } else {
-            Utilidades.mostrarAlertaSimple("Atención", "Selecciona una fecha válida o genera el reporte primero.", Alert.AlertType.WARNING);
+            // AHORA SÍ ESTE MENSAJE TENDRÁ SENTIDO
+            Utilidades.mostrarAlertaSimple("Falta Reporte", 
+                "No puedes subir evidencia porque aún no has generado el reporte de esta sesión.", 
+                Alert.AlertType.WARNING);
         }
     }
 
     @FXML
-    private void clicModificarArchivo(ActionEvent event) {
-        // 1. Obtener selección de la tabla
+    private void clicActualizarArchivo(ActionEvent event) {
         Evidencia seleccion = tvEvidencias.getSelectionModel().getSelectedItem();
         
         if (seleccion != null) {
-            // 2. Abrir formulario en modo EDICIÓN (pasando el objeto)
-            //abrirFormulario(seleccion); 
+            abrirFormulario(seleccion); 
         } else {
-            Utilidades.mostrarAlertaSimple("Selección requerida", "Selecciona un archivo de la tabla para actualizar.", Alert.AlertType.WARNING);
+            Utilidades.mostrarAlertaSimple("Selección requerida", "Selecciona un archivo para actualizar.", Alert.AlertType.WARNING);
         }
     }
 
@@ -143,13 +145,12 @@ public class FXMLGestionarEvidenciaController implements Initializable {
     private void clicEliminarArchivo(ActionEvent event) {
         Evidencia seleccion = tvEvidencias.getSelectionModel().getSelectedItem();
         if(seleccion != null) {
-            // Confirmación simple (puedes usar AlertType.CONFIRMATION si quieres)
             boolean exito = EvidenciaDAO.eliminarEvidencia(seleccion.getIdEvidencia());
             if(exito) {
                 Utilidades.mostrarAlertaSimple("Eliminado", "Evidencia eliminada correctamente.", Alert.AlertType.INFORMATION);
                 cargarTablaEvidencias();
             } else {
-                Utilidades.mostrarAlertaSimple("Error", "No se pudo eliminar de la base de datos.", Alert.AlertType.ERROR);
+                Utilidades.mostrarAlertaSimple("Error", "No se pudo eliminar.", Alert.AlertType.ERROR);
             }
         } else {
             Utilidades.mostrarAlertaSimple("Selección requerida", "Selecciona un archivo para eliminar.", Alert.AlertType.WARNING);
@@ -161,8 +162,6 @@ public class FXMLGestionarEvidenciaController implements Initializable {
         ((Stage) cbPeriodo.getScene().getWindow()).close();
     }
     
-    /*
-    // Método auxiliar para abrir la ventana modal
     private void abrirFormulario(Evidencia evidenciaEdicion) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/sistematutoriasfx/vista/tutor/FXMLFormularioEvidencia.fxml"));
@@ -183,7 +182,7 @@ public class FXMLGestionarEvidenciaController implements Initializable {
             stage.setTitle(evidenciaEdicion == null ? "Subir Evidencia" : "Modificar Evidencia");
             stage.showAndWait();
             
-            // Recargar al cerrar
+            // Recargar tabla al cerrar
             cargarTablaEvidencias();
             
         } catch (IOException ex) {
@@ -191,5 +190,4 @@ public class FXMLGestionarEvidenciaController implements Initializable {
             Utilidades.mostrarAlertaSimple("Error", "No se pudo abrir el formulario.", Alert.AlertType.ERROR);
         }
     }
-*/
 }

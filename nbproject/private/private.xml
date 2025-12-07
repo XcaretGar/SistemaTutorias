@@ -4,12 +4,14 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/Ana%20Georgina/OneDrive/Documentos/NetBeansProjects/SistemaTutorias/src/sistematutoriasfx/SistemaTutoriasFx.java</file>
-            <file>file:/C:/Users/Ana%20Georgina/OneDrive/Documentos/NetBeansProjects/SistemaTutorias/src/sistematutoriasfx/controlador/tutor/FXMLPrincipalTutorController.java</file>
-            <file>file:/C:/Users/Ana%20Georgina/OneDrive/Documentos/NetBeansProjects/SistemaTutorias/src/sistematutoriasfx/vista/tutor/FXMLPrincipalTutor.fxml</file>
-            <file>file:/C:/Users/Ana%20Georgina/OneDrive/Documentos/NetBeansProjects/SistemaTutorias/src/sistematutoriasfx/controlador/tutor/FXMLRegistrarHorarioTutorController.java</file>
+            <file>file:/C:/Users/Ana%20Georgina/OneDrive/Documentos/NetBeansProjects/SistemaTutorias/src/sistematutoriasfx/modelo/pojo/Evidencia.java</file>
+            <file>file:/C:/Users/Ana%20Georgina/OneDrive/Documentos/NetBeansProjects/SistemaTutorias/src/sistematutoriasfx/controlador/tutor/FXMLGestionarEvidenciaController.java</file>
+            <file>file:/C:/Users/Ana%20Georgina/OneDrive/Documentos/NetBeansProjects/SistemaTutorias/src/sistematutoriasfx/vista/tutor/FXMLGestionarEvidencia.fxml</file>
             <file>file:/C:/Users/Ana%20Georgina/OneDrive/Documentos/NetBeansProjects/SistemaTutorias/src/sistematutoriasfx/vista/tutor/FXMLRegistrarHorarioTutor.fxml</file>
-            <file>file:/C:/Users/Ana%20Georgina/OneDrive/Documentos/NetBeansProjects/SistemaTutorias/src/sistematutoriasfx/vista/tutor/FXMLFormularioRegistrarHorarioTutorController.fxml</file>
-            <file>file:/C:/Users/Ana%20Georgina/OneDrive/Documentos/NetBeansProjects/SistemaTutorias/src/sistematutoriasfx/controlador/tutor/FXMLFormularioRegistrarHorarioTutorController.java</file>
+            <file>file:/C:/Users/Ana%20Georgina/OneDrive/Documentos/NetBeansProjects/SistemaTutorias/src/sistematutoriasfx/controlador/tutor/FXMLPrincipalTutorController.java</file>
+            <file>file:/C:/Users/Ana%20Georgina/OneDrive/Documentos/NetBeansProjects/SistemaTutorias/src/sistematutoriasfx/vista/tutor/FXMLFormularioEvidencia.fxml</file>
+            <file>file:/C:/Users/Ana%20Georgina/OneDrive/Documentos/NetBeansProjects/SistemaTutorias/src/sistematutoriasfx/controlador/tutor/FXMLFormularioEvidenciaController.java</file>
+            <file>file:/C:/Users/Ana%20Georgina/OneDrive/Documentos/NetBeansProjects/SistemaTutorias/src/sistematutoriasfx/vista/tutor/FXMLFormularioHorario.fxml</file>
         </group>
     </open-files>
 </project-private>
