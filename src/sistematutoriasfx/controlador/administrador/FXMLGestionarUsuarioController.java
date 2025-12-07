@@ -33,6 +33,7 @@ import sistematutoriasfx.dominio.AcademicoImp;
 import sistematutoriasfx.interfaces.IObservador;
 import sistematutoriasfx.modelo.pojo.Academico;
 import sistematutoriasfx.modelo.pojo.Rol;
+import sistematutoriasfx.modelo.pojo.Usuario;
 import utilidad.Utilidades;
 
 /**
@@ -58,6 +59,8 @@ public class FXMLGestionarUsuarioController implements Initializable, IObservado
     private TextField tfBuscar;
     
     private ObservableList<Academico> academicos;
+    private Usuario usuarioSesion;
+
 
     /**
      * Initializes the controller class.
@@ -157,7 +160,7 @@ public class FXMLGestionarUsuarioController implements Initializable, IObservado
             FXMLDarBajaUsuarioController controlador = loader.getController();
             //Se obtiene el rol y también lo pasa
             Rol rol = academico.getUsuario().getRoles().get(0);
-            controlador.inicializarDatos(this, academico, rol);
+            controlador.inicializarDatos(this, academico, rol, usuarioSesion);
             Scene scene = new Scene(vista);
             Stage stage = new Stage();
             stage.setTitle("Dar de Baja Usuario");

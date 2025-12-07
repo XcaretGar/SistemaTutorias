@@ -30,9 +30,7 @@ public class FXMLMenuOpcionesAdministradorController implements Initializable {
     
     @FXML
     private Label lbNombreAdministrador;
-    @FXML
     private Usuario usuarioSesion;
-    @FXML
     private Academico academicoSesion;
 
     /**
@@ -45,13 +43,13 @@ public class FXMLMenuOpcionesAdministradorController implements Initializable {
     
     public void configurarVista(Usuario usuario) {
         this.usuarioSesion = usuario;
-        
+
         // Buscamos los datos del Académico en la BD
         this.academicoSesion = AcademicoDAO.obtenerAcademicoPorIdUsuario(usuario.getIdUsuario());
-        
-        if(this.academicoSesion != null){
+
+        if (this.academicoSesion != null) {
             lbNombreAdministrador.setText("Administrador: " + this.academicoSesion.getNombreCompleto());
-        }else{
+        } else {
             lbNombreAdministrador.setText("Administrador: " + usuario.getUsername());
         }
     }

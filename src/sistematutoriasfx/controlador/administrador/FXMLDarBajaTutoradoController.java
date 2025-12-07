@@ -63,8 +63,14 @@ public class FXMLDarBajaTutoradoController implements Initializable {
     private void clicConfirmarBaja(ActionEvent event) {
         String motivo = taMotivoBaja.getText().trim();
 
+         if (motivo.isEmpty()) {
+            Utilidades.mostrarAlertaSimple("Motivo requerido",
+                "Debes ingresar un motivo de baja.",
+                Alert.AlertType.WARNING);
+            return;
+        }
+         
         boolean exito = EstudianteDAO.darDeBaja(estudianteSeleccionado.getIdEstudiante(), motivo);
-
         if (exito) {
             Utilidades.mostrarAlertaSimple("Baja confirmada",
                 "Tutorado dado de baja exitosamente.", Alert.AlertType.INFORMATION);

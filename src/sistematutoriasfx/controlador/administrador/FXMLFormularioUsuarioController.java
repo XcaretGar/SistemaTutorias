@@ -50,6 +50,11 @@ public class FXMLFormularioUsuarioController implements Initializable {
     private TextField tfApPaterno;
     @FXML
     private TextField tfApMaterno;
+    @FXML 
+    private ComboBox<Academico.TipoContrato> cbTipoContrato;
+    @FXML 
+    private TextField tfEstudios;
+
     
     private IObservador observador;
     private Academico academicoEdicion;
@@ -61,6 +66,8 @@ public class FXMLFormularioUsuarioController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         cargarInformacionTipoUsuarios();
+        cbTipoContrato.setItems(
+                FXCollections.observableArrayList(Academico.TipoContrato.values()));
     }    
     
     public void inicializarDatos(IObservador observador, Academico academico) {
@@ -74,8 +81,19 @@ public class FXMLFormularioUsuarioController implements Initializable {
                 tfCorreo.setText(academico.getCorreoInstitucional());
                 tfNoPersonal.setText(academico.getNoPersonal());
                 tfNoPersonal.setEditable(false);
-                pfContraseña.setText(academico.getUsuario().getPassword());
                 cbTipoUsuario.setValue(academico.getUsuario().getRoles().get(0));
+                cbTipoContrato.setValue(academico.getTipoContrato());
+                tfEstudios.setText(academico.getEstudios());
+                
+                Usuario usuario = new Usuario();
+                usuario.setUsername(tfCorreo.getText());
+
+                if (!pfContraseña.getText().isEmpty()) {
+                    usuario.setPassword(pfContraseña.getText());
+                } else if (academicoEdicion != null && academicoEdicion.getUsuario() != null) {
+                    usuario.setPassword(academicoEdicion.getUsuario().getPassword());
+                }
+
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -137,6 +155,16 @@ public class FXMLFormularioUsuarioController implements Initializable {
             mensajeError += "- Contraseña requerida \n";
         }
         
+        if (cbTipoContrato.getSelectionModel().getSelectedItem() == null) {
+            valido = false;
+            mensajeError += "- Tipo de Contrato requerido \n";
+        }
+
+        if (tfEstudios.getText().isEmpty()) {
+            valido = false;
+            mensajeError += "- Grado académico requerido \n";
+        }
+
         if (!valido) {
             Utilidades.mostrarAlertaSimple("Campos vacíos", 
                     mensajeError, Alert.AlertType.WARNING);
@@ -187,15 +215,29 @@ public class FXMLFormularioUsuarioController implements Initializable {
         academico.setApellidoMaterno(tfApMaterno.getText());
         academico.setNoPersonal(tfNoPersonal.getText());
         academico.setCorreoInstitucional(tfCorreo.getText());
+        academico.setTipoContrato(cbTipoContrato.getValue());
+        academico.setEstudios(tfEstudios.getText());
         
         Usuario usuario = new Usuario();
-        usuario.setUsername(tfNoPersonal.getText());
-        usuario.setPassword(pfContraseña.getText());
-        
+        usuario.setUsername(tfCorreo.getText());        
+        if (!pfContraseña.getText().isEmpty()) {
+            usuario.setPassword(pfContraseña.getText());
+        } else if (academicoEdicion != null && academicoEdicion.getUsuario() != null) {
+            usuario.setPassword(academicoEdicion.getUsuario().getPassword());
+        }
+
         Rol rolSeleccionado = cbTipoUsuario.getSelectionModel().getSelectedItem();
         List<Rol> roles = new ArrayList<>();
         roles.add(rolSeleccionado);
         usuario.setRoles(roles);
+        
+        if (academicoEdicion != null) {
+            academico.setIdAcademico(academicoEdicion.getIdAcademico());
+            if (academicoEdicion.getUsuario() != null) {
+                usuario.setIdUsuario(academicoEdicion.getUsuario().getIdUsuario());
+            }
+        }
+        
         academico.setUsuario(usuario);
         return academico;
     }

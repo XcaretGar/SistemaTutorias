@@ -26,6 +26,7 @@
                         </Label>
                      </children>
                   </Pane>
+                  <Button layoutX="470.0" layoutY="151.0" mnemonicParsing="false" onAction="#clicDarBaja" prefHeight="25.0" prefWidth="82.0" style="-fx-background-color: #B52B10;" text="Dar de Baja" textFill="WHITE" />
                </children>
             </Pane>
             <Button layoutX="331.0" layoutY="129.0" mnemonicParsing="false" onAction="#clicActualizarUsuario" prefHeight="25.0" prefWidth="82.0" style="-fx-background-color: #E3B629;" text="Actualizar" textFill="WHITE" />

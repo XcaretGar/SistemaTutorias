@@ -19,6 +19,8 @@ public class Academico {
     private TipoContrato tipoContrato;
     private String estudios;
     private Usuario usuario;
+    private String estatus;
+    private String motivoBaja;
 
     public Academico() {
     }
@@ -98,6 +100,22 @@ public class Academico {
 
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
+    }
+
+    public String getEstatus() {
+        return estatus;
+    }
+
+    public void setEstatus(String estatus) {
+        this.estatus = estatus;
+    }
+
+    public String getMotivoBaja() {
+        return motivoBaja;
+    }
+
+    public void setMotivoBaja(String motivoBaja) {
+        this.motivoBaja = motivoBaja;
     }
     
     public String getNombreCompleto() {

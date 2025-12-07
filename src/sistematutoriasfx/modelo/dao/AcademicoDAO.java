@@ -42,6 +42,8 @@ public class AcademicoDAO {
                 academico.setCorreoInstitucional(rs.getString("correoInstitucional"));
                 academico.setTipoContrato(TipoContrato.valueOf(rs.getString("tipoContrato")));
                 academico.setEstudios(rs.getString("estudios"));
+                academico.setEstatus(rs.getString("estatus"));
+                academico.setMotivoBaja(rs.getString("motivoBaja"));
                 //Objeto para que académico puedo acceder a todo lo que le pertenece a usuario
                 Usuario usuario = new Usuario();
                 usuario.setIdUsuario(rs.getInt("idUsuario"));
@@ -76,6 +78,8 @@ public class AcademicoDAO {
                 academico.setCorreoInstitucional(rs.getString("correoInstitucional"));
                 academico.setTipoContrato(TipoContrato.valueOf(rs.getString("tipoContrato")));
                 academico.setEstudios(rs.getString("estudios"));
+                academico.setEstatus(rs.getString("estatus"));
+                academico.setMotivoBaja(rs.getString("motivoBaja"));
 
                 Usuario usuario = new Usuario();
                 usuario.setIdUsuario(rs.getInt("idUsuario"));
@@ -152,8 +156,8 @@ public class AcademicoDAO {
         try {
             conexion = ConexionBD.abrirConexion();
             String query = "UPDATE academico SET noPersonal = ?, nombre = ?, apellidoPaterno = ?, " +
-                           "apellidoMaterno = ?, correoInstitucional = ?, tipoContrato = ?, estudios = ? " +
-                           "WHERE idEstudiante = ?";
+                           "apellidoMaterno = ?, correoInstitucional = ?, tipoContrato = ?, estudios = ?, idUsuario = ? " +
+                           "WHERE idAcademico = ?";
             PreparedStatement ps = conexion.prepareStatement(query);
             ps.setString(1, academico.getNoPersonal());
             ps.setString(2, academico.getNombre());
@@ -162,7 +166,8 @@ public class AcademicoDAO {
             ps.setString(5, academico.getCorreoInstitucional());
             ps.setString(6, academico.getTipoContrato().name());
             ps.setString(7, academico.getEstudios());
-            ps.setInt(8, academico.getIdAcademico()); 
+            ps.setInt(8, academico.getUsuario().getIdUsuario());
+            ps.setInt(9, academico.getIdAcademico()); 
             int filasAfectadas = ps.executeUpdate();
             respuesta = (filasAfectadas > 0);
         } catch (SQLException e) {
@@ -180,10 +185,12 @@ public class AcademicoDAO {
         Connection conexion = null;
         try {
             conexion = ConexionBD.abrirConexion();
-            String query = "UPDATE estudiante SET estatus = ? WHERE idEstudiante = ?";
+            String query = "UPDATE academico SET estatus = ?, motivoBaja = ? WHERE idAcademico = ?";
             PreparedStatement ps = conexion.prepareStatement(query);
-            ps.setString(1, motivo);
-            ps.setInt(2, idAcademico);
+            ps.setString(1, "Baja");   
+            ps.setString(2, motivo);  
+            ps.setInt(3, idAcademico);
+
             resultado = ps.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();

@@ -17,6 +17,7 @@ import sistematutoriasfx.interfaces.IObservador;
 import sistematutoriasfx.modelo.dao.AcademicoDAO;
 import sistematutoriasfx.modelo.pojo.Academico;
 import sistematutoriasfx.modelo.pojo.Rol;
+import sistematutoriasfx.modelo.pojo.Usuario;
 import utilidad.Utilidades;
 
 /**
@@ -37,6 +38,7 @@ public class FXMLDarBajaUsuarioController implements Initializable {
 
     private Academico academicoSeleccionado;
     private IObservador observador;
+    private Usuario usuarioActual;
 
     /**
      * Initializes the controller class.
@@ -46,9 +48,10 @@ public class FXMLDarBajaUsuarioController implements Initializable {
         // TODO
     }   
 
-    public void inicializarDatos(IObservador observador, Academico academico, Rol rol) {
+    public void inicializarDatos(IObservador observador, Academico academico, Rol rol, Usuario usuarioActual) {
         this.observador = observador;
         this.academicoSeleccionado = academico;
+        this.usuarioActual = usuarioActual;
         lbUsuario.setText(academico.getNombreCompleto());
         lbIdentificador.setText(academico.getNoPersonal());
         lbTipo.setText(rol.getNombre());
@@ -62,10 +65,23 @@ public class FXMLDarBajaUsuarioController implements Initializable {
 
     @FXML
     private void clicConfirmarBaja(ActionEvent event) {
-        String motivo = taMotivoBaja.getText().trim();
+         String motivo = taMotivoBaja.getText().trim();
+
+        if (motivo.isEmpty()) {
+            Utilidades.mostrarAlertaSimple("Motivo requerido",
+                "Debes ingresar un motivo de baja.",
+                Alert.AlertType.WARNING);
+            return;
+        }
+
+        if (academicoSeleccionado.getUsuario().getIdUsuario() == usuarioActual.getIdUsuario()) {
+            Utilidades.mostrarAlertaSimple("Operación no permitida",
+                "No puedes darte de baja a ti mismo como administrador.",
+                Alert.AlertType.WARNING);
+            return;
+        }
 
         boolean exito = AcademicoDAO.darDeBaja(academicoSeleccionado.getIdAcademico(), motivo);
-
         if (exito) {
             Utilidades.mostrarAlertaSimple("Baja confirmada",
                 "Usuario dado de baja exitosamente", Alert.AlertType.INFORMATION);
