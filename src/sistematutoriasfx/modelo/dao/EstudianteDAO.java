@@ -137,4 +137,50 @@ public class EstudianteDAO {
         }
         return resultado;
     }
+    
+    // Método NUEVO para el CU4 Registrar Asistencia
+    public static ArrayList<Estudiante> obtenerEstudiantesPorTutor(int idAcademico, int idPeriodo) {
+        ArrayList<Estudiante> estudiantes = new ArrayList<>();
+        Connection conexion = null;
+        try {
+            conexion = ConexionBD.abrirConexion();
+            
+            // JOIN para traer SOLO los asignados al tutor en ese periodo
+            String query = "SELECT e.idEstudiante, e.matricula, e.nombreEstudiante, e.apellidoPaterno, e.apellidoMaterno, e.correoInstitucional, e.idProgramaEducativo " +
+                           "FROM estudiante e " +
+                           "INNER JOIN asignaciontutor a ON e.idEstudiante = a.idEstudiante " +
+                           "WHERE a.idAcademico = ? AND a.idPeriodo = ? AND e.estatus != 'Baja'";
+            
+            PreparedStatement ps = conexion.prepareStatement(query);
+            ps.setInt(1, idAcademico);
+            ps.setInt(2, idPeriodo);
+            ResultSet rs = ps.executeQuery();
+            
+            while (rs.next()) {
+                Estudiante estudiante = new Estudiante();
+                estudiante.setIdEstudiante(rs.getInt("idEstudiante"));
+                estudiante.setMatricula(rs.getString("matricula"));
+                estudiante.setNombreEstudiante(rs.getString("nombreEstudiante"));
+                estudiante.setApellidoPaterno(rs.getString("apellidoPaterno"));
+                estudiante.setApellidoMaterno(rs.getString("apellidoMaterno"));
+                estudiante.setCorreoInstitucional(rs.getString("correoInstitucional"));
+                estudiante.setIdProgramaEducativo(rs.getInt("idProgramaEducativo"));
+                
+                // NOTA: No necesitamos cargar estatus ni motivoBaja aquí, solo datos básicos para la lista
+                
+                // Inicializamos los checkboxes (desmarcados)
+                estudiante.getCbAsistencia().setSelected(false);
+                estudiante.getCbRiesgo().setSelected(false);
+                
+                estudiantes.add(estudiante);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if(conexion != null){
+                try { conexion.close(); } catch (SQLException e) { e.printStackTrace(); }
+            }
+        }
+        return estudiantes;
+    }
 }

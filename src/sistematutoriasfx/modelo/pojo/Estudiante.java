@@ -4,6 +4,8 @@
  */
 package sistematutoriasfx.modelo.pojo;
 
+import javafx.scene.control.CheckBox;
+
 /**
  *
  * @author JOANA XCARET
@@ -19,8 +21,15 @@ public class Estudiante {
     private String programaEducativo;
     private Estatus estatus; 
     private String motivoBaja;
+    
+    // (No se guardan en BD, son solo para la pantalla)
+    private javafx.scene.control.CheckBox cbAsistencia; 
+    private javafx.scene.control.CheckBox cbRiesgo;
 
+    // Constructor actualizado
     public Estudiante() {
+        this.cbAsistencia = new javafx.scene.control.CheckBox();
+        this.cbRiesgo = new javafx.scene.control.CheckBox();
     }
 
     public int getIdEstudiante() {
@@ -111,5 +120,21 @@ public class Estudiante {
     
     public String getNombreCompleto() {
         return nombreEstudiante + " " + apellidoPaterno + " " + (apellidoMaterno != null ? apellidoMaterno : "");
+    }
+
+    public CheckBox getCbAsistencia() {
+        return cbAsistencia;
+    }
+
+    public void setCbAsistencia(CheckBox cbAsistencia) {
+        this.cbAsistencia = cbAsistencia;
+    }
+
+    public CheckBox getCbRiesgo() {
+        return cbRiesgo;
+    }
+
+    public void setCbRiesgo(CheckBox cbRiesgo) {
+        this.cbRiesgo = cbRiesgo;
     }
 }

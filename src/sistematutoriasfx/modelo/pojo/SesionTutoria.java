@@ -23,6 +23,10 @@ public class SesionTutoria {
     private int numSesion;      
     private String fecha;       
     private String periodo;
+    
+    //Atributos de listaasistencia
+    private int totalAsistentes;
+    private int totalRiesgo;
 
     public SesionTutoria() {
     }
@@ -119,4 +123,23 @@ public class SesionTutoria {
     public void setPeriodo(String periodo) {
         this.periodo = periodo;
     }
+
+    public int getTotalAsistentes() {
+        return totalAsistentes;
+    }
+
+    public void setTotalAsistentes(int totalAsistentes) {
+        this.totalAsistentes = totalAsistentes;
+    }
+
+    public int getTotalRiesgo() {
+        return totalRiesgo;
+    }
+
+    public void setTotalRiesgo(int totalRiesgo) {
+        this.totalRiesgo = totalRiesgo;
+    }
+    
+    
+    
 }
