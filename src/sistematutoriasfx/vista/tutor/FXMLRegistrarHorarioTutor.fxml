@@ -22,14 +22,6 @@
                         <Blend />
                      </effect>
                   </Label>
-                  <Label layoutX="338.0" layoutY="25.0" text="Tutor" textFill="WHITE">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                     <effect>
-                        <Blend />
-                     </effect>
-                  </Label>
                </children>
             </Pane>
             <Label layoutX="38.0" layoutY="106.0" text="Registrar Horario de Tutoría">
@@ -40,8 +32,14 @@
                   <Font size="16.0" />
                </font>
             </Label>
-            <Button layoutX="38.0" layoutY="144.0" mnemonicParsing="false" onAction="#clicRegistrarHorario" prefHeight="25.0" prefWidth="136.0" style="-fx-background-color: #38AB3B;" text="Registrar un horario" textFill="WHITE" />
-            <Button layoutX="192.0" layoutY="144.0" mnemonicParsing="false" onAction="#clicActualizarHorario" prefHeight="25.0" prefWidth="147.0" style="-fx-background-color: #38AB3B;" text="Actualizar un horario" textFill="WHITE" />
+            <Button layoutX="38.0" layoutY="144.0" mnemonicParsing="false" onAction="#clicRegistrarHorario" prefHeight="25.0" prefWidth="136.0" style="-fx-background-color: #38AB3B;" text="Registrar un horario" textFill="WHITE">
+               <font>
+                  <Font size="13.0" />
+               </font></Button>
+            <Button layoutX="192.0" layoutY="144.0" mnemonicParsing="false" onAction="#clicActualizarHorario" prefHeight="25.0" prefWidth="147.0" style="-fx-background-color: #E3B629;" text="Actualizar un horario" textFill="WHITE">
+               <font>
+                  <Font size="13.0" />
+               </font></Button>
             <Label layoutX="38.0" layoutY="204.0" text="Horarios registrados">
                <effect>
                   <Blend />

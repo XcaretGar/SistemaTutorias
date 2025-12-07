@@ -18,10 +18,6 @@
                      <font><Font size="16.0" /></font>
                      <effect><Blend /></effect>
                   </Label>
-                  <Label fx:id="lbNombreTutor" alignment="CENTER_RIGHT" layoutX="350.0" layoutY="25.0" prefWidth="220.0" text="Tutor: ..." textFill="WHITE">
-                     <font><Font size="16.0" /></font>
-                     <effect><Blend /></effect>
-                  </Label>
                </children>
             </Pane>
 
@@ -57,13 +53,11 @@
 
             <Button layoutX="400.0" layoutY="450.0" mnemonicParsing="false" onAction="#clicGuardar" prefHeight="40.0" prefWidth="150.0" style="-fx-background-color: #38AB3B;" text="Guardar" textFill="WHITE">
                <font><Font size="16.0" /></font>
-               <cursor><Cursor fx:constant="HAND" /></cursor>
                <effect><Blend /></effect>
             </Button>
             
             <Button layoutX="230.0" layoutY="450.0" mnemonicParsing="false" onAction="#clicCancelar" prefHeight="40.0" prefWidth="120.0" style="-fx-background-color: #d9534f;" text="Cancelar" textFill="WHITE">
                <font><Font size="16.0" /></font>
-               <cursor><Cursor fx:constant="HAND" /></cursor>
                <effect><Blend /></effect>
             </Button>
 
