@@ -22,14 +22,6 @@
                         <Blend />
                      </effect>
                   </Label>
-                  <Label layoutX="338.0" layoutY="25.0" text="Coordinador:" textFill="WHITE">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                     <effect>
-                        <Blend />
-                     </effect>
-                  </Label>
                </children>
             </Pane>
             <Label layoutX="29.0" layoutY="93.0" text="Actualizar Asignación">
@@ -60,7 +52,7 @@
                   <Label fx:id="lbNuevoTutor" layoutX="90.0" layoutY="158.0" />
                </children>
             </Pane>
-            <Button layoutX="429.0" layoutY="247.0" mnemonicParsing="false" onAction="#clicCancelar" prefHeight="17.0" prefWidth="102.0" style="-fx-background-color: #38AB3B;" text="Cancelar" textFill="WHITE" />
+            <Button layoutX="429.0" layoutY="247.0" mnemonicParsing="false" onAction="#clicCancelar" prefHeight="17.0" prefWidth="102.0" style="-fx-background-color: #B52B10;" text="Cancelar" textFill="WHITE" />
             <Button layoutX="423.0" layoutY="191.0" mnemonicParsing="false" onAction="#clicConfirmarCambio" prefHeight="25.0" prefWidth="114.0" style="-fx-background-color: #38AB3B;" text="Confirmar Cambio" textFill="#fcfcfc" />
          </children>
       </Pane>

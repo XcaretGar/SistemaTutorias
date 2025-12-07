@@ -37,7 +37,7 @@ public class UsuarioDAO {
                 usuarioVerificado.setIdUsuario(rs.getInt("idUsuario"));
                 usuarioVerificado.setUsername(rs.getString("username"));
                 usuarioVerificado.setPassword(rs.getString("password"));
-                // El rol se queda pendiente (0) hasta que el usuario elija
+                usuarioVerificado.setRoles(obtenerRolesDeUsuario(usuarioVerificado.getIdUsuario()));
             }
         } catch (SQLException e) {
             e.printStackTrace();

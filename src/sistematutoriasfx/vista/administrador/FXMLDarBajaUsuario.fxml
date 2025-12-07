@@ -8,8 +8,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="370.0" prefWidth="610.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="sistematutoriasfx.controlador.administrador.FXMLDarBajaUsuarioController">
+<AnchorPane id="AnchorPane" prefHeight="370.0" prefWidth="610.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sistematutoriasfx.controlador.administrador.FXMLDarBajaUsuarioController">
    <children>
       <AnchorPane id="AnchorPane" layoutX="10.0" layoutY="10.0" prefHeight="340.0" prefWidth="600.0">
          <children>
@@ -20,14 +19,6 @@
                         <Pane layoutX="-9.0" layoutY="-20.0" prefHeight="80.0" prefWidth="626.0" style="-fx-background-color: #063596;">
                            <children>
                               <Label layoutX="30.0" layoutY="25.0" text="Sistema de Gestión de Tutorías" textFill="WHITE">
-                                 <effect>
-                                    <Blend />
-                                 </effect>
-                                 <font>
-                                    <Font size="16.0" />
-                                 </font>
-                              </Label>
-                              <Label layoutX="338.0" layoutY="25.0" text="Administrador:" textFill="WHITE">
                                  <effect>
                                     <Blend />
                                  </effect>
@@ -75,7 +66,7 @@
                               <Font size="14.0" />
                            </font>
                         </Label>
-                        <TextArea layoutX="349.0" layoutY="137.0" prefHeight="136.0" prefWidth="228.0" />
+                        <TextArea fx:id="taMotivoBaja" layoutX="349.0" layoutY="137.0" prefHeight="136.0" prefWidth="228.0" />
                      </children>
                   </Pane>
                </children>

@@ -22,4 +22,13 @@ public class CatalogoDAO {
         }
         throw new SQLException("Lo sentimos no hay conexión a la base de datos");
     }
+    
+    public static ResultSet obtenerTiposUsuarios(Connection conexionBD) throws SQLException {
+        if (conexionBD != null) {
+            String query = "SELECT * FROM rol";
+            PreparedStatement ps = conexionBD.prepareStatement(query);
+            return ps.executeQuery();
+        }
+        throw new SQLException("Lo sentimos no hay conexión a la base de datos");
+    }
 }

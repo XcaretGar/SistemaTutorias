@@ -150,7 +150,7 @@ public class FXMLFormularioTutoradoController implements Initializable {
         Estudiante estudiante = obtenerEstudiante();
         Respuesta respuesta = EstudianteImp.registrar(estudiante);
         if (!respuesta.isError()) {
-            Utilidades.mostrarAlertaSimple("Tutorado registrado correctamente",
+            Utilidades.mostrarAlertaSimple("Tutorado registrado exitosamente",
                 respuesta.getMensaje(), Alert.AlertType.INFORMATION);
             if (observador != null) {
                 observador.notificarOperacionExitosa("registrar", estudiante.getNombreCompleto());
@@ -167,7 +167,7 @@ public class FXMLFormularioTutoradoController implements Initializable {
         estudianteEdicion.setIdEstudiante(this.estudianteEdicion.getIdEstudiante());
         HashMap<String, Object> resultado = EstudianteImp.actualizar(estudianteEdicion);
         if (!(boolean) resultado.get("error")) {
-            Utilidades.mostrarAlertaSimple("Tutorado actualizado correctamente", 
+            Utilidades.mostrarAlertaSimple("Tutorado actualizado exitosamente", 
                     resultado.get("mensaje").toString(), Alert.AlertType.INFORMATION);
             observador.notificarOperacionExitosa("actualizar", estudianteEdicion.getNombreCompleto());
             cerrarVentana();

@@ -22,14 +22,6 @@
                         <Blend />
                      </effect>
                   </Label>
-                  <Label layoutX="338.0" layoutY="25.0" text="Coordinador:" textFill="WHITE">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                     <effect>
-                        <Blend />
-                     </effect>
-                  </Label>
                </children>
             </Pane>
             <Label layoutX="25.0" layoutY="84.0" text="Asignar Tutorado">

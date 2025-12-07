@@ -102,7 +102,7 @@ public class FXMLInicioSesionController implements Initializable {
     
     private void ingresarAlSistema(Usuario usuario, Rol rol) {
         usuario.setIdRol(rol.getIdRol());
-        usuario.setNombreRol(rol.getNombre());
+        usuario.setUsername(rol.getNombre());
         Utilidades.mostrarAlertaSimple("Bienvenido", "Ingresando como: " + rol.getNombre(), Alert.AlertType.INFORMATION);
         irPantallaPrincipal(usuario);
     }

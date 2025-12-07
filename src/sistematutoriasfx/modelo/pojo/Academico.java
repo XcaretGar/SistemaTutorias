@@ -18,7 +18,7 @@ public class Academico {
     private String correoInstitucional;
     private TipoContrato tipoContrato;
     private String estudios;
-    private int idUsuario;
+    private Usuario usuario;
 
     public Academico() {
     }
@@ -71,14 +71,6 @@ public class Academico {
         this.correoInstitucional = correoInstitucional;
     }
 
-    public int getIdUsuario() {
-        return idUsuario;
-    }
-
-    public void setIdUsuario(int idUsuario) {
-        this.idUsuario = idUsuario;
-    }
-
     public TipoContrato getTipoContrato() {
         return tipoContrato;
     }
@@ -98,6 +90,14 @@ public class Academico {
     public enum TipoContrato {
         TiempoCompleto,
         MedioTiempo
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
     
     public String getNombreCompleto() {

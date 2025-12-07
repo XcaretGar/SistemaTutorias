@@ -24,14 +24,6 @@
                               <Font size="16.0" />
                            </font>
                         </Label>
-                        <Label layoutX="338.0" layoutY="25.0" text="Administrador:" textFill="WHITE">
-                           <effect>
-                              <Blend />
-                           </effect>
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                        </Label>
                      </children>
                   </Pane>
                   <Label layoutX="25.0" layoutY="84.0" text="Registrar Tutorado">
@@ -53,7 +45,7 @@
                   <TextField fx:id="tfMatricula" layoutX="91.0" layoutY="152.0" prefHeight="25.0" prefWidth="207.0" />
                   <ComboBox fx:id="cbProgramaEducativo" layoutX="143.0" layoutY="189.0" prefHeight="25.0" prefWidth="207.0" promptText="Seleccione el Programa Educativo" />
                   <ComboBox fx:id="cbEstadoAcademico" layoutX="143.0" layoutY="219.0" prefHeight="25.0" prefWidth="207.0" promptText="Seleccione el Estado Académico" />
-                  <Button layoutX="305.0" layoutY="304.0" mnemonicParsing="false" onAction="#clicCancelar" prefHeight="17.0" prefWidth="102.0" style="-fx-background-color: #38AB3B;" text="Cancelar" textFill="WHITE" />
+                  <Button layoutX="305.0" layoutY="304.0" mnemonicParsing="false" onAction="#clicCancelar" prefHeight="17.0" prefWidth="102.0" style="-fx-background-color: #B52B10;" text="Cancelar" textFill="WHITE" />
                   <TextField fx:id="tfApellidoPaterno" layoutX="319.0" layoutY="117.0" prefHeight="25.0" prefWidth="109.0" />
                   <Label layoutX="220.0" layoutY="119.0" text="Apellido Paterno:" />
                   <TextField fx:id="tfApellidoMaterno" layoutX="544.0" layoutY="115.0" prefHeight="25.0" prefWidth="109.0" />

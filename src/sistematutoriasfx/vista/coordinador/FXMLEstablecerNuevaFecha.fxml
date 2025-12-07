@@ -22,14 +22,6 @@
                         <Font size="16.0" />
                      </font>
                   </Label>
-                  <Label layoutX="338.0" layoutY="25.0" text="Coordinador:" textFill="WHITE">
-                     <effect>
-                        <Blend />
-                     </effect>
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                  </Label>
                </children>
             </Pane>
             <Label layoutX="35.0" layoutY="77.0" text="Establecer Nueva Fecha">
@@ -46,7 +38,7 @@
             <Label layoutX="36.0" layoutY="217.0" text="Descripción:" />
             <DatePicker fx:id="dpFecha" layoutX="165.0" layoutY="180.0" prefHeight="25.0" prefWidth="142.0" />
             <ComboBox fx:id="cbPeriodo" layoutX="165.0" layoutY="111.0" prefHeight="25.0" prefWidth="156.0" promptText="Seleccione el periodo" />
-            <Button layoutX="270.0" layoutY="263.0" mnemonicParsing="false" onAction="#clicCancelar" prefHeight="17.0" prefWidth="102.0" style="-fx-background-color: #38AB3B;" text="Cancelar" textFill="#fffefe" />
+            <Button layoutX="270.0" layoutY="263.0" mnemonicParsing="false" onAction="#clicCancelar" prefHeight="17.0" prefWidth="102.0" style="-fx-background-color: #B52B10;" text="Cancelar" textFill="#fffefe" />
             <Button layoutX="136.0" layoutY="263.0" mnemonicParsing="false" onAction="#clicGuardarFecha" prefHeight="17.0" prefWidth="102.0" style="-fx-background-color: #38AB3B;" text="Guardar Fecha" textFill="WHITE" />
             <TextField fx:id="tfNoSesion" layoutX="164.0" layoutY="147.0" />
             <TextField fx:id="tfDescripcion" layoutX="164.0" layoutY="213.0" />

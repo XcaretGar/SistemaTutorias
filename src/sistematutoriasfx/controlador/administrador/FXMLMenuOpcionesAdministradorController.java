@@ -76,7 +76,7 @@ public class FXMLMenuOpcionesAdministradorController implements Initializable {
     private void clicGestionarUsuario(ActionEvent event) {
         try {
             Parent vista = FXMLLoader.load(
-                    SistemaTutoriasFx.class.getResource("vista/FXMLGestionarUsuario.fxml")); 
+                    SistemaTutoriasFx.class.getResource("/sistematutoriasfx/vista/administrador/FXMLGestionarUsuario.fxml")); 
             Scene escenaGestionarUsuario = new Scene(vista);
             Stage stAdmin = new Stage();
             stAdmin.setScene(escenaGestionarUsuario);

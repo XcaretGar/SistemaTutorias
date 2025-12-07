@@ -13,6 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import sistematutoriasfx.modelo.dao.CatalogoDAO;
 import sistematutoriasfx.modelo.pojo.ProgramaEducativo;
+import sistematutoriasfx.modelo.pojo.Rol;
 import sistematutoriasfx.modeloo.ConexionBD;
 
 /**
@@ -37,6 +38,34 @@ public class CatalogoImp {
             
             respuesta.put("error", false);  
             respuesta.put("programas", programasEducativos);  
+        } catch (SQLException e) {  
+            respuesta.put("error", true);  
+            respuesta.put("mensaje", e.getMessage());
+        } finally {
+            if (conexion != null) {
+                try { conexion.close(); } catch (SQLException e) { e.printStackTrace(); }
+            }
+        }
+        return respuesta;  
+    }
+    
+    public static HashMap<String, Object> obtenerTiposUsuarios(){  
+        HashMap<String,Object> respuesta = new LinkedHashMap<>(); 
+        Connection conexion = null;
+        try {  
+            conexion = ConexionBD.abrirConexion();
+            ResultSet rs = CatalogoDAO.obtenerTiposUsuarios(conexion);
+            List<Rol> roles = new ArrayList<>();
+            
+            while(rs.next()){  
+                Rol rol = new Rol();  
+                rol.setIdRol(rs.getInt("idRol"));
+                rol.setNombre(rs.getString("nombre"));
+                roles.add(rol);  
+            }  
+            
+            respuesta.put("error", false);  
+            respuesta.put("tiposUsuarios", roles);  
         } catch (SQLException e) {  
             respuesta.put("error", true);  
             respuesta.put("mensaje", e.getMessage());

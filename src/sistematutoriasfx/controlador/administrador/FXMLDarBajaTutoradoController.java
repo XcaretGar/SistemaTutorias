@@ -67,7 +67,7 @@ public class FXMLDarBajaTutoradoController implements Initializable {
 
         if (exito) {
             Utilidades.mostrarAlertaSimple("Baja confirmada",
-                "El tutorado fue dado de baja correctamente.", Alert.AlertType.INFORMATION);
+                "Tutorado dado de baja exitosamente.", Alert.AlertType.INFORMATION);
             observador.notificarOperacionExitosa("Baja", estudianteSeleccionado.getNombreCompleto());
             Stage stage = (Stage) lbTutorado.getScene().getWindow();
             stage.close();
