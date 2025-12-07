@@ -64,7 +64,7 @@ public class FXMLRegistrarHorarioTutorController implements Initializable {
         colPeriodo.setCellValueFactory(new PropertyValueFactory("periodo"));
         colFechaTutoria.setCellValueFactory(new PropertyValueFactory("fecha"));
         colSesion.setCellValueFactory(new PropertyValueFactory("numSesion"));
-        colHora.setCellValueFactory(new PropertyValueFactory("horaInicio"));
+        colHora.setCellValueFactory(new PropertyValueFactory("hora"));
         colLugar.setCellValueFactory(new PropertyValueFactory("lugar"));
         colComentarios.setCellValueFactory(new PropertyValueFactory("comentarios"));
     }

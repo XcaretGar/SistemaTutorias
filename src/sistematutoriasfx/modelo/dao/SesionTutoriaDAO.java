@@ -21,11 +21,9 @@ public class SesionTutoriaDAO {
     
     public static boolean registrarSesion(SesionTutoria nuevaSesion) {
         boolean respuesta = false;
-        Connection conexion = null; // 1. Declaramos la variable afuera
+        Connection conexion = null;
         try {
-            // 2. Abrimos conexión nueva
             conexion = ConexionBD.abrirConexion();
-            
             String query = "INSERT INTO sesiontutoria (idAcademico, idPeriodo, idFechaTutoria, hora, lugar, comentarios) " +
                            "VALUES (?, ?, ?, ?, ?, ?)";
             
@@ -43,13 +41,37 @@ public class SesionTutoriaDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            // 3. SIEMPRE cerramos la conexión aquí
             if(conexion != null){
-                try { 
-                    conexion.close(); 
-                } catch (SQLException e) { 
-                    e.printStackTrace(); 
-                }
+                try { conexion.close(); } catch (SQLException e) { e.printStackTrace(); }
+            }
+        }
+        return respuesta;
+    }
+    
+    public static boolean actualizarSesion(SesionTutoria sesion) {
+        boolean respuesta = false;
+        Connection conexion = null;
+        try {
+            conexion = ConexionBD.abrirConexion();
+            String query = "UPDATE sesiontutoria SET idPeriodo = ?, idFechaTutoria = ?, hora = ?, lugar = ?, comentarios = ? " +
+                           "WHERE idSesion = ?";
+            
+            PreparedStatement ps = conexion.prepareStatement(query);
+            ps.setInt(1, sesion.getIdPeriodo());
+            ps.setInt(2, sesion.getIdFechaTutoria());
+            ps.setString(3, sesion.getHora());
+            ps.setString(4, sesion.getLugar());
+            ps.setString(5, sesion.getComentarios());
+            ps.setInt(6, sesion.getIdSesion());
+            
+            int filasAfectadas = ps.executeUpdate();
+            respuesta = (filasAfectadas > 0);
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if(conexion != null){
+                try { conexion.close(); } catch (SQLException e) { e.printStackTrace(); }
             }
         }
         return respuesta;
@@ -60,7 +82,6 @@ public class SesionTutoriaDAO {
         Connection conexion = null;
         try {
             conexion = ConexionBD.abrirConexion();
-            
             String query = "SELECT s.*, p.nombre AS periodoNombre, ft.fechaSesion, ft.numSesion " +
                            "FROM sesiontutoria s " +
                            "INNER JOIN periodoescolar p ON s.idPeriodo = p.idPeriodo " +
@@ -76,12 +97,17 @@ public class SesionTutoriaDAO {
                 sesion.setIdSesion(rs.getInt("idSesion"));
                 sesion.setIdPeriodo(rs.getInt("idPeriodo"));
                 sesion.setIdFechaTutoria(rs.getInt("idFechaTutoria"));
+                
+                // Datos del JOIN
                 sesion.setFecha(rs.getString("fechaSesion")); 
                 sesion.setNumSesion(rs.getInt("numSesion"));
                 sesion.setPeriodo(rs.getString("periodoNombre"));
+                
+                // Datos propios
                 sesion.setHora(rs.getString("hora"));
                 sesion.setLugar(rs.getString("lugar"));
                 sesion.setComentarios(rs.getString("comentarios"));
+                
                 sesiones.add(sesion);
             }
         } catch (SQLException e) {

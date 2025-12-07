@@ -13,7 +13,7 @@ public class Usuario {
     private String username;
     private String password;
     private int idRol;
-    private String nombreRol; // Atributo extra útil para mostrar en la tabla, aunque no esté en la BD directa
+    private String nombreRol; 
 
     public Usuario() {
     }
@@ -25,7 +25,6 @@ public class Usuario {
         this.idRol = idRol;
     }
 
-    // Getters y Setters
     public int getIdUsuario() { return idUsuario; }
     public void setIdUsuario(int idUsuario) { this.idUsuario = idUsuario; }
 

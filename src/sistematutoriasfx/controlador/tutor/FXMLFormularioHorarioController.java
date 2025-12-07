@@ -53,24 +53,24 @@ public class FXMLFormularioHorarioController implements Initializable {
     private TextArea taComentarios;
     
     private int idAcademico = 0; 
-    private boolean esEdicion = false; // Bandera para saber si editamos
-    private SesionTutoria sesionEdicion; // Objeto original
-
+    private boolean esEdicion = false; 
+    private SesionTutoria sesionEdicion; 
+    
     // Recibe el ID del tutor desde la tabla
     public void inicializarTutor(int idAcademicoRecibido){
         this.idAcademico = idAcademicoRecibido;
     }
 
-    // NUEVO: Recibe la sesión a editar desde la tabla
+    // Recibe la sesión a editar desde la tabla
     public void inicializarSesionEdicion(SesionTutoria sesion) {
         this.esEdicion = true;
         this.sesionEdicion = sesion;
         
-        // Llenar campos simples
+        // 1. Llenar campos de texto
         tfLugar.setText(sesion.getLugar());
         taComentarios.setText(sesion.getComentarios());
         
-        // Seleccionar Periodo (Buscando por ID)
+        // 2. Seleccionar Periodo
         for (PeriodoEscolar p : cbPeriodo.getItems()) {
             if (p.getIdPeriodo() == sesion.getIdPeriodo()) {
                 cbPeriodo.setValue(p);
@@ -78,7 +78,7 @@ public class FXMLFormularioHorarioController implements Initializable {
             }
         }
         
-        // Forzar carga de fechas y seleccionar la correcta
+        // 3. Cargar fechas y seleccionar la correcta
         cargarFechasOficiales(sesion.getIdPeriodo());
         for (FechasTutoria f : cbFechaBase.getItems()) {
             if (f.getIdFechaTutoria() == sesion.getIdFechaTutoria()) {
@@ -87,7 +87,7 @@ public class FXMLFormularioHorarioController implements Initializable {
             }
         }
         
-        // Desglosar la hora (Viene "14:30:00")
+        // 4. Desglosar la hora
         try {
             String[] partes = sesion.getHora().split(":");
             int h = Integer.parseInt(partes[0]);
@@ -151,6 +151,7 @@ public class FXMLFormularioHorarioController implements Initializable {
 
     @FXML
     private void clicGuardar(ActionEvent event) {
+        // Validar vacíos
         if(cbPeriodo.getValue() == null || cbFechaBase.getValue() == null ||
            cbHora.getValue() == null || cbMinutos.getValue() == null || cbAmPm.getValue() == null || 
            tfLugar.getText().isEmpty()){
@@ -164,27 +165,26 @@ public class FXMLFormularioHorarioController implements Initializable {
         if(cbAmPm.getValue().equals("PM") && horaInt != 12) horaInt += 12;
         else if (cbAmPm.getValue().equals("AM") && horaInt == 12) horaInt = 0;
         
-        String horaInicio = String.format("%02d:%s:00", horaInt, cbMinutos.getValue());
+        String hora = String.format("%02d:%s:00", horaInt, cbMinutos.getValue());
         
+        // Crear objeto sesión
         SesionTutoria sesion = new SesionTutoria();
         sesion.setIdAcademico(this.idAcademico);
         sesion.setIdPeriodo(cbPeriodo.getValue().getIdPeriodo());
         sesion.setIdFechaTutoria(cbFechaBase.getValue().getIdFechaTutoria());
-        sesion.setHora(horaInicio);
+        sesion.setHora(hora);
         sesion.setLugar(tfLugar.getText());
         sesion.setComentarios(taComentarios.getText());
         
         boolean exito;
         
         if (esEdicion) {
-            // Caso ACTUALIZAR
+            // ACTUALIZAR
+            // Le pasamos el ID de la sesión original para que el DAO sepa cuál editar
             sesion.setIdSesion(this.sesionEdicion.getIdSesion());
-            // TODO: Asegúrate de tener el método 'actualizarSesion' en tu DAO
-            // exito = SesionTutoriaDAO.actualizarSesion(sesion); 
-            Utilidades.mostrarAlertaSimple("Aviso", "Falta implementar el UPDATE en el DAO", Alert.AlertType.INFORMATION);
-            return; // Quitamos esto cuando implementes el DAO update
+            exito = SesionTutoriaDAO.actualizarSesion(sesion);
         } else {
-            // Caso REGISTRAR NUEVO
+            // REGISTRAR
             exito = SesionTutoriaDAO.registrarSesion(sesion);
         }
         
