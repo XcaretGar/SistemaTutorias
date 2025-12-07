@@ -38,7 +38,7 @@ import utilidad.Utilidades;
  * 
  * @author JOANA XCARET
  */
-public class FXMLGestionarTutoradoController  implements Initializable, IObservador {
+public class FXMLGestionarTutoradoController implements Initializable, IObservador {
 
     @FXML
     private TableView<Estudiante> tvTutorados;
@@ -102,8 +102,8 @@ public class FXMLGestionarTutoradoController  implements Initializable, IObserva
         if (estudianteSeleccion != null) {
             irFormulario(estudianteSeleccion);
         } else {
-            Utilidades.mostrarAlertaSimple("", "Selecciona un estudiante, para modificar la información"
-                    + " de un estudiante primero debes seleccionarlo", Alert.AlertType.WARNING);
+            Utilidades.mostrarAlertaSimple("", "Selecciona un tutorado, para actualizar la información"
+                    + " de un tutorado primero debes seleccionarlo", Alert.AlertType.WARNING);
         }
     }
 
@@ -136,7 +136,7 @@ public class FXMLGestionarTutoradoController  implements Initializable, IObserva
             irDarBaja(estudianteSeleccion);
         } else {
             Utilidades.mostrarAlertaSimple("Aviso", 
-                "Selecciona un estudiante para darlo de baja.", 
+                "Selecciona un tutorado para darlo de baja.", 
                 Alert.AlertType.WARNING);
         }
     }

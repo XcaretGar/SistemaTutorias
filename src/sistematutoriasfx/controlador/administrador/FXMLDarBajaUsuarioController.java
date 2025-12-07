@@ -54,7 +54,6 @@ public class FXMLDarBajaUsuarioController implements Initializable {
         lbTipo.setText(rol.getNombre());
     }
 
-
     @FXML
     private void clicCancelar(ActionEvent event) {
         Stage stage = (Stage) lbUsuario.getScene().getWindow();
@@ -75,7 +74,7 @@ public class FXMLDarBajaUsuarioController implements Initializable {
             stage.close();
         } else {
             Utilidades.mostrarAlertaSimple("Error",
-                "No se pudo dar de baja al tutorado.", Alert.AlertType.ERROR);
+                "No se pudo dar de baja al usuario.", Alert.AlertType.ERROR);
         }
     }
 }

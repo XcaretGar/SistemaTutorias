@@ -163,15 +163,16 @@ public class FXMLFormularioUsuarioController implements Initializable {
     private void actualizarUsuario() {
         Academico academicoEdicion = obtenerAcademico();
         academicoEdicion.setIdAcademico(this.academicoEdicion.getIdAcademico());
-        HashMap<String, Object> resultado = AcademicoImp.actualizar(academicoEdicion);
-        if (!(boolean) resultado.get("error")) {
-            Utilidades.mostrarAlertaSimple("Tutorado actualizado exitosamente", 
-                    resultado.get("mensaje").toString(), Alert.AlertType.INFORMATION);
+
+        Respuesta resultado = AcademicoImp.actualizar(academicoEdicion);
+        if (!resultado.isError()) {
+            Utilidades.mostrarAlertaSimple("Usuario actualizado exitosamente", 
+                    resultado.getMensaje(), Alert.AlertType.INFORMATION);
             observador.notificarOperacionExitosa("actualizar", academicoEdicion.getNombreCompleto());
             cerrarVentana();
         } else {
             Utilidades.mostrarAlertaSimple("Error al actualizar",
-                    resultado.get("mensaje").toString(), Alert.AlertType.ERROR);
+                    resultado.getMensaje(), Alert.AlertType.ERROR);
         }
     }
     

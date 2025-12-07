@@ -14,6 +14,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import sistematutoriasfx.modelo.pojo.Academico;
 import sistematutoriasfx.modelo.pojo.Academico.TipoContrato;
 import sistematutoriasfx.modelo.pojo.Usuario;
@@ -56,6 +57,42 @@ public class AcademicoDAO {
         return academico;
     }
     
+    public static ArrayList<Academico> obtenerTodos() {
+        ArrayList<Academico> lista = new ArrayList<>();
+        Connection conexion = null;
+        try {
+            conexion = ConexionBD.abrirConexion();
+            String query = "SELECT * FROM academico";
+            PreparedStatement ps = conexion.prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Academico academico = new Academico();
+                academico.setIdAcademico(rs.getInt("idAcademico"));
+                academico.setNombre(rs.getString("nombre"));
+                academico.setApellidoPaterno(rs.getString("apellidoPaterno"));
+                academico.setApellidoMaterno(rs.getString("apellidoMaterno"));
+                academico.setNoPersonal(rs.getString("noPersonal"));
+                academico.setCorreoInstitucional(rs.getString("correoInstitucional"));
+                academico.setTipoContrato(TipoContrato.valueOf(rs.getString("tipoContrato")));
+                academico.setEstudios(rs.getString("estudios"));
+
+                Usuario usuario = new Usuario();
+                usuario.setIdUsuario(rs.getInt("idUsuario"));
+                usuario.setRoles(RolDAO.obtenerRolesPorIdUsuario(usuario.getIdUsuario()));
+                academico.setUsuario(usuario);
+                lista.add(academico);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (conexion != null) {
+                try { conexion.close(); } catch (SQLException e) { e.printStackTrace(); }
+            }
+        }
+        return lista;
+    }
+
     public static boolean registrarUsuarioConRol(Academico academico) {
         boolean resultado = false;
         Connection conexion = null;

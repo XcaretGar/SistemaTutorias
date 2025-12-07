@@ -4,11 +4,11 @@
  */
 package sistematutoriasfx.dominio;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import sistematutoriasfx.modelo.dao.AcademicoDAO;
 import sistematutoriasfx.modelo.pojo.Academico;
-import sistematutoriasfx.modelo.pojo.Estudiante;
 import sistematutoriasfx.modelo.pojo.Respuesta;
 
 /**
@@ -22,7 +22,7 @@ public class AcademicoImp {
         try {
             Academico academico = AcademicoDAO.obtenerAcademicoPorIdUsuario(idUsuario);
             respuesta.put("error", false);
-            respuesta.put("estudiantes", academico);
+            respuesta.put("academico", academico);
         } catch (Exception e) {
             respuesta.put("error", true);
             respuesta.put("mensaje", e.getMessage());
@@ -30,6 +30,19 @@ public class AcademicoImp {
         return respuesta;
     }
     
+    public static HashMap<String, Object> obtenerUsuarios() {
+        HashMap<String, Object> respuesta = new LinkedHashMap<>();
+        try {
+            ArrayList<Academico> academicos = AcademicoDAO.obtenerTodos();
+            respuesta.put("error", false);
+            respuesta.put("academicos", academicos);
+        } catch (Exception e) {
+            respuesta.put("error", true);
+            respuesta.put("mensaje", e.getMessage());
+        }
+        return respuesta;
+    }
+
     public static Respuesta registrar(Academico academico) {
         Respuesta respuesta = new Respuesta();
         respuesta.setError(true);
@@ -47,22 +60,22 @@ public class AcademicoImp {
         return respuesta;
     }
     
-    public static HashMap<String, Object> actualizar(Academico academico) {
-        HashMap<String, Object> respuesta = new LinkedHashMap<>();
+    public static Respuesta actualizar(Academico academico) {
+        Respuesta respuesta = new Respuesta();
         try {
             boolean exito = AcademicoDAO.actualizar(academico);
             if (exito) {
-                respuesta.put("error", false);
-                respuesta.put("mensaje", "El registro del usuario " 
-                        + academico.getNombre() + " fue guardado correctamente");
+                respuesta.setError(false);
+                respuesta.setMensaje("El registro del usuario " 
+                        + academico.getNombre() + " fue actualizado correctamente");
             } else {
-                respuesta.put("error", true);
-                respuesta.put("mensaje", "Lo sentimos, no se pudo modificar la información "
+                respuesta.setError(true);
+                respuesta.setMensaje("Lo sentimos, no se pudo actualizar la información "
                             + " del usuario, por favor inténtelo más tarde");
             }
         } catch (Exception e) {
-            respuesta.put("error", true);
-            respuesta.put("mensaje", e.getMessage());
+            respuesta.setError(true);
+            respuesta.setMensaje(e.getMessage());
         }
         return respuesta;
     }
