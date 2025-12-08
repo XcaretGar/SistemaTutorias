@@ -6,7 +6,10 @@ package sistematutoriasfx.controlador.coordinador;
 
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.List;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -15,6 +18,8 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import sistematutoriasfx.dominio.CatalogoImp;
+import sistematutoriasfx.interfaces.IObservador;
 import sistematutoriasfx.modelo.dao.FechaInstitucionalDAO;
 import sistematutoriasfx.modelo.dao.PeriodoEscolarDAO;
 import sistematutoriasfx.modelo.pojo.FechaInstitucional;
@@ -36,21 +41,29 @@ public class FXMLEstablecerNuevaFechaController implements Initializable {
     private TextField tfNoSesion;
     @FXML
     private TextField tfDescripcion;
+    
+    private IObservador observador;
+    private FechaInstitucional fechaSeleccionada;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        cbPeriodo.getItems().setAll(PeriodoEscolarDAO.obtenerPeriodos());
+        cargarPeriodosEscolares();
     }    
     
-    public void inicializarDatos(FechaInstitucional fecha) {
+    public void inicializarDatos(IObservador observador, FechaInstitucional fecha) {
+        this.observador = observador;
+        this.fechaSeleccionada = fecha;
         if (fecha != null) {
-        cbPeriodo.getSelectionModel().select(fecha.getIdPeriodo());
-        tfNoSesion.setText(String.valueOf(fecha.getNumSesion()));
-        dpFecha.setValue(fecha.getFechaSesion());
-        tfDescripcion.setText(fecha.getDescripcion());
+            tfNoSesion.setText(String.valueOf(fecha.getNumSesion()));
+            dpFecha.setValue(fecha.getFechaSesion());
+            tfDescripcion.setText(fecha.getDescripcion());
+            cbPeriodo.setValue(new PeriodoEscolar(
+                    fecha.getIdPeriodo(),
+                    fecha.getNombre()
+            ));
         } else {
             cbPeriodo.getSelectionModel().clearSelection();
             tfNoSesion.clear();
@@ -66,41 +79,65 @@ public class FXMLEstablecerNuevaFechaController implements Initializable {
 
     @FXML
     private void clicGuardarFecha(ActionEvent event) {
-        PeriodoEscolar periodo = (PeriodoEscolar) cbPeriodo.getSelectionModel().getSelectedItem();
-        String sesionTexto = tfNoSesion.getText();
-        LocalDate fecha = dpFecha.getValue();
-        String descripcion = tfDescripcion.getText();
-
-        if (periodo == null || sesionTexto.isEmpty() || fecha == null || descripcion.isEmpty()) {
-            Utilidades.mostrarAlertaSimple("Datos incompletos", 
-                    "Completa todos los campos", Alert.AlertType.WARNING);
+        PeriodoEscolar periodo = cbPeriodo.getSelectionModel().getSelectedItem();
+        if (periodo == null || tfNoSesion.getText().isEmpty() || dpFecha.getValue() == null || tfDescripcion.getText().isEmpty()) {
+            Utilidades.mostrarAlertaSimple("Datos incompletos", "Completa todos los campos", Alert.AlertType.WARNING);
             return;
         }
 
         int numeroSesion;
         try {
-            numeroSesion = Integer.parseInt(sesionTexto);
+            numeroSesion = Integer.parseInt(tfNoSesion.getText());
         } catch (NumberFormatException e) {
-            Utilidades.mostrarAlertaSimple("Sesión inválida", 
-                    "El número de sesión debe ser numérico", Alert.AlertType.WARNING);
+            Utilidades.mostrarAlertaSimple("Sesión inválida", "El número de sesión debe ser numérico", Alert.AlertType.WARNING);
+            return;
+        }
+        
+        boolean traslape = FechaInstitucionalDAO.existeTraslape(
+                periodo.getIdPeriodo(),
+                dpFecha.getValue(),
+                fechaSeleccionada == null ? null : fechaSeleccionada.getIdFechaInstitucional()
+        );
+        if (traslape) {
+            Utilidades.mostrarAlertaSimple("Traslape detectado",
+                    "La fecha se traslapa con otra tutoría programada. Corrige la fecha.",
+                    Alert.AlertType.WARNING);
             return;
         }
 
-        FechaInstitucional nuevaFecha = new FechaInstitucional();
-        nuevaFecha.setIdPeriodo(periodo.getIdPeriodo());
-        nuevaFecha.setNumSesion(numeroSesion);
-        nuevaFecha.setFechaSesion(fecha);
-        nuevaFecha.setDescripcion(descripcion);
+        boolean exito;
+        if (fechaSeleccionada == null) {
+            FechaInstitucional nueva = new FechaInstitucional();
+            nueva.setIdPeriodo(periodo.getIdPeriodo());
+            nueva.setNumSesion(numeroSesion);
+            nueva.setFechaSesion(dpFecha.getValue());
+            nueva.setDescripcion(tfDescripcion.getText());
+            exito = FechaInstitucionalDAO.registrarFecha(nueva);
+        } else {
+            fechaSeleccionada.setIdPeriodo(periodo.getIdPeriodo());
+            fechaSeleccionada.setNumSesion(numeroSesion);
+            fechaSeleccionada.setFechaSesion(dpFecha.getValue());
+            fechaSeleccionada.setDescripcion(tfDescripcion.getText());
+            exito = FechaInstitucionalDAO.actualizarFecha(fechaSeleccionada);
+        }
 
-        boolean exito = FechaInstitucionalDAO.registrarFecha(nuevaFecha);
         if (exito) {
-            Utilidades.mostrarAlertaSimple("Registro exitoso", 
-                    "Fecha institucional registrada exitosamente", Alert.AlertType.INFORMATION);
+            Utilidades.mostrarAlertaSimple("Éxito", fechaSeleccionada == null ? "Fecha registrada" : "Fecha actualizada", Alert.AlertType.INFORMATION);
             cerrarVentana();
         } else {
-            Utilidades.mostrarAlertaSimple("Error", 
-                    "No se pudo registrar la fecha", Alert.AlertType.ERROR);
+            Utilidades.mostrarAlertaSimple("Error", "No se pudo guardar la fecha", Alert.AlertType.ERROR);
         }
+    }
+    
+    private void cargarPeriodosEscolares() {
+        HashMap<String, Object> respuesta = CatalogoImp.obtenerPeriodos();
+        if (!(boolean) respuesta.get("error")) {
+           List<PeriodoEscolar> periodosEscolaresBD = (List<PeriodoEscolar>) respuesta.get("periodos");
+            cbPeriodo.setItems(FXCollections.observableArrayList(periodosEscolaresBD));
+        } else {
+            Utilidades.mostrarAlertaSimple("Error al cargar los periodos escolares",
+                    respuesta.get("mensaje").toString(), Alert.AlertType.ERROR);
+        }    
     }
     
     private void cerrarVentana() {

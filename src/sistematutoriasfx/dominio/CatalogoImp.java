@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import sistematutoriasfx.modelo.dao.CatalogoDAO;
+import sistematutoriasfx.modelo.pojo.PeriodoEscolar;
 import sistematutoriasfx.modelo.pojo.ProgramaEducativo;
 import sistematutoriasfx.modelo.pojo.Rol;
 import sistematutoriasfx.modeloo.ConexionBD;
@@ -75,5 +76,35 @@ public class CatalogoImp {
             }
         }
         return respuesta;  
+    }
+    
+    public static HashMap<String, Object> obtenerPeriodos() {
+        HashMap<String, Object> respuesta = new LinkedHashMap<>();
+        List<PeriodoEscolar> periodos = new ArrayList<>();
+
+        Connection conexion = null;
+        try {
+            conexion = ConexionBD.abrirConexion();
+            ResultSet rs = CatalogoDAO.obtenerPeriodosEscolares(conexion);
+
+            while (rs.next()) {
+                PeriodoEscolar periodo = new PeriodoEscolar();
+                periodo.setIdPeriodo(rs.getInt("idPeriodo"));
+                periodo.setNombre(rs.getString("nombre")); 
+                periodos.add(periodo);
+            }
+
+            respuesta.put("error", false);
+            respuesta.put("periodos", periodos);
+
+        } catch (SQLException e) {
+            respuesta.put("error", true);
+            respuesta.put("mensaje", e.getMessage());
+        } finally {
+            if (conexion != null) {
+                try { conexion.close(); } catch (SQLException e) { e.printStackTrace(); }
+            }
+        }
+        return respuesta;
     }
 }

@@ -9,6 +9,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import sistematutoriasfx.modelo.pojo.FechaInstitucional;
@@ -84,5 +85,23 @@ public class FechaInstitucionalDAO {
             if (conexion != null) try { conexion.close(); } catch (SQLException e) { e.printStackTrace(); }
         }
         return exito;
+    }
+    
+    public static boolean existeTraslape(int idPeriodo, LocalDate fecha, Integer idFechaActual) {
+        boolean traslape = false;
+        try (Connection conexion = ConexionBD.abrirConexion();
+             PreparedStatement ps = conexion.prepareStatement(
+                 "SELECT COUNT(*) AS total FROM fechasinstitucionales WHERE idPeriodo = ? AND fechaSesion = ? AND idFechaInstitucional <> ?")) {
+            ps.setInt(1, idPeriodo);
+            ps.setDate(2, Date.valueOf(fecha));
+            ps.setInt(3, idFechaActual == null ? -1 : idFechaActual); 
+            ResultSet rs = ps.executeQuery();
+            if (rs.next() && rs.getInt("total") > 0) {
+                traslape = true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return traslape;
     }
 }

@@ -149,7 +149,6 @@ public class FXMLAsignarTutoradoController implements Initializable, IObservador
     @Override
     public void notificarOperacionExitosa(String tipoOperacion, String nombre) {
         System.out.println("Operación: " + tipoOperacion);
-        System.out.println("Nombre tutorado: " + nombre);
         tfBuscar.setText("");
         cargarEstudiantes();
         configurarBusqueda();

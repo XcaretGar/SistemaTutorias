@@ -24,6 +24,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import sistematutoriasfx.interfaces.IObservador;
 import sistematutoriasfx.modelo.dao.FechaInstitucionalDAO;
 import sistematutoriasfx.modelo.pojo.FechaInstitucional;
 import utilidad.Utilidades;
@@ -33,7 +34,7 @@ import utilidad.Utilidades;
  *
  * @author JOANA XCARET
  */
-public class FXMLRegistrarFechaTutoriaController implements Initializable {
+public class FXMLRegistrarFechaTutoriaController implements Initializable, IObservador {
 
     @FXML
     private TableView<FechaInstitucional> tvFechasTutoria;
@@ -93,7 +94,7 @@ public class FXMLRegistrarFechaTutoriaController implements Initializable {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/sistematutoriasfx/vista/coordinador/FXMLEstablecerNuevaFecha.fxml"));
             Parent vista = loader.load();
             FXMLEstablecerNuevaFechaController controlador = loader.getController();
-            controlador.inicializarDatos(fecha); 
+            controlador.inicializarDatos(this, fecha); 
             Scene scene = new Scene(vista);
             Stage stage = new Stage();
             stage.setTitle("Establecer Fecha Tutoria");
@@ -104,5 +105,11 @@ public class FXMLRegistrarFechaTutoriaController implements Initializable {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+    }
+    
+    @Override
+    public void notificarOperacionExitosa(String tipoOperacion, String nombre) {
+        System.out.println("Operación: " + tipoOperacion);
+        cargarFechas();
     }
 }

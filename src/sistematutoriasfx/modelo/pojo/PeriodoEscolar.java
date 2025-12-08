@@ -17,6 +17,11 @@ public class PeriodoEscolar {
 
     public PeriodoEscolar() {
     }
+    
+    public PeriodoEscolar(int idPeriodo, String nombre) {
+        this.idPeriodo = idPeriodo;
+        this.nombre = nombre;
+    }
 
     public int getIdPeriodo() {
         return idPeriodo;
