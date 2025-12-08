@@ -19,7 +19,7 @@ import sistematutoriasfx.modeloo.ConexionBD;
  *
  * @author JOANA XCARET
  */
-public class FechaInstitucionalDAO {
+/*public class FechaInstitucionalDAO {
     
     public static boolean registrarFecha(FechaInstitucional fecha) {
         boolean exito = false;
@@ -104,4 +104,4 @@ public class FechaInstitucionalDAO {
         }
         return traslape;
     }
-}
+}*/

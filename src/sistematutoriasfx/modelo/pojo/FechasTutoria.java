@@ -4,6 +4,8 @@
  */
 package sistematutoriasfx.modelo.pojo;
 
+import java.time.LocalDate;
+
 /**
  *
  * @author Ana Georgina
@@ -12,16 +14,21 @@ public class FechasTutoria {
     private int idFechaTutoria;
     private int idPeriodo;
     private int numSesion;
-    private String fechaSesion;
+    private LocalDate fechaSesion;
+    private String descripcion;
+    private String nombre;
+    
 
     public FechasTutoria() {
     }
 
-    public FechasTutoria(int idFechaTutoria, int idPeriodo, int numSesion, String fechaSesion) {
+    public FechasTutoria(int idFechaTutoria, int idPeriodo, int numSesion, LocalDate fechaSesion, String descripcion, String nombre) {
         this.idFechaTutoria = idFechaTutoria;
         this.idPeriodo = idPeriodo;
         this.numSesion = numSesion;
         this.fechaSesion = fechaSesion;
+        this.descripcion = descripcion;
+        this.nombre = nombre;
     }
 
     public int getIdFechaTutoria() {
@@ -48,17 +55,33 @@ public class FechasTutoria {
         this.numSesion = numSesion;
     }
 
-    public String getFechaSesion() {
+    public LocalDate getFechaSesion() {
         return fechaSesion;
     }
 
-    public void setFechaSesion(String fechaSesion) {
+    public void setFechaSesion(LocalDate fechaSesion) {
         this.fechaSesion = fechaSesion;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
     
     @Override
     public String toString() {
-        return "Sesión " + numSesion; 
+        return "Nombre " + nombre; 
     }
 }
 

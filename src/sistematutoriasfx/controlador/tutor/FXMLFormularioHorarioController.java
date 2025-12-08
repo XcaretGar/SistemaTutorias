@@ -137,7 +137,7 @@ public class FXMLFormularioHorarioController implements Initializable {
         
         cbFechaBase.valueProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal != null) {
-                lbFechaMostrada.setText(newVal.getFechaSesion());
+                lbFechaMostrada.setText(newVal.getFechaSesion().toString());
             }
         });
     }

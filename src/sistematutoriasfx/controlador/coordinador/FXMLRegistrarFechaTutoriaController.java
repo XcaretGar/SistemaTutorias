@@ -25,8 +25,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import sistematutoriasfx.interfaces.IObservador;
-import sistematutoriasfx.modelo.dao.FechaInstitucionalDAO;
-import sistematutoriasfx.modelo.pojo.FechaInstitucional;
+import sistematutoriasfx.modelo.dao.FechasTutoriaDAO;
+import sistematutoriasfx.modelo.pojo.FechasTutoria;
 import utilidad.Utilidades;
 
 /**
@@ -37,7 +37,7 @@ import utilidad.Utilidades;
 public class FXMLRegistrarFechaTutoriaController implements Initializable, IObservador {
 
     @FXML
-    private TableView<FechaInstitucional> tvFechasTutoria;
+    private TableView<FechasTutoria> tvFechasTutoria;
     @FXML
     private TableColumn colSesion;
     @FXML
@@ -47,7 +47,7 @@ public class FXMLRegistrarFechaTutoriaController implements Initializable, IObse
     @FXML
     private TableColumn colDescripcion;
     
-    private ObservableList<FechaInstitucional> fechas;
+    private ObservableList<FechasTutoria> fechas;
 
     /**
      * Initializes the controller class.
@@ -66,7 +66,7 @@ public class FXMLRegistrarFechaTutoriaController implements Initializable, IObse
     }
 
     private void cargarFechas() {
-        ArrayList<FechaInstitucional> fechasBD = new ArrayList<>(FechaInstitucionalDAO.obtenerFechas());
+        ArrayList<FechasTutoria> fechasBD = new ArrayList<>(FechasTutoriaDAO.obtenerFechasPorPeriodo(1));
         fechas = FXCollections.observableArrayList();
         fechas.addAll(fechasBD);
         tvFechasTutoria.setItems(fechas);
@@ -79,7 +79,7 @@ public class FXMLRegistrarFechaTutoriaController implements Initializable, IObse
 
     @FXML
     private void clicActualizarFecha(ActionEvent event) {
-        FechaInstitucional seleccionada = tvFechasTutoria.getSelectionModel().getSelectedItem();
+        FechasTutoria seleccionada = tvFechasTutoria.getSelectionModel().getSelectedItem();
         if (seleccionada != null) {
             irFormulario(seleccionada);
         } else {
@@ -89,7 +89,7 @@ public class FXMLRegistrarFechaTutoriaController implements Initializable, IObse
         }
     }
     
-    private void irFormulario(FechaInstitucional fecha) {
+    private void irFormulario(FechasTutoria fecha) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/sistematutoriasfx/vista/coordinador/FXMLEstablecerNuevaFecha.fxml"));
             Parent vista = loader.load();

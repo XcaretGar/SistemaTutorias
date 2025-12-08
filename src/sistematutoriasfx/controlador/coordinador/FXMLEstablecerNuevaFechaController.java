@@ -20,9 +20,8 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import sistematutoriasfx.dominio.CatalogoImp;
 import sistematutoriasfx.interfaces.IObservador;
-import sistematutoriasfx.modelo.dao.FechaInstitucionalDAO;
-import sistematutoriasfx.modelo.dao.PeriodoEscolarDAO;
-import sistematutoriasfx.modelo.pojo.FechaInstitucional;
+import sistematutoriasfx.modelo.dao.FechasTutoriaDAO;
+import sistematutoriasfx.modelo.pojo.FechasTutoria;
 import sistematutoriasfx.modelo.pojo.PeriodoEscolar;
 import utilidad.Utilidades;
 
@@ -43,7 +42,7 @@ public class FXMLEstablecerNuevaFechaController implements Initializable {
     private TextField tfDescripcion;
     
     private IObservador observador;
-    private FechaInstitucional fechaSeleccionada;
+    private FechasTutoria fechaSeleccionada;
 
     /**
      * Initializes the controller class.
@@ -53,7 +52,7 @@ public class FXMLEstablecerNuevaFechaController implements Initializable {
         cargarPeriodosEscolares();
     }    
     
-    public void inicializarDatos(IObservador observador, FechaInstitucional fecha) {
+    public void inicializarDatos(IObservador observador, FechasTutoria fecha) {
         this.observador = observador;
         this.fechaSeleccionada = fecha;
         if (fecha != null) {
@@ -93,10 +92,10 @@ public class FXMLEstablecerNuevaFechaController implements Initializable {
             return;
         }
         
-        boolean traslape = FechaInstitucionalDAO.existeTraslape(
+        boolean traslape = FechasTutoriaDAO.existeTraslape(
                 periodo.getIdPeriodo(),
                 dpFecha.getValue(),
-                fechaSeleccionada == null ? null : fechaSeleccionada.getIdFechaInstitucional()
+                fechaSeleccionada == null ? null : fechaSeleccionada.getIdFechaTutoria()
         );
         if (traslape) {
             Utilidades.mostrarAlertaSimple("Traslape detectado",
@@ -107,18 +106,18 @@ public class FXMLEstablecerNuevaFechaController implements Initializable {
 
         boolean exito;
         if (fechaSeleccionada == null) {
-            FechaInstitucional nueva = new FechaInstitucional();
+            FechasTutoria nueva = new FechasTutoria();
             nueva.setIdPeriodo(periodo.getIdPeriodo());
             nueva.setNumSesion(numeroSesion);
             nueva.setFechaSesion(dpFecha.getValue());
             nueva.setDescripcion(tfDescripcion.getText());
-            exito = FechaInstitucionalDAO.registrarFecha(nueva);
+            exito = FechasTutoriaDAO.registrarFecha(nueva);
         } else {
             fechaSeleccionada.setIdPeriodo(periodo.getIdPeriodo());
             fechaSeleccionada.setNumSesion(numeroSesion);
             fechaSeleccionada.setFechaSesion(dpFecha.getValue());
             fechaSeleccionada.setDescripcion(tfDescripcion.getText());
-            exito = FechaInstitucionalDAO.actualizarFecha(fechaSeleccionada);
+            exito = FechasTutoriaDAO.actualizarFecha(fechaSeleccionada);
         }
 
         if (exito) {
