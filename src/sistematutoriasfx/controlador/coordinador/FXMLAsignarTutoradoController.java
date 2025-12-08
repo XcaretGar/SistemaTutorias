@@ -75,7 +75,7 @@ public class FXMLAsignarTutoradoController implements Initializable, IObservador
         colApMaterno.setCellValueFactory(new PropertyValueFactory("apellidoMaterno"));
         colMatricula.setCellValueFactory(new PropertyValueFactory("matricula"));
         colProgramaEducativo.setCellValueFactory(new PropertyValueFactory("programaEducativo"));
-        colAsignado.setCellValueFactory(new PropertyValueFactory("asignado"));
+        colAsignado.setCellValueFactory(new PropertyValueFactory("asignadoTexto"));
     }
     
     private void cargarInformacion() {

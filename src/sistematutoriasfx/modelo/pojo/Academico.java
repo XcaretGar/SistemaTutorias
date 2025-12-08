@@ -21,6 +21,7 @@ public class Academico {
     private Usuario usuario;
     private String estatus;
     private String motivoBaja;
+    private int cargaAcademica;
 
     public Academico() {
     }
@@ -117,7 +118,15 @@ public class Academico {
     public void setMotivoBaja(String motivoBaja) {
         this.motivoBaja = motivoBaja;
     }
-    
+
+    public int getCargaAcademica() {
+        return cargaAcademica;
+    }
+
+    public void setCargaAcademica(int cargaAcademica) {
+        this.cargaAcademica = cargaAcademica;
+    }
+  
     public String getNombreCompleto() {
         return nombre + " " + apellidoPaterno + " " + (apellidoMaterno != null ? apellidoMaterno : "");
     }

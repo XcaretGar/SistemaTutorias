@@ -127,6 +127,10 @@ public class Estudiante {
         this.asignado = asignado;
     }
     
+    public String getAsignadoTexto() {
+        return asignado ? "Sí" : "No";
+    }
+    
     public String getNombreCompleto() {
         return nombreEstudiante + " " + apellidoPaterno + " " + (apellidoMaterno != null ? apellidoMaterno : "");
     }

@@ -39,10 +39,19 @@ public class AsignacionTutorDAO {
         Connection conexion = null;
         try {
             conexion = ConexionBD.abrirConexion();
-            String query = "INSERT INTO asignaciontutor(idEstudiante, idAcademico) VALUES (?, ?)";
+            String sqlPeriodo = "SELECT idPeriodo FROM PeriodoEscolar ORDER BY fechaInicio DESC LIMIT 1";
+            PreparedStatement psPeriodo = conexion.prepareStatement(sqlPeriodo);
+            ResultSet rsPeriodo = psPeriodo.executeQuery();
+            int idPeriodo = -1;
+            if (rsPeriodo.next()) {
+                idPeriodo = rsPeriodo.getInt("idPeriodo");
+            }
+        
+            String query = "INSERT INTO asignaciontutor(idEstudiante, idAcademico, idPeriodo) VALUES (?, ?, ?)";
             PreparedStatement ps = conexion.prepareStatement(query);
             ps.setInt(1, idEstudiante);
             ps.setInt(2, idAcademico);
+            ps.setInt(3, idPeriodo);
             resultado = ps.executeUpdate() > 0;
         } catch (SQLException e) { 
             e.printStackTrace(); 
@@ -77,8 +86,8 @@ public class AsignacionTutorDAO {
         Connection conexion = null;
         try {
             conexion = ConexionBD.abrirConexion();
-            String query = "SELECT academico * FROM asignaciontutor " +
-                           "INNER JOIN academico a ON asignaciontutor.idAcademico = academico.idAcademico " +
+            String query = "SELECT academico.* FROM asignaciontutor " +
+                           "INNER JOIN academico ON asignaciontutor.idAcademico = academico.idAcademico " +
                            "WHERE asignaciontutor.idEstudiante = ?";
             PreparedStatement ps = conexion.prepareStatement(query);
             ps.setInt(1, idEstudiante);

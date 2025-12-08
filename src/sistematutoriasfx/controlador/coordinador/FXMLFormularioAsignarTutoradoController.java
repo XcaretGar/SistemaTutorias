@@ -4,6 +4,7 @@
  */
 package sistematutoriasfx.controlador.coordinador;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -11,12 +12,16 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import sistematutoriasfx.interfaces.IObservador;
 import sistematutoriasfx.modelo.dao.AcademicoDAO;
@@ -79,7 +84,7 @@ public class FXMLFormularioAsignarTutoradoController implements Initializable {
         colApPaterno.setCellValueFactory(new PropertyValueFactory("apellidoPaterno"));
         colApMaterno.setCellValueFactory(new PropertyValueFactory("apellidoMaterno"));
         colTipoContrato.setCellValueFactory(new PropertyValueFactory("tipoContrato"));
-        colCarrera.setCellValueFactory(new PropertyValueFactory("carrera"));
+        colCarrera.setCellValueFactory(new PropertyValueFactory("estudios"));
         colCargaAcademica.setCellValueFactory(new PropertyValueFactory("cargaAcademica"));
     }
     
@@ -97,32 +102,51 @@ public class FXMLFormularioAsignarTutoradoController implements Initializable {
                 "Debes seleccionar un tutor", Alert.AlertType.WARNING);
             return;
         }
+        
+        if (tutorSeleccionado.getCargaAcademica() >= 15) {
+            Utilidades.mostrarAlertaSimple("Capacidad máxima alcanzada",
+                "El tutor ha alcanzado su capacidad máxima de tutorados. Selecciona otro tutor",
+                Alert.AlertType.WARNING);
+            return;
+        }
 
-        boolean exito;
         if (!estudianteSeleccionado.isAsignado()) {
-            exito = AsignacionTutorDAO.asignarTutor(
+            boolean exito = AsignacionTutorDAO.asignarTutor(
                 estudianteSeleccionado.getIdEstudiante(),
                 tutorSeleccionado.getIdAcademico());
-        } else {
-            exito = AsignacionTutorDAO.actualizarAsignacion(
-                estudianteSeleccionado.getIdEstudiante(),
-                tutorSeleccionado.getIdAcademico());
-        }
-
-        if (exito) {
-            String mensaje = (!estudianteSeleccionado.isAsignado())
-                ? "Tutor asignado exitosamente"
-                : "Tutor actualizado correctamente";
-            Utilidades.mostrarAlertaSimple("Operación exitosa", mensaje, Alert.AlertType.INFORMATION);
-
-            if (observador != null) {
-                observador.notificarOperacionExitosa("Asignación", estudianteSeleccionado.getNombreCompleto());
-            }
-            cerrarVentana();
-        } else {
+            if (exito) {
+                Utilidades.mostrarAlertaSimple("Operación exitosa",
+                    "Tutor asignado exitosamente", Alert.AlertType.INFORMATION);
+                if (observador != null) {
+                    observador.notificarOperacionExitosa("Asignación", estudianteSeleccionado.getNombreCompleto());
+                }
+            } else {
             Utilidades.mostrarAlertaSimple("Error",
-                "No se pudo completar la operación", Alert.AlertType.ERROR);
-        }
+                "No se pudo completar la asignación", Alert.AlertType.ERROR);
+            }
+        } else {
+            Academico tutorActual = AsignacionTutorDAO.obtenerTutorActual(estudianteSeleccionado.getIdEstudiante());
+            if (tutorActual != null && tutorActual.getIdAcademico() == tutorSeleccionado.getIdAcademico()) {
+                Utilidades.mostrarAlertaSimple("Selección inválida",
+                    "No puedes seleccionar al mismo tutor que ya está asignado",
+                    Alert.AlertType.WARNING);
+                return;
+            }
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/sistematutoriasfx/vista/coordinador/FXMLActualizarTutor.fxml"));
+                Parent vista = loader.load();
+                FXMLActualizarTutorController controladorActualizar = loader.getController();
+                controladorActualizar.inicializarDatos(estudianteSeleccionado, tutorSeleccionado);
+                Scene scene = new Scene(vista);
+                Stage stage = new Stage();
+                stage.setTitle("Actualizar Tutor");
+                stage.setScene(scene);
+                stage.initModality(Modality.APPLICATION_MODAL);
+                stage.showAndWait();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }  
     }
     
     private void cerrarVentana() {

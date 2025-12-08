@@ -80,6 +80,7 @@ public class AcademicoDAO {
                 academico.setEstudios(rs.getString("estudios"));
                 academico.setEstatus(rs.getString("estatus"));
                 academico.setMotivoBaja(rs.getString("motivoBaja"));
+                academico.setCargaAcademica(obtenerCargaAcademica(academico.getIdAcademico()));
 
                 Usuario usuario = new Usuario();
                 usuario.setIdUsuario(rs.getInt("idUsuario"));
@@ -96,6 +97,26 @@ public class AcademicoDAO {
         }
         return lista;
     }
+    
+    public static int obtenerCargaAcademica(int idAcademico) {
+        int total = 0;
+        Connection conexion = null;
+        try {
+            conexion = ConexionBD.abrirConexion();
+            String sql = "SELECT COUNT(*) AS totalTutorados FROM asignaciontutor WHERE idAcademico = ?";
+            PreparedStatement ps = conexion.prepareStatement(sql);
+            ps.setInt(1, idAcademico);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                total = rs.getInt("totalTutorados");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (conexion != null) try { conexion.close(); } catch (SQLException e) { e.printStackTrace(); }
+        }
+        return total;
+}
 
     public static boolean registrarUsuarioConRol(Academico academico) {
         boolean resultado = false;
