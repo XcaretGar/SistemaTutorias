@@ -23,7 +23,7 @@ import sistematutoriasfx.controlador.administrador.FXMLMenuOpcionesAdministrador
 import sistematutoriasfx.controlador.coordinador.FXMLMenuOpcionesCoordinadorController;
 import sistematutoriasfx.modelo.dao.UsuarioDAO; 
 import sistematutoriasfx.modelo.pojo.Usuario; 
-import sistematutoriasfx.controlador.tutor.FXMLPrincipalTutorController;
+//import sistematutoriasfx.controlador.tutor.FXMLPrincipalTutorController;
 import sistematutoriasfx.modelo.pojo.Rol;
 import utilidad.Utilidades; 
 
@@ -141,10 +141,10 @@ public class FXMLInicioSesionController implements Initializable {
             } else if (usuarioLogin.getIdRol() == 2) {
                 FXMLMenuOpcionesCoordinadorController controlador = loader.getController();
                 controlador.configurarVista(usuarioLogin);
-            } else if (usuarioLogin.getIdRol() == 3) {
+            } /*else if (usuarioLogin.getIdRol() == 3) {
                 FXMLPrincipalTutorController controlador = loader.getController();
                 controlador.configurarVista(usuarioLogin);
-            }
+            }*/
             
             Scene escena = new Scene(root);
             Stage nuevoEscenario = new Stage();

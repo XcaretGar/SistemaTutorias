@@ -41,7 +41,7 @@ import sistematutoriasfx.modelo.pojo.PeriodoEscolar;
 import sistematutoriasfx.modelo.pojo.Usuario;
 import utilidad.Utilidades;
 
-public class FXMLGestionarEvidenciaController implements Initializable {
+/*public class FXMLGestionarEvidenciaController implements Initializable {
 
     @FXML 
     private ComboBox<PeriodoEscolar> cbPeriodo;
@@ -221,4 +221,4 @@ public class FXMLGestionarEvidenciaController implements Initializable {
             Utilidades.mostrarAlertaSimple("Error", "No se pudo abrir el formulario.", Alert.AlertType.ERROR);
         }
     }
-}
+}*/

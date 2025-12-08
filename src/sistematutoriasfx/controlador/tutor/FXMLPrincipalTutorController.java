@@ -26,7 +26,7 @@ import utilidad.Utilidades;
  *
  * @author Ana Georgina
  */
-public class FXMLPrincipalTutorController implements Initializable {
+/*public class FXMLPrincipalTutorController implements Initializable {
 
     @FXML
     private Label lbNombreTutor;
@@ -35,7 +35,7 @@ public class FXMLPrincipalTutorController implements Initializable {
     
     /**
      * Initializes the controller class.
-     */
+     *//*
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
@@ -159,4 +159,4 @@ public class FXMLPrincipalTutorController implements Initializable {
     private void clicProblematica(ActionEvent event) {
         //AQUI SE AGREGA EL FXML
     }
-}
+}*/

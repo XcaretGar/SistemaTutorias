@@ -57,11 +57,12 @@ public class FXMLEstablecerNuevaFechaController implements Initializable {
         this.fechaSeleccionada = fecha;
         if (fecha != null) {
             tfNoSesion.setText(String.valueOf(fecha.getNumSesion()));
-            dpFecha.setValue(fecha.getFechaSesion());
+            dpFecha.setValue(fecha.getFechaSesion()); 
+            
             tfDescripcion.setText(fecha.getDescripcion());
             cbPeriodo.setValue(new PeriodoEscolar(
                     fecha.getIdPeriodo(),
-                    fecha.getNombre()
+                    fecha.getNombre() != null ? fecha.getNombre() : "Periodo " + fecha.getIdPeriodo()
             ));
         } else {
             cbPeriodo.getSelectionModel().clearSelection();

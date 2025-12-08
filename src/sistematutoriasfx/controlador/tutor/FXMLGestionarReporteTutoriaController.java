@@ -41,7 +41,7 @@ import sistematutoriasfx.modelo.pojo.ReporteTutoria;
 import sistematutoriasfx.modelo.pojo.Usuario;
 import utilidad.Utilidades;
 
-public class FXMLGestionarReporteTutoriaController implements Initializable {
+/*public class FXMLGestionarReporteTutoriaController implements Initializable {
 
     @FXML private ComboBox<PeriodoEscolar> cbPeriodo;
     @FXML private ComboBox<FechasTutoria> cbFechaSesion;
@@ -353,4 +353,4 @@ public class FXMLGestionarReporteTutoriaController implements Initializable {
             }
         }
     }
-}
+}*/

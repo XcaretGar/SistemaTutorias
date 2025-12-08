@@ -7,6 +7,8 @@ package sistematutoriasfx.controlador.coordinador;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
@@ -19,14 +21,17 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import sistematutoriasfx.dominio.CatalogoImp;
 import sistematutoriasfx.interfaces.IObservador;
 import sistematutoriasfx.modelo.dao.FechasTutoriaDAO;
 import sistematutoriasfx.modelo.pojo.FechasTutoria;
+import sistematutoriasfx.modelo.pojo.PeriodoEscolar;
 import utilidad.Utilidades;
 
 /**
@@ -36,6 +41,8 @@ import utilidad.Utilidades;
  */
 public class FXMLRegistrarFechaTutoriaController implements Initializable, IObservador {
 
+    @FXML 
+    private ComboBox<PeriodoEscolar> cbPeriodo;
     @FXML
     private TableView<FechasTutoria> tvFechasTutoria;
     @FXML
@@ -55,7 +62,8 @@ public class FXMLRegistrarFechaTutoriaController implements Initializable, IObse
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         configurarTabla();
-        cargarFechas();
+        cargarPeriodos();
+        configurarListeners();
     }    
     
     private void configurarTabla() {
@@ -65,10 +73,28 @@ public class FXMLRegistrarFechaTutoriaController implements Initializable, IObse
         colDescripcion.setCellValueFactory(new PropertyValueFactory("descripcion"));
     }
 
-    private void cargarFechas() {
-        ArrayList<FechasTutoria> fechasBD = new ArrayList<>(FechasTutoriaDAO.obtenerFechasPorPeriodo(1));
-        fechas = FXCollections.observableArrayList();
-        fechas.addAll(fechasBD);
+    private void cargarPeriodos() {
+        HashMap<String, Object> respuesta = CatalogoImp.obtenerPeriodos();
+        if (!(boolean) respuesta.get("error")) {
+            List<PeriodoEscolar> periodos = (List<PeriodoEscolar>) respuesta.get("periodos");
+            cbPeriodo.setItems(FXCollections.observableArrayList(periodos));
+        } else {
+            Utilidades.mostrarAlertaSimple("Error al cargar periodos",
+                    respuesta.get("mensaje").toString(), Alert.AlertType.ERROR);
+        }
+    }
+
+    private void configurarListeners() {
+        cbPeriodo.valueProperty().addListener((obs, oldVal, newVal) -> {
+            if (newVal != null) {
+                cargarFechasPorPeriodo(newVal.getIdPeriodo());
+            }
+        });
+    }
+
+    private void cargarFechasPorPeriodo(int idPeriodo) {
+        ArrayList<FechasTutoria> fechasBD = FechasTutoriaDAO.obtenerFechasPorPeriodo(idPeriodo);
+        fechas = FXCollections.observableArrayList(fechasBD);
         tvFechasTutoria.setItems(fechas);
     }
 
@@ -90,7 +116,7 @@ public class FXMLRegistrarFechaTutoriaController implements Initializable, IObse
     }
     
     private void irFormulario(FechasTutoria fecha) {
-        try {
+         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/sistematutoriasfx/vista/coordinador/FXMLEstablecerNuevaFecha.fxml"));
             Parent vista = loader.load();
             FXMLEstablecerNuevaFechaController controlador = loader.getController();
@@ -101,7 +127,9 @@ public class FXMLRegistrarFechaTutoriaController implements Initializable, IObse
             stage.setScene(scene);
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.showAndWait();
-            cargarFechas(); 
+            if (cbPeriodo.getValue() != null) {
+                cargarFechasPorPeriodo(cbPeriodo.getValue().getIdPeriodo());
+            }
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -109,7 +137,8 @@ public class FXMLRegistrarFechaTutoriaController implements Initializable, IObse
     
     @Override
     public void notificarOperacionExitosa(String tipoOperacion, String nombre) {
-        System.out.println("Operación: " + tipoOperacion);
-        cargarFechas();
+        if (cbPeriodo.getValue() != null) {
+            cargarFechasPorPeriodo(cbPeriodo.getValue().getIdPeriodo());
+        }
     }
 }

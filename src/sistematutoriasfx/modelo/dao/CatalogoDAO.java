@@ -34,7 +34,7 @@ public class CatalogoDAO {
     
     public static ResultSet obtenerPeriodosEscolares(Connection conexionBD) throws SQLException {
         if (conexionBD != null) {
-            String query = "SELECT * FROMperiodo periodoEscolar";
+            String query = "SELECT * FROM periodoEscolar";
             PreparedStatement ps = conexionBD.prepareStatement(query);
             return ps.executeQuery();
         }
