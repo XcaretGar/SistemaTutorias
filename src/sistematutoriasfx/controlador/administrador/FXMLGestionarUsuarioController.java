@@ -68,7 +68,7 @@ public class FXMLGestionarUsuarioController implements Initializable, IObservado
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         configurarTabla();
-        cargarInformacion();
+        cargarAcademicos();
         configurarBusqueda();
     }    
 
@@ -93,7 +93,7 @@ public class FXMLGestionarUsuarioController implements Initializable, IObservado
         colCorreo.setCellValueFactory(new PropertyValueFactory("correoInstitucional"));
     }
     
-    private void cargarInformacion() {
+    private void cargarAcademicos() {
         HashMap<String, Object> respuesta = AcademicoImp.obtenerUsuarios();
         //Casteo con paréntesis
         boolean error = (boolean) respuesta.get("error");
@@ -177,7 +177,7 @@ public class FXMLGestionarUsuarioController implements Initializable, IObservado
         System.out.println("Operación: " + tipoOperacion);
         System.out.println("Nombre usuario: " + nombre);
         tfBuscar.setText("");
-        cargarInformacion();
+        cargarAcademicos();
         configurarBusqueda();
     }
     

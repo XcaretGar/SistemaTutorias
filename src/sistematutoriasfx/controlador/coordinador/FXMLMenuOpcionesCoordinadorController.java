@@ -74,10 +74,34 @@ public class FXMLMenuOpcionesCoordinadorController implements Initializable {
 
     @FXML
     private void clicRegistrarFechaTutoria(ActionEvent event) {
+         try {
+            Parent vista = FXMLLoader.load(
+                    SistemaTutoriasFx.class.getResource("/sistematutoriasfx/vista/coordinador/FXMLRegistrarFechaTutoria.fxml")); 
+            Scene escenaGestionarTutorado = new Scene(vista);
+            Stage stAdmin = new Stage();
+            stAdmin.setScene(escenaGestionarTutorado);
+            stAdmin.setTitle("Asignar Tutorado");
+            stAdmin.initModality(Modality.APPLICATION_MODAL);
+            stAdmin.showAndWait();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 
     @FXML
     private void clicRevisarReporteTutoria(ActionEvent event) {
+         try {
+            Parent vista = FXMLLoader.load(
+                    SistemaTutoriasFx.class.getResource("/sistematutoriasfx/vista/coordinador/FXMLRevisarReporteTutoria.fxml")); 
+            Scene escenaGestionarTutorado = new Scene(vista);
+            Stage stAdmin = new Stage();
+            stAdmin.setScene(escenaGestionarTutorado);
+            stAdmin.setTitle("Asignar Tutorado");
+            stAdmin.initModality(Modality.APPLICATION_MODAL);
+            stAdmin.showAndWait();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
     
     @FXML

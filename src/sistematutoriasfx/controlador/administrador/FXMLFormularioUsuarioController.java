@@ -65,7 +65,7 @@ public class FXMLFormularioUsuarioController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        cargarInformacionTipoUsuarios();
+        cargarTipoUsuarios();
         cbTipoContrato.setItems(
                 FXCollections.observableArrayList(Academico.TipoContrato.values()));
     }    
@@ -242,7 +242,7 @@ public class FXMLFormularioUsuarioController implements Initializable {
         return academico;
     }
     
-    private void cargarInformacionTipoUsuarios() {
+    private void cargarTipoUsuarios() {
         HashMap<String, Object> respuesta = CatalogoImp.obtenerTiposUsuarios();
         if (!(boolean) respuesta.get("error")) {
            List<Rol> roles = (List<Rol>) respuesta.get("tiposUsuarios");

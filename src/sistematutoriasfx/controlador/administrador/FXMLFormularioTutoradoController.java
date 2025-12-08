@@ -57,7 +57,7 @@ public class FXMLFormularioTutoradoController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        cargarInformacionProgramasEducativos();
+        cargarProgramasEducativos();
         cbEstadoAcademico.setItems(
                 FXCollections.observableArrayList(Estudiante.Estatus.values()));
     }   
@@ -195,7 +195,7 @@ public class FXMLFormularioTutoradoController implements Initializable {
         return estudiante;
     }
     
-    private void cargarInformacionProgramasEducativos() {
+    private void cargarProgramasEducativos() {
         HashMap<String, Object> respuesta = CatalogoImp.obtenerProgramasEducativos();
         if (!(boolean) respuesta.get("error")) {
            List<ProgramaEducativo> programasEducativosBD = (List<ProgramaEducativo>) respuesta.get("programas");
