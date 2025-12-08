@@ -21,6 +21,7 @@ public class Estudiante {
     private String programaEducativo;
     private Estatus estatus; 
     private String motivoBaja;
+    private boolean asignado;
     
     // (No se guardan en BD, son solo para la pantalla)
     private javafx.scene.control.CheckBox cbAsistencia; 
@@ -116,6 +117,14 @@ public class Estudiante {
 
     public void setMotivoBaja(String motivoBaja) {
         this.motivoBaja = motivoBaja;
+    }
+
+    public boolean isAsignado() {
+        return asignado;
+    }
+
+    public void setAsignado(boolean asignado) {
+        this.asignado = asignado;
     }
     
     public String getNombreCompleto() {

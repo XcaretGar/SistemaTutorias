@@ -58,7 +58,7 @@
                </children>
             </Pane>
             <Label layoutX="200.0" layoutY="267.0" prefHeight="25.0" prefWidth="286.0" text="Administrar la información de los usuarios" textFill="WHITE" />
-            <Button layoutX="161.0" layoutY="316.0" mnemonicParsing="false" onAction="#clicCerrarSesion" prefHeight="71.0" prefWidth="302.0" style="-fx-background-color: #417C9E;" text="Cerrar Sesión" textFill="WHITE">
+            <Button layoutX="161.0" layoutY="316.0" mnemonicParsing="false" onAction="#clicCerrarSesion" prefHeight="71.0" prefWidth="302.0" style="-fx-background-color: #d9534f;" text="Cerrar Sesión" textFill="WHITE">
                <effect>
                   <Blend />
                </effect>

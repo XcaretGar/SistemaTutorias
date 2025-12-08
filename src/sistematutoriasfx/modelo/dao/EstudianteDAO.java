@@ -43,6 +43,9 @@ public class EstudianteDAO {
                 estudiante.setProgramaEducativo(rs.getString("programaEducativo"));
                 estudiante.setEstatus(Estudiante.Estatus.valueOf(rs.getString("estatus")));
                 estudiante.setMotivoBaja(rs.getString("motivoBaja"));
+                boolean asignado = AsignacionTutorDAO.existeAsignacion(estudiante.getIdEstudiante());
+                estudiante.setAsignado(asignado);
+
                 estudiantes.add(estudiante);
             }
         } catch (SQLException e) {

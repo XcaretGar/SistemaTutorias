@@ -55,16 +55,16 @@
               <columns>
                 <TableColumn fx:id="colNombre" prefWidth="90.0" text="Nombre" />
                 <TableColumn fx:id="colApPaterno" prefWidth="100.0" text="Apellido Paterno" />
-                  <TableColumn fx:id="ApMaterno" prefWidth="104.0" text="Apellido Materno" />
+                  <TableColumn fx:id="colApMaterno" prefWidth="104.0" text="Apellido Materno" />
                   <TableColumn fx:id="colTipoContrato" minWidth="1.0" prefWidth="110.0" text="Tipo de Contrato" />
                   <TableColumn fx:id="colCarrera" minWidth="0.0" prefWidth="138.0" text="Carrera" />
                   <TableColumn fx:id="colCargaAcademica" prefWidth="109.0" text="Carga Académica" />
               </columns>
             </TableView>
             <Button layoutX="25.0" layoutY="276.0" mnemonicParsing="false" onAction="#clicSeleccionar" prefHeight="17.0" prefWidth="102.0" style="-fx-background-color: #38AB3B;" text="Seleccionar" textFill="WHITE" />
-            <TextField fx:id="tfProgramaEducativo" layoutX="147.0" layoutY="212.0" />
-            <TextField fx:id="tfMatricula" layoutX="96.0" layoutY="180.0" />
-            <TextField fx:id="tfNombreCompleto" layoutX="96.0" layoutY="151.0" />
+            <Label fx:id="lbNombreCompleto" layoutX="86.0" layoutY="155.0" />
+            <Label fx:id="lbMatricula" layoutX="95.0" layoutY="184.0" />
+            <Label fx:id="lbProgramaEducativo" layoutX="147.0" layoutY="216.0" />
          </children>
       </Pane>
    </children>

@@ -67,7 +67,7 @@
                </font>
             </Button>
             <Label layoutX="229.0" layoutY="364.0" text="Consultar reportes de tutorías " textFill="WHITE" />
-            <Button layoutX="161.0" layoutY="415.0" mnemonicParsing="false" onAction="#clicCerrarSesion" prefHeight="71.0" prefWidth="302.0" style="-fx-background-color: #417C9E;" text="Cerrar Sesión" textFill="WHITE">
+            <Button layoutX="161.0" layoutY="415.0" mnemonicParsing="false" onAction="#clicCerrarSesion" prefHeight="71.0" prefWidth="302.0" style="-fx-background-color: #d9534f;" text="Cerrar Sesión" textFill="WHITE">
                <effect>
                   <Blend />
                </effect>
