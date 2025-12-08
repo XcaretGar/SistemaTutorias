@@ -23,10 +23,12 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import sistematutoriasfx.modelo.dao.FechasTutoriaDAO;
+import sistematutoriasfx.modelo.dao.ListaAsistenciaDAO;
 import sistematutoriasfx.modelo.dao.PeriodoEscolarDAO;
 import sistematutoriasfx.modelo.dao.ReporteTutoriaDAO;
 import sistematutoriasfx.modelo.dao.SesionTutoriaDAO;
 import sistematutoriasfx.modelo.pojo.FechasTutoria;
+import sistematutoriasfx.modelo.pojo.ListaAsistencia;
 import sistematutoriasfx.modelo.pojo.PeriodoEscolar;
 import sistematutoriasfx.modelo.pojo.ReporteTutoria;
 import sistematutoriasfx.modelo.pojo.SesionTutoria;
@@ -45,24 +47,20 @@ public class FXMLFormularioReporteTutoriaController implements Initializable {
     private boolean esEdicion = false;
     private ReporteTutoria reporteEdicion;
 
-    // Recibe el ID del tutor desde la ventana anterior
     public void inicializarTutor(int idAcademico) {
         this.idAcademico = idAcademico;
     }
 
-    // Configura la ventana si es una EDICIÓN
     public void inicializarEdicion(ReporteTutoria reporte) {
         this.esEdicion = true;
         this.reporteEdicion = reporte;
         
-        // Llenar campos de texto
         taComentarios.setText(reporte.getComentariosGenerales());
         tfTotalAsistentes.setText(String.valueOf(reporte.getTotalAsistentes()));
         tfTotalRiesgo.setText(String.valueOf(reporte.getTotalEnRiesgo()));
         lbEstatusReporte.setText("Estatus: " + reporte.getEstatus());
         
-        // Seleccionar el periodo correcto en el combo
-        // Nota: Esto disparará el listener que carga las fechas
+        // Seleccionar periodo
         for (PeriodoEscolar p : cbPeriodoReporte.getItems()) {
             if (p.getIdPeriodo() == reporte.getIdPeriodo()) {
                 cbPeriodoReporte.setValue(p);
@@ -70,22 +68,26 @@ public class FXMLFormularioReporteTutoriaController implements Initializable {
             }
         }
         
-        // IMPORTANTE: Forzamos la carga de fechas y seleccionamos la correcta
-        // (Porque el listener a veces no es instantáneo al setear valor por código)
         cargarFechasDelPeriodo(reporte.getIdPeriodo());
         
-        // Buscamos la fecha que coincida con la sesión del reporte
-        // Necesitamos saber el idFechaTutoria. Lo podemos sacar indirectamente 
-        // o asumiendo que el objeto reporte ya trae esa info si hicimos el JOIN correcto.
-        // Por simplicidad visual, seleccionamos por texto o id si lo tenemos disponible.
-        // Aquí asumiremos que el usuario selecciona la fecha si no se carga auto, 
-        // o idealmente haríamos un método extra para buscar la fecha por idSesion.
+        // Seleccionar fecha correspondiente
+        int idFechaDelReporte = obtenerIdFechaPorSesion(reporte.getIdSesion());
+        for (FechasTutoria f : cbFechaSesionReporte.getItems()) {
+            if (f.getIdFechaTutoria() == idFechaDelReporte) {
+                cbFechaSesionReporte.setValue(f);
+                break;
+            }
+        }
     }
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         cargarCombos();
         configurarListeners();
+        
+        // ✅ Asegurar que los campos estén deshabilitados para edición manual
+        tfTotalAsistentes.setEditable(false);
+        tfTotalRiesgo.setEditable(false);
     }
     
     private void cargarCombos() {
@@ -96,10 +98,19 @@ public class FXMLFormularioReporteTutoriaController implements Initializable {
         cbPeriodoReporte.valueProperty().addListener((obs, oldVal, newVal) -> {
             if(newVal != null) {
                 cargarFechasDelPeriodo(newVal.getIdPeriodo());
+                // Limpiar campos al cambiar periodo
+                tfTotalAsistentes.setText("0");
+                tfTotalRiesgo.setText("0");
+                lbEstatusReporte.setText("Estatus: ---");
             }
         });
         
-        // Al seleccionar fecha, podríamos buscar si ya hay datos previos (opcional)
+        // ✅ NUEVO: Al seleccionar fecha, cargar automáticamente los totales
+        cbFechaSesionReporte.valueProperty().addListener((obs, oldVal, newVal) -> {
+            if(newVal != null) {
+                cargarTotalesDeAsistencia();
+            }
+        });
     }
     
     private void cargarFechasDelPeriodo(int idPeriodo) {
@@ -108,25 +119,87 @@ public class FXMLFormularioReporteTutoriaController implements Initializable {
         ));
     }
 
+    // ✅ NUEVO MÉTODO: Calcular totales desde listaasistencia
+    private void cargarTotalesDeAsistencia() {
+        if(cbFechaSesionReporte.getValue() == null) {
+            return;
+        }
+        
+        int idSesionReal = obtenerIdSesion(cbFechaSesionReporte.getValue().getIdFechaTutoria());
+        
+        if(idSesionReal == 0) {
+            tfTotalAsistentes.setText("0");
+            tfTotalRiesgo.setText("0");
+            lbEstatusReporte.setText("Estatus: Sin horario");
+            return;
+        }
+        
+        // Obtener la lista de asistencia
+        java.util.ArrayList<ListaAsistencia> asistencias = 
+            ListaAsistenciaDAO.obtenerAsistenciaPorSesion(idSesionReal);
+        
+        if(asistencias == null || asistencias.isEmpty()) {
+            tfTotalAsistentes.setText("0");
+            tfTotalRiesgo.setText("0");
+            lbEstatusReporte.setText("Estatus: Sin asistencia");
+            return;
+        }
+        
+        // ✅ Calcular totales
+        int totalAsistieron = 0;
+        int totalEnRiesgo = 0;
+        
+        for(ListaAsistencia asist : asistencias) {
+            if(asist.isAsistio()) {
+                totalAsistieron++;
+            }
+            if(asist.isRiesgoDetectado()) {
+                totalEnRiesgo++;
+            }
+        }
+        
+        // ✅ Actualizar campos automáticamente
+        tfTotalAsistentes.setText(String.valueOf(totalAsistieron));
+        tfTotalRiesgo.setText(String.valueOf(totalEnRiesgo));
+        
+        // Verificar si ya existe un reporte
+        ReporteTutoria reporteExistente = ReporteTutoriaDAO.obtenerReportePorSesion(idAcademico, 
+            cbFechaSesionReporte.getValue().getIdFechaTutoria());
+        
+        if(reporteExistente != null) {
+            lbEstatusReporte.setText("Estatus: Ya existe reporte");
+        } else {
+            lbEstatusReporte.setText("Estatus: Listo para crear");
+        }
+    }
+
     @FXML
     private void clicGuardar(ActionEvent event) {
         // 1. Validaciones
         if (cbPeriodoReporte.getValue() == null || cbFechaSesionReporte.getValue() == null) {
-            Utilidades.mostrarAlertaSimple("Faltan datos", "Por favor selecciona el periodo y la fecha de sesión.", Alert.AlertType.WARNING);
+            Utilidades.mostrarAlertaSimple("Faltan datos", 
+                "Por favor selecciona el periodo y la fecha de sesión.", 
+                Alert.AlertType.WARNING);
+            return;
+        }
+        
+        // ✅ Validar que haya asistencia registrada
+        int asistentes = Integer.parseInt(tfTotalAsistentes.getText());
+        if(asistentes == 0 && !esEdicion) {
+            Utilidades.mostrarAlertaSimple("Sin asistencia", 
+                "No puedes crear un reporte sin haber registrado asistencia primero.\n" +
+                "Ve a 'Gestionar Asistencia' y registra la lista primero.", 
+                Alert.AlertType.WARNING);
             return;
         }
         
         try {
-            // 2. Preparar objeto
             ReporteTutoria reporte = new ReporteTutoria();
             reporte.setComentariosGenerales(taComentarios.getText());
             
-            // Validar que sean números
-            int asistentes = tfTotalAsistentes.getText().isEmpty() ? 0 : Integer.parseInt(tfTotalAsistentes.getText());
-            int riesgo = tfTotalRiesgo.getText().isEmpty() ? 0 : Integer.parseInt(tfTotalRiesgo.getText());
-            
-            reporte.setTotalAsistentes(asistentes);
-            reporte.setTotalEnRiesgo(riesgo);
+            // ✅ Tomar los valores calculados automáticamente
+            reporte.setTotalAsistentes(Integer.parseInt(tfTotalAsistentes.getText()));
+            reporte.setTotalEnRiesgo(Integer.parseInt(tfTotalRiesgo.getText()));
             
             boolean exito;
             
@@ -139,52 +212,72 @@ public class FXMLFormularioReporteTutoriaController implements Initializable {
                 reporte.setIdAcademico(idAcademico);
                 reporte.setIdPeriodo(cbPeriodoReporte.getValue().getIdPeriodo());
                 
-                // Buscar el idSesion real basado en la fecha seleccionada
                 int idSesionReal = obtenerIdSesion(cbFechaSesionReporte.getValue().getIdFechaTutoria());
                 
                 if(idSesionReal == 0) {
                     Utilidades.mostrarAlertaSimple("Error de Lógica", 
-                        "No has registrado un horario de tutoría para esta fecha.\n"
-                        + "Primero ve a 'Horarios de Tutoría' y registra tu sesión.", 
+                        "No has registrado un horario de tutoría para esta fecha.\n" +
+                        "Primero ve a 'Horarios de Tutoría' y registra tu sesión.", 
                         Alert.AlertType.ERROR);
                     return;
                 }
                 reporte.setIdSesion(idSesionReal);
                 
-                // Validar que no exista ya un reporte para esa sesión (para no duplicar)
-                if(ReporteTutoriaDAO.obtenerReportePorSesion(idAcademico, cbFechaSesionReporte.getValue().getIdFechaTutoria()) != null){
-                     Utilidades.mostrarAlertaSimple("Duplicado", "Ya existe un reporte para esta sesión. Úsalo en modo edición.", Alert.AlertType.WARNING);
-                     return;
+                // Validar duplicados
+                if(ReporteTutoriaDAO.obtenerReportePorSesion(idAcademico, 
+                    cbFechaSesionReporte.getValue().getIdFechaTutoria()) != null) {
+                    Utilidades.mostrarAlertaSimple("Duplicado", 
+                        "Ya existe un reporte para esta sesión. Úsalo en modo edición.", 
+                        Alert.AlertType.WARNING);
+                    return;
                 }
 
                 exito = ReporteTutoriaDAO.registrarReporte(reporte);
             }
             
             if(exito) {
-                Utilidades.mostrarAlertaSimple("Éxito", "El reporte se guardó correctamente.", Alert.AlertType.INFORMATION);
+                Utilidades.mostrarAlertaSimple("Éxito", 
+                    "El reporte se guardó correctamente.", 
+                    Alert.AlertType.INFORMATION);
                 cerrarVentana();
             } else {
-                Utilidades.mostrarAlertaSimple("Error", "No se pudo guardar en la base de datos.", Alert.AlertType.ERROR);
+                Utilidades.mostrarAlertaSimple("Error", 
+                    "No se pudo guardar en la base de datos.", 
+                    Alert.AlertType.ERROR);
             }
             
         } catch (NumberFormatException e) {
-             Utilidades.mostrarAlertaSimple("Error de formato", "Los totales deben ser números enteros.", Alert.AlertType.WARNING);
+            Utilidades.mostrarAlertaSimple("Error de formato", 
+                "Los totales deben ser números enteros.", 
+                Alert.AlertType.WARNING);
         } catch (Exception e) {
-             e.printStackTrace();
-             Utilidades.mostrarAlertaSimple("Error", "Ocurrió un error inesperado.", Alert.AlertType.ERROR);
+            e.printStackTrace();
+            Utilidades.mostrarAlertaSimple("Error", 
+                "Ocurrió un error inesperado.", 
+                Alert.AlertType.ERROR);
         }
     }
     
-    // Método auxiliar para obtener el ID de la Sesión (Cita) basado en la Fecha Oficial
     private int obtenerIdSesion(int idFechaTutoria) {
-         java.util.ArrayList<SesionTutoria> sesiones = 
-                SesionTutoriaDAO.obtenerSesionesPorTutor(idAcademico);
+        java.util.ArrayList<SesionTutoria> sesiones = 
+            SesionTutoriaDAO.obtenerSesionesPorTutor(idAcademico);
         for (SesionTutoria s : sesiones) {
             if (s.getIdFechaTutoria() == idFechaTutoria) {
                 return s.getIdSesion();
             }
         }
-        return 0; // 0 significa que el tutor NO agendó cita para esa fecha
+        return 0;
+    }
+    
+    private int obtenerIdFechaPorSesion(int idSesion) {
+        java.util.ArrayList<SesionTutoria> sesiones = 
+            SesionTutoriaDAO.obtenerSesionesPorTutor(idAcademico);
+        for (SesionTutoria s : sesiones) {
+            if (s.getIdSesion() == idSesion) {
+                return s.getIdFechaTutoria();
+            }
+        }
+        return 0;
     }
 
     @FXML

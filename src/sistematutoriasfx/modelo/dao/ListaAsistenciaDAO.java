@@ -11,12 +11,40 @@ package sistematutoriasfx.modelo.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import sistematutoriasfx.modeloo.ConexionBD;
 import sistematutoriasfx.modelo.pojo.ListaAsistencia;
 
 public class ListaAsistenciaDAO {
 
+    public static ArrayList<ListaAsistencia> obtenerAsistenciaPorSesion(int idSesion) {
+        ArrayList<ListaAsistencia> lista = new ArrayList<>();
+
+        try {
+            String consulta = "SELECT * FROM listaasistencia WHERE idSesion = ?";
+            PreparedStatement st = ConexionBD.abrirConexion().prepareStatement(consulta);
+            st.setInt(1, idSesion);
+            ResultSet rs = st.executeQuery();
+
+            while (rs.next()) {
+                ListaAsistencia asistencia = new ListaAsistencia();
+                asistencia.setIdLista(rs.getInt("idLista"));
+                asistencia.setIdSesion(rs.getInt("idSesion"));
+                asistencia.setIdEstudiante(rs.getInt("idEstudiante"));
+                asistencia.setAsistio(rs.getBoolean("asistio"));
+                asistencia.setRiesgoDetectado(rs.getBoolean("riesgoDetectado"));
+                lista.add(asistencia);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return lista;
+    }
+    
     public static boolean registrarAsistencia(ListaAsistencia lista) {
         boolean resultado = false;
         Connection conexion = null;

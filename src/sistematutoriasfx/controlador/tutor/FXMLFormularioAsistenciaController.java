@@ -18,6 +18,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
@@ -36,44 +37,55 @@ import utilidad.Utilidades;
 
 public class FXMLFormularioAsistenciaController implements Initializable {
 
-    @FXML private Label lbFechaSesion; // Si le pusiste fx:id en el FXML
+    @FXML private Label lbFechaSesion;
     @FXML private TableView<Estudiante> tvAlumnos;
     @FXML private TableColumn colMatricula;
     @FXML private TableColumn colNombre;
     @FXML private TableColumn colAsistencia;
     @FXML private TableColumn colRiesgo;
+    @FXML private Button btnGuardar;
+    @FXML private Button btnCancelar;
 
     private int idAcademico;
     private FechasTutoria fechaSesion;
-    private int idSesionReal; // El ID de la cita en 'sesiontutoria'
+    private int idSesionReal;
+    private boolean modoConsulta = false;
 
-    // --- MÉTODO DE INICIALIZACIÓN (Lo llama la ventana anterior) ---
-    public void inicializarAsistencia(int idAcademico, FechasTutoria fecha) {
+    // ✅ MÉTODO PRINCIPAL DE INICIALIZACIÓN
+    public void inicializarAsistencia(int idAcademico, FechasTutoria fecha, boolean soloConsulta) {
         this.idAcademico = idAcademico;
         this.fechaSesion = fecha;
+        this.modoConsulta = soloConsulta;
         
-        // Ponemos la fecha en el título (si tienes el label en el FXML)
-        if(lbFechaSesion != null) {
+        if(lbFechaSesion != null && fecha != null) {
             lbFechaSesion.setText("Fecha: " + fecha.getFechaSesion());
         }
         
-        // 1. Buscamos el ID real de la sesión (porque en el combo elegimos una Fecha Oficial)
         this.idSesionReal = buscarIdSesion(fecha.getIdFechaTutoria());
         
-        // 2. Cargamos la lista de estudiantes
         cargarAlumnos();
+        
+        // ✅ Cargar datos previos si existen
+        if(idSesionReal > 0) {
+            cargarAsistenciaPrevia();
+        }
+        
+        // ✅ Si es modo consulta, deshabilitar edición
+        if(modoConsulta) {
+            deshabilitarEdicion();
+        }
     }
     
     private int buscarIdSesion(int idFechaTutoria) {
-         java.util.ArrayList<SesionTutoria> sesiones = 
+        java.util.ArrayList<SesionTutoria> sesiones = 
                 SesionTutoriaDAO.obtenerSesionesPorTutor(idAcademico);
-         
+        
         for (SesionTutoria s : sesiones) {
             if (s.getIdFechaTutoria() == idFechaTutoria) {
                 return s.getIdSesion();
             }
         }
-        return 0; // 0 significa que no agendó horario para esta fecha
+        return 0; 
     }
 
     @Override
@@ -83,76 +95,150 @@ public class FXMLFormularioAsistenciaController implements Initializable {
     
     private void configurarColumnas() {
         colMatricula.setCellValueFactory(new PropertyValueFactory("matricula"));
-        // Asegúrate que Estudiante tenga un getter getNombreCompleto o similar, o usa "nombre"
-        colNombre.setCellValueFactory(new PropertyValueFactory("nombreCompleto")); 
-        
-        // --- MAGIA DE LOS CHECKBOXES ---
-        // Enlazamos con los atributos booleanos del POJO Estudiante
+        colNombre.setCellValueFactory(new PropertyValueFactory("nombreEstudiante")); 
         colAsistencia.setCellValueFactory(new PropertyValueFactory("cbAsistencia"));
         colRiesgo.setCellValueFactory(new PropertyValueFactory("cbRiesgo"));
+
+        colAsistencia.setCellFactory(col -> new TableCell<Estudiante, CheckBox>() {
+            @Override
+            protected void updateItem(CheckBox item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(item);
+                    setText(null);
+                }
+            }
+        });
+
+        colRiesgo.setCellFactory(col -> new TableCell<Estudiante, CheckBox>() {
+            @Override
+            protected void updateItem(CheckBox item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(item);
+                    setText(null);
+                }
+            }
+        });
     }
     
     private void cargarAlumnos() {
         if(idSesionReal > 0) {
-            // Traemos los alumnos asignados a este tutor en este periodo
             ObservableList<Estudiante> lista = FXCollections.observableArrayList(
                 EstudianteDAO.obtenerEstudiantesPorTutor(idAcademico, fechaSesion.getIdPeriodo())
             );
-            tvAlumnos.setItems(lista);
+            
+            if(tvAlumnos != null) {
+                tvAlumnos.setItems(lista);
+            } else {
+                System.err.println("ERROR: tvAlumnos es null");
+            }
         } else {
-            Utilidades.mostrarAlertaSimple("Error de Lógica", 
-                "No has registrado un horario para esta fecha oficial.\nVe a 'Horarios' primero.", 
-                Alert.AlertType.ERROR);
-            cerrarVentana();
+            Utilidades.mostrarAlertaSimple("Horario No Encontrado", 
+                "No has registrado un horario para esta fecha oficial.\n" +
+                "Primero ve a 'Registrar Horario' y configura esta sesión.", 
+                Alert.AlertType.WARNING);
         }
+    }
+
+    // ✅ NUEVO MÉTODO: Cargar asistencia guardada previamente
+    private void cargarAsistenciaPrevia() {
+        java.util.ArrayList<ListaAsistencia> asistenciaPrevia = 
+            ListaAsistenciaDAO.obtenerAsistenciaPorSesion(idSesionReal);
+        
+        if(asistenciaPrevia == null || asistenciaPrevia.isEmpty()) {
+            return; // No hay datos previos
+        }
+        
+        // Recorrer la tabla y marcar los CheckBox según los datos guardados
+        for (Estudiante est : tvAlumnos.getItems()) {
+            for (ListaAsistencia asist : asistenciaPrevia) {
+                if (est.getIdEstudiante() == asist.getIdEstudiante()) {
+                    est.getCbAsistencia().setSelected(asist.isAsistio());
+                    est.getCbRiesgo().setSelected(asist.isRiesgoDetectado());
+                    break;
+                }
+            }
+        }
+    }
+
+    // ✅ NUEVO MÉTODO: Deshabilitar edición para modo consulta
+    private void deshabilitarEdicion() {
+        // Deshabilitar CheckBox
+        for (Estudiante est : tvAlumnos.getItems()) {
+            if(est.getCbAsistencia() != null) {
+                est.getCbAsistencia().setDisable(true);
+            }
+            if(est.getCbRiesgo() != null) {
+                est.getCbRiesgo().setDisable(true);
+            }
+        }
+        
+        // Ocultar botones
+        if(btnGuardar != null) btnGuardar.setVisible(false);
+        if(btnCancelar != null) btnCancelar.setVisible(false);
     }
 
     @FXML
     private void clicGuardar(ActionEvent event) {
-        // 1. Borramos la asistencia anterior (si existía) para evitar duplicados
+        // ✅ VALIDACIÓN: Verificar que la tabla NO esté vacía
+        if(tvAlumnos.getItems().isEmpty()) {
+            Utilidades.mostrarAlertaSimple("Tabla vacía", 
+                "No hay estudiantes asignados a este periodo.\n" +
+                "Verifica que hayas registrado asignaciones en el sistema.", 
+                Alert.AlertType.WARNING);
+            return;
+        }
+        
+        // ✅ VALIDACIÓN: Verificar que idSesionReal sea válido
+        if(idSesionReal <= 0) {
+            Utilidades.mostrarAlertaSimple("Error de sesión", 
+                "No se encontró una sesión válida para esta fecha.", 
+                Alert.AlertType.ERROR);
+            return;
+        }
+        
         ListaAsistenciaDAO.eliminarAsistenciaPorSesion(idSesionReal);
         
         boolean error = false;
-        
-        // 2. Recorremos la tabla visual fila por fila
         for (Estudiante est : tvAlumnos.getItems()) {
-            // Obtenemos el estado de los checkboxes
             boolean asistio = est.getCbAsistencia().isSelected();
             boolean riesgo = est.getCbRiesgo().isSelected();
             
-            // Creamos el objeto para guardar en BD
             ListaAsistencia lista = new ListaAsistencia();
             lista.setIdSesion(idSesionReal);
             lista.setIdEstudiante(est.getIdEstudiante());
             lista.setAsistio(asistio);
             lista.setRiesgoDetectado(riesgo);
             
-            // Guardamos
             boolean exito = ListaAsistenciaDAO.registrarAsistencia(lista);
             if(!exito) error = true;
         }
         
         if (!error) {
-            Utilidades.mostrarAlertaSimple("Éxito", "Lista de asistencia guardada correctamente.", Alert.AlertType.INFORMATION);
+            Utilidades.mostrarAlertaSimple("Éxito", "Asistencia guardada.", Alert.AlertType.INFORMATION);
             cerrarVentana();
         } else {
-            Utilidades.mostrarAlertaSimple("Advertencia", "Hubo problemas al guardar algunos alumnos.", Alert.AlertType.WARNING);
+            Utilidades.mostrarAlertaSimple("Advertencia", "Error al guardar algunos registros.", Alert.AlertType.WARNING);
         }
     }
 
-    @FXML
-    private void clicCancelar(ActionEvent event) {
-        cerrarVentana();
-    }
+    @FXML 
+    private void clicCancelar(ActionEvent event) { cerrarVentana(); }
     
-    @FXML
-    private void clicRegresar(ActionEvent event) {
-        cerrarVentana();
-    }
+    @FXML 
+    private void clicRegresar(ActionEvent event) { cerrarVentana(); }
     
     private void cerrarVentana() {
-        if (tvAlumnos.getScene() != null) {
-             ((Stage) tvAlumnos.getScene().getWindow()).close();
+        if (tvAlumnos != null && tvAlumnos.getScene() != null) {
+            Stage stage = (Stage) tvAlumnos.getScene().getWindow();
+            if (stage != null) {
+                stage.close();
+            }
         }
     }
 }

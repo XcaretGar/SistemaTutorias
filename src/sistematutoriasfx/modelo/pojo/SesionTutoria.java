@@ -27,6 +27,7 @@ public class SesionTutoria {
     //Atributos de listaasistencia
     private int totalAsistentes;
     private int totalRiesgo;
+    private int totalAlumnos;
 
     public SesionTutoria() {
     }
@@ -138,6 +139,14 @@ public class SesionTutoria {
 
     public void setTotalRiesgo(int totalRiesgo) {
         this.totalRiesgo = totalRiesgo;
+    }
+
+    public int getTotalAlumnos() {
+        return totalAlumnos;
+    }
+
+    public void setTotalAlumnos(int totalAlumnos) {
+        this.totalAlumnos = totalAlumnos;
     }
     
     

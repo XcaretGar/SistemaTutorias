@@ -70,6 +70,31 @@ public class ReporteTutoriaDAO {
         }
         return resultado;
     }
+    
+    public static boolean eliminarReporte(int idReporte) {
+        boolean resultado = false;
+        Connection conexion = null;
+
+        try {
+            conexion = ConexionBD.abrirConexion();
+            String query = "DELETE FROM reportetutoria WHERE idReporte = ?";
+
+            PreparedStatement ps = conexion.prepareStatement(query);
+            ps.setInt(1, idReporte);
+
+            int filas = ps.executeUpdate();
+            resultado = (filas > 0);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if(conexion != null) {
+                try { conexion.close(); } catch (SQLException e) { e.printStackTrace(); }
+            }
+        }
+
+        return resultado;
+    }
 
     // 3. OBTENER POR SESIÓN (Para el formulario)
     public static ReporteTutoria obtenerReportePorSesion(int idAcademico, int idFechaTutoria) {
@@ -111,7 +136,7 @@ public class ReporteTutoriaDAO {
         return (r != null) ? r.getIdReporte() : 0;
     }
 
-    // 5. OBTENER LISTA PARA TABLA (NUEVO)
+    // 5. OBTENER LISTA PARA TABLA
     public static ArrayList<ReporteTutoria> obtenerReportesPorTutor(int idAcademico) {
         ArrayList<ReporteTutoria> lista = new ArrayList<>();
         Connection conexion = null;
@@ -124,24 +149,30 @@ public class ReporteTutoriaDAO {
                          + "INNER JOIN sesiontutoria s ON r.idSesion = s.idSesion "
                          + "INNER JOIN fechastutoria f ON s.idFechaTutoria = f.idFechaTutoria "
                          + "WHERE r.idAcademico = ?";
-            
+
             PreparedStatement ps = conexion.prepareStatement(query);
             ps.setInt(1, idAcademico);
             ResultSet rs = ps.executeQuery();
-            
+
             while (rs.next()) {
                 ReporteTutoria r = new ReporteTutoria();
+
+                // ✅ CAMPOS REALES DE LA BASE DE DATOS (ESTOS FALTABAN)
                 r.setIdReporte(rs.getInt("idReporte"));
-                r.setEstatus(rs.getString("estatus"));
+                r.setIdAcademico(rs.getInt("idAcademico"));
+                r.setIdPeriodo(rs.getInt("idPeriodo"));        // ✅ CRÍTICO PARA EL FILTRO
+                r.setIdSesion(rs.getInt("idSesion"));          // ✅ NECESARIO PARA EXPORTAR
                 r.setTotalAsistentes(rs.getInt("totalAsistentes"));
                 r.setTotalEnRiesgo(rs.getInt("totalEnRiesgo"));
                 r.setComentariosGenerales(rs.getString("comentariosGenerales"));
-                
-                // Datos virtuales
+                r.setEstatus(rs.getString("estatus"));
+                r.setFechaEntrega(rs.getString("fechaEntrega")); // ✅ PARA MOSTRAR EN REPORTE
+
+                // ✅ CAMPOS VIRTUALES (Para mostrar en la tabla)
                 r.setPeriodoNombre(rs.getString("periodoNombre"));
-                r.setFechaSesion(rs.getString("fechaSesion"));
+                r.setFechaSesion(rs.getString("fechaSesion"));  // ✅ CRÍTICO PARA EL FILTRO
                 r.setNumSesion(rs.getInt("numSesion"));
-                
+
                 lista.add(r);
             }
         } catch (SQLException e) {

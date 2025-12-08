@@ -59,6 +59,8 @@ public class FXMLGestionarEvidenciaController implements Initializable {
     private Usuario usuarioSesion;
     private Academico academicoSesion;
     private int idReporteActual = 0; 
+    @FXML
+    private Label lbFechaMostrada;
     
     public void configurarEscena(Usuario usuario) {
         this.usuarioSesion = usuario;
@@ -83,19 +85,42 @@ public class FXMLGestionarEvidenciaController implements Initializable {
     }
     
     private void configurarListeners() {
+        // Listener para el ComboBox de Período
         cbPeriodo.valueProperty().addListener((obs, oldVal, newVal) -> {
             if(newVal != null) {
+                // Cargar fechas del periodo seleccionado
                 cbFechaSesion.setItems(FXCollections.observableArrayList(
                     FechasTutoriaDAO.obtenerFechasPorPeriodo(newVal.getIdPeriodo())
                 ));
+                // Limpiar tabla y resetear ID
+                tvEvidencias.getItems().clear();
+                idReporteActual = 0;
+                // ✅ Limpiar la fecha mostrada
+                lbFechaMostrada.setText("");
+            } else {
+                // Si se deselecciona el periodo, limpiar todo
+                cbFechaSesion.setItems(FXCollections.observableArrayList());
+                lbFechaMostrada.setText("");
                 tvEvidencias.getItems().clear();
                 idReporteActual = 0;
             }
         });
-        
+
+        // Listener para el ComboBox de Fecha de Sesión
         cbFechaSesion.valueProperty().addListener((obs, oldVal, newVal) -> {
-            if(newVal != null && academicoSesion != null) {
-                buscarReporte(newVal.getIdFechaTutoria());
+            if(newVal != null) {
+                // ✅ Mostrar la fecha seleccionada en el label azul
+                lbFechaMostrada.setText(newVal.getFechaSesion());
+
+                // Buscar el reporte asociado a esta fecha
+                if(academicoSesion != null) {
+                    buscarReporte(newVal.getIdFechaTutoria());
+                }
+            } else {
+                // Si se deselecciona la fecha, limpiar
+                lbFechaMostrada.setText("");
+                tvEvidencias.getItems().clear();
+                idReporteActual = 0;
             }
         });
     }

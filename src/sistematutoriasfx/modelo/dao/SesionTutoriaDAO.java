@@ -76,46 +76,53 @@ public class SesionTutoriaDAO {
         }
         return respuesta;
     }
-    
+
     public static ArrayList<SesionTutoria> obtenerSesionesPorTutor(int idAcademico) {
         ArrayList<SesionTutoria> sesiones = new ArrayList<>();
         Connection conexion = null;
         try {
             conexion = ConexionBD.abrirConexion();
-            String query = "SELECT s.*, p.nombre AS periodoNombre, ft.fechaSesion, ft.numSesion " +
+
+            // ✅ MODIFICADO: Agregamos el conteo de total de alumnos
+            String query = "SELECT s.*, p.nombre AS periodoNombre, ft.fechaSesion, ft.numSesion, " +
+                           "(SELECT COUNT(*) FROM listaasistencia l WHERE l.idSesion = s.idSesion AND l.asistio = 1) AS totalAsistentes, " +
+                           "(SELECT COUNT(*) FROM listaasistencia l WHERE l.idSesion = s.idSesion AND l.riesgoDetectado = 1) AS totalRiesgo, " +
+                           // ✅ NUEVA LÍNEA: Contar total de alumnos asignados
+                           "(SELECT COUNT(*) FROM asignaciontutor WHERE idAcademico = ? AND idPeriodo = s.idPeriodo) AS totalAlumnos " +
                            "FROM sesiontutoria s " +
                            "INNER JOIN periodoescolar p ON s.idPeriodo = p.idPeriodo " +
                            "INNER JOIN fechastutoria ft ON s.idFechaTutoria = ft.idFechaTutoria " +
                            "WHERE s.idAcademico = ?";
-            
+
             PreparedStatement ps = conexion.prepareStatement(query);
-            ps.setInt(1, idAcademico);
+            ps.setInt(1, idAcademico); // ✅ Para el subquery de totalAlumnos
+            ps.setInt(2, idAcademico); // Para el WHERE principal
             ResultSet rs = ps.executeQuery();
-            
+
             while(rs.next()){
                 SesionTutoria sesion = new SesionTutoria();
                 sesion.setIdSesion(rs.getInt("idSesion"));
                 sesion.setIdPeriodo(rs.getInt("idPeriodo"));
                 sesion.setIdFechaTutoria(rs.getInt("idFechaTutoria"));
-                
-                // Datos del JOIN
+
                 sesion.setFecha(rs.getString("fechaSesion")); 
                 sesion.setNumSesion(rs.getInt("numSesion"));
                 sesion.setPeriodo(rs.getString("periodoNombre"));
-                
-                // Datos propios
+
                 sesion.setHora(rs.getString("hora"));
                 sesion.setLugar(rs.getString("lugar"));
                 sesion.setComentarios(rs.getString("comentarios"));
-                
+
+                sesion.setTotalAsistentes(rs.getInt("totalAsistentes"));
+                sesion.setTotalRiesgo(rs.getInt("totalRiesgo"));
+                sesion.setTotalAlumnos(rs.getInt("totalAlumnos")); // ✅ NUEVO
+
                 sesiones.add(sesion);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            if(conexion != null){
-                try { conexion.close(); } catch (SQLException e) { e.printStackTrace(); }
-            }
+            if(conexion != null){ try { conexion.close(); } catch (SQLException e) { e.printStackTrace(); } }
         }
         return sesiones;
     }

@@ -1,7 +1,13 @@
 package sistematutoriasfx.controlador.tutor;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -13,17 +19,23 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import sistematutoriasfx.modelo.dao.AcademicoDAO;
+import sistematutoriasfx.modelo.dao.EstudianteDAO;
 import sistematutoriasfx.modelo.dao.FechasTutoriaDAO;
+import sistematutoriasfx.modelo.dao.ListaAsistenciaDAO;
 import sistematutoriasfx.modelo.dao.PeriodoEscolarDAO;
 import sistematutoriasfx.modelo.dao.ReporteTutoriaDAO;
 import sistematutoriasfx.modelo.pojo.Academico;
+import sistematutoriasfx.modelo.pojo.Estudiante;
 import sistematutoriasfx.modelo.pojo.FechasTutoria;
+import sistematutoriasfx.modelo.pojo.ListaAsistencia;
 import sistematutoriasfx.modelo.pojo.PeriodoEscolar;
 import sistematutoriasfx.modelo.pojo.ReporteTutoria;
 import sistematutoriasfx.modelo.pojo.Usuario;
@@ -33,6 +45,7 @@ public class FXMLGestionarReporteTutoriaController implements Initializable {
 
     @FXML private ComboBox<PeriodoEscolar> cbPeriodo;
     @FXML private ComboBox<FechasTutoria> cbFechaSesion;
+    @FXML private Label lbFechaMostrada; // ✅ NUEVO
     @FXML private TableView<ReporteTutoria> tvReportes;
     @FXML private TableColumn colPeriodo;
     @FXML private TableColumn colFechaSesion; 
@@ -44,6 +57,7 @@ public class FXMLGestionarReporteTutoriaController implements Initializable {
 
     private Usuario usuarioSesion;
     private Academico academicoSesion;
+    private ObservableList<ReporteTutoria> listaOriginalReportes; // ✅ NUEVO
 
     public void configurarEscena(Usuario usuario) {
         this.usuarioSesion = usuario;
@@ -61,7 +75,6 @@ public class FXMLGestionarReporteTutoriaController implements Initializable {
     }
     
     private void configurarColumnas() {
-        // Enlazar columnas con atributos del POJO (incluyendo los virtuales)
         colPeriodo.setCellValueFactory(new PropertyValueFactory("periodoNombre")); 
         colFechaSesion.setCellValueFactory(new PropertyValueFactory("fechaSesion"));
         colSesion.setCellValueFactory(new PropertyValueFactory("numSesion")); 
@@ -76,36 +89,80 @@ public class FXMLGestionarReporteTutoriaController implements Initializable {
     }
     
     private void configurarListeners() {
+        // ✅ Al cambiar periodo, cargar fechas y filtrar
         cbPeriodo.valueProperty().addListener((obs, oldVal, newVal) -> {
             if(newVal != null) {
                 cbFechaSesion.setItems(FXCollections.observableArrayList(
                     FechasTutoriaDAO.obtenerFechasPorPeriodo(newVal.getIdPeriodo())
                 ));
-                // Opcional: Filtrar tabla aquí si quisieras ver solo ese periodo
+                filtrarTabla();
+            } else {
+                cbFechaSesion.setItems(FXCollections.observableArrayList());
+                lbFechaMostrada.setText("");
+                filtrarTabla();
             }
+        });
+        
+        // ✅ Al cambiar fecha, mostrar fecha y filtrar
+        cbFechaSesion.valueProperty().addListener((obs, oldVal, newVal) -> {
+            if(newVal != null) {
+                lbFechaMostrada.setText(newVal.getFechaSesion());
+            } else {
+                lbFechaMostrada.setText("");
+            }
+            filtrarTabla();
         });
     }
     
     private void cargarTabla() {
         if(academicoSesion != null) {
-            tvReportes.setItems(FXCollections.observableArrayList(
-                ReporteTutoriaDAO.obtenerReportesPorTutor(academicoSesion.getIdAcademico())
-            ));
+            ArrayList<ReporteTutoria> lista = ReporteTutoriaDAO.obtenerReportesPorTutor(academicoSesion.getIdAcademico());
+            listaOriginalReportes = FXCollections.observableArrayList(lista);
+
+            // ✅ CAMBIO: Mostrar TODOS los reportes al cargar inicialmente
+            tvReportes.setItems(listaOriginalReportes);
         }
     }
 
+    private void filtrarTabla() {
+        if(listaOriginalReportes == null) return;
+
+        ObservableList<ReporteTutoria> filtro = FXCollections.observableArrayList();
+        PeriodoEscolar pSel = cbPeriodo.getValue();
+        FechasTutoria fSel = cbFechaSesion.getValue();
+
+        if(pSel == null && fSel == null) {
+            tvReportes.setItems(listaOriginalReportes);
+            return;
+        }
+
+        for(ReporteTutoria r : listaOriginalReportes) {
+            boolean coincidePeriodo = (pSel == null) || (r.getIdPeriodo() == pSel.getIdPeriodo());
+            boolean coincideFecha = (fSel == null) || (r.getFechaSesion().equals(fSel.getFechaSesion()));
+
+            if(coincidePeriodo && coincideFecha) {
+                filtro.add(r);
+            }
+        }
+
+        tvReportes.setItems(filtro);
+    }
+    
+   
     @FXML
     private void clicRegistrar(ActionEvent event) {
-        abrirFormulario(null); // Nuevo reporte
+        abrirFormulario(null);
     }
 
     @FXML
     private void clicModificar(ActionEvent event) {
         ReporteTutoria seleccion = tvReportes.getSelectionModel().getSelectedItem();
         if(seleccion != null) {
-            abrirFormulario(seleccion); // Editar reporte seleccionado
+            abrirFormulario(seleccion);
         } else {
-            Utilidades.mostrarAlertaSimple("Selección requerida", "Selecciona un reporte para modificar.", Alert.AlertType.WARNING);
+            Utilidades.mostrarAlertaSimple("Selección requerida", 
+                "Selecciona un reporte para modificar.", 
+                Alert.AlertType.WARNING);
         }
     }
     
@@ -128,11 +185,14 @@ public class FXMLGestionarReporteTutoriaController implements Initializable {
             stage.setTitle(reporteEdicion == null ? "Registrar Reporte" : "Modificar Reporte");
             stage.showAndWait();
             
-            cargarTabla(); // Recargar la tabla al cerrar el formulario
+            cargarTabla();
+            filtrarTabla(); // ✅ Aplicar filtros después de recargar
             
         } catch (IOException ex) {
             ex.printStackTrace();
-            Utilidades.mostrarAlertaSimple("Error", "No se pudo abrir la ventana del formulario.", Alert.AlertType.ERROR);
+            Utilidades.mostrarAlertaSimple("Error", 
+                "No se pudo abrir la ventana del formulario.", 
+                Alert.AlertType.ERROR);
         }
     }
 
@@ -143,11 +203,154 @@ public class FXMLGestionarReporteTutoriaController implements Initializable {
     
     @FXML 
     private void clicEliminar(ActionEvent event) {
-        Utilidades.mostrarAlertaSimple("Pendiente", "Funcionalidad de eliminar pendiente.", Alert.AlertType.INFORMATION);
+        ReporteTutoria seleccion = tvReportes.getSelectionModel().getSelectedItem();
+        
+        if(seleccion == null) {
+            Utilidades.mostrarAlertaSimple("Selección requerida", 
+                "Por favor selecciona un reporte de la tabla para eliminar.", 
+                Alert.AlertType.WARNING);
+            return;
+        }
+        
+        Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmacion.setTitle("Confirmar eliminación");
+        confirmacion.setHeaderText("¿Eliminar este reporte?");
+        confirmacion.setContentText(
+            "Período: " + seleccion.getPeriodoNombre() + "\n" +
+            "Fecha: " + seleccion.getFechaSesion() + "\n" +
+            "Sesión: " + seleccion.getNumSesion() + "\n\n" +
+            "Esta acción NO se puede deshacer."
+        );
+        
+        java.util.Optional<javafx.scene.control.ButtonType> resultado = confirmacion.showAndWait();
+        
+        if(resultado.isPresent() && resultado.get() == javafx.scene.control.ButtonType.OK) {
+            boolean exito = ReporteTutoriaDAO.eliminarReporte(seleccion.getIdReporte());
+            
+            if(exito) {
+                Utilidades.mostrarAlertaSimple("Éxito", 
+                    "El reporte ha sido eliminado correctamente.", 
+                    Alert.AlertType.INFORMATION);
+                cargarTabla();
+                filtrarTabla();
+            } else {
+                Utilidades.mostrarAlertaSimple("Error", 
+                    "No se pudo eliminar el reporte.", 
+                    Alert.AlertType.ERROR);
+            }
+        }
     }
     
     @FXML 
     private void clicExportar(ActionEvent event) {
-        Utilidades.mostrarAlertaSimple("Pendiente", "Funcionalidad de exportar a PDF pendiente.", Alert.AlertType.INFORMATION);
+        ReporteTutoria seleccion = tvReportes.getSelectionModel().getSelectedItem();
+        
+        if(seleccion == null) {
+            Utilidades.mostrarAlertaSimple("Selección requerida", 
+                "Por favor selecciona un reporte de la tabla para exportar.", 
+                Alert.AlertType.WARNING);
+            return;
+        }
+        
+        exportarReporteATXT(seleccion);
+    }
+    
+    // ✅ NUEVO: Exportar reporte a TXT
+    private void exportarReporteATXT(ReporteTutoria reporte) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Guardar Reporte");
+        fileChooser.setInitialFileName("Reporte_Tutoria_" + reporte.getFechaSesion() + ".txt");
+        fileChooser.getExtensionFilters().add(
+            new FileChooser.ExtensionFilter("Archivos de texto", "*.txt")
+        );
+        
+        File archivo = fileChooser.showSaveDialog(cbPeriodo.getScene().getWindow());
+        
+        if(archivo != null) {
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(archivo))) {
+                // ===== ENCABEZADO =====
+                writer.write("========================================\n");
+                writer.write("    REPORTE DE TUTORÍA\n");
+                writer.write("========================================\n\n");
+                
+                // ===== INFORMACIÓN GENERAL =====
+                writer.write("INFORMACIÓN GENERAL:\n");
+                writer.write("----------------------------------------\n");
+                writer.write("Período:          " + reporte.getPeriodoNombre() + "\n");
+                writer.write("Fecha de Sesión:  " + reporte.getFechaSesion() + "\n");
+                writer.write("Número de Sesión: " + reporte.getNumSesion() + "\n");
+                writer.write("Estatus:          " + reporte.getEstatus() + "\n");
+                writer.write("Fecha de Entrega: " + reporte.getFechaEntrega() + "\n\n");
+                
+                // ===== ESTADÍSTICAS =====
+                writer.write("ESTADÍSTICAS DE ASISTENCIA:\n");
+                writer.write("----------------------------------------\n");
+                writer.write("Total de Asistentes:  " + reporte.getTotalAsistentes() + "\n");
+                writer.write("Alumnos en Riesgo:    " + reporte.getTotalEnRiesgo() + "\n\n");
+                
+                // ===== LISTA DE ALUMNOS =====
+                writer.write("LISTA DE ALUMNOS:\n");
+                writer.write("----------------------------------------\n");
+                
+                // Obtener la lista de asistencia
+                ArrayList<ListaAsistencia> asistencias = 
+                    ListaAsistenciaDAO.obtenerAsistenciaPorSesion(reporte.getIdSesion());
+                
+                if(asistencias != null && !asistencias.isEmpty()) {
+                    // Obtener datos de estudiantes
+                    ArrayList<Estudiante> estudiantes = 
+                        EstudianteDAO.obtenerEstudiantesPorTutor(academicoSesion.getIdAcademico(), reporte.getIdPeriodo());
+                    
+                    for(ListaAsistencia asist : asistencias) {
+                        // Buscar el estudiante correspondiente
+                        Estudiante est = null;
+                        for(Estudiante e : estudiantes) {
+                            if(e.getIdEstudiante() == asist.getIdEstudiante()) {
+                                est = e;
+                                break;
+                            }
+                        }
+                        
+                        if(est != null) {
+                            writer.write(String.format("%-12s %-30s %-10s %-10s\n",
+                                est.getMatricula(),
+                                est.getNombreEstudiante(),
+                                asist.isAsistio() ? "Asistió" : "Falta",
+                                asist.isRiesgoDetectado() ? "En Riesgo" : "Normal"
+                            ));
+                        }
+                    }
+                } else {
+                    writer.write("Sin registros de asistencia.\n");
+                }
+                
+                writer.write("\n");
+                
+                // ===== COMENTARIOS =====
+                writer.write("COMENTARIOS GENERALES:\n");
+                writer.write("----------------------------------------\n");
+                String comentarios = reporte.getComentariosGenerales();
+                if(comentarios != null && !comentarios.isEmpty()) {
+                    writer.write(comentarios + "\n");
+                } else {
+                    writer.write("Sin comentarios.\n");
+                }
+                
+                writer.write("\n");
+                writer.write("========================================\n");
+                writer.write("Generado: " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")) + "\n");
+                writer.write("========================================\n");
+                
+                Utilidades.mostrarAlertaSimple("Éxito", 
+                    "El reporte se exportó correctamente a:\n" + archivo.getAbsolutePath(), 
+                    Alert.AlertType.INFORMATION);
+                
+            } catch (IOException e) {
+                e.printStackTrace();
+                Utilidades.mostrarAlertaSimple("Error", 
+                    "No se pudo guardar el archivo:\n" + e.getMessage(), 
+                    Alert.AlertType.ERROR);
+            }
+        }
     }
 }
