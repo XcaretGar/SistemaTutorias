@@ -32,13 +32,13 @@
                </font>
             </Label>
 
-            <Label layoutX="349.0" layoutY="90.0" text="Módulo de Problemáticas">
+            <Label layoutX="335.0" layoutY="90.0" text="Módulo de Problemáticas">
                <font>
                   <Font name="System Bold" size="16.0" />
                </font>
             </Label>
 
-            <Button layoutX="236.0" layoutY="448.0" mnemonicParsing="false" onAction="#clicCerrarSesion" prefHeight="25.0" prefWidth="129.0" style="-fx-background-color: #d9534f;" text="Cerrar Sesión" textFill="WHITE">
+            <Button layoutX="392.0" layoutY="363.0" mnemonicParsing="false" onAction="#clicCerrarSesion" prefHeight="25.0" prefWidth="129.0" style="-fx-background-color: #d9534f;" text="Cerrar Sesión" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
@@ -79,6 +79,16 @@
                </font>
             </Button>
             <Label layoutX="65.0" layoutY="185.0" text="Configura fecha y hora" textFill="#7f8c8d">
+               <font>
+                  <Font size="11.0" />
+               </font>
+            </Label>
+            <Button layoutX="331.0" layoutY="137.0" mnemonicParsing="false" onAction="#clicProblematica" prefHeight="41.0" prefWidth="200.0" style="-fx-background-color: #417C9E;" text="Problemáticas" textFill="WHITE">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <Label layoutX="331.0" layoutY="185.0" text="Gestiona problemáticas de tutorados" textFill="#7f8c8d">
                <font>
                   <Font size="11.0" />
                </font>

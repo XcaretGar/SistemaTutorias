@@ -154,4 +154,9 @@ public class FXMLPrincipalTutorController implements Initializable {
             e.printStackTrace();
         }
     }
+
+    @FXML
+    private void clicProblematica(ActionEvent event) {
+        //AQUI SE AGREGA EL FXML
+    }
 }
