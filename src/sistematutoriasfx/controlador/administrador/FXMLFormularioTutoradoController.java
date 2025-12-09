@@ -96,8 +96,9 @@ public class FXMLFormularioTutoradoController implements Initializable {
     }
 
     @FXML
-    private void clicCancelar(ActionEvent event) {
-        cerrarVentana();
+    private void clicRegresar(ActionEvent event) {
+        Stage stage = (Stage) tfCorreo.getScene().getWindow();
+        stage.close();
     }
     
     private boolean sonCamposValidos() {

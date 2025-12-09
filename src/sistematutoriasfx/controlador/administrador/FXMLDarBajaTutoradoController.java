@@ -54,7 +54,7 @@ public class FXMLDarBajaTutoradoController implements Initializable {
     }
 
     @FXML
-    private void clicCancelar(ActionEvent event) {
+    private void clicRegresar(ActionEvent event) {
         Stage stage = (Stage) lbTutorado.getScene().getWindow();
         stage.close();
     }

@@ -103,7 +103,7 @@ public class FXMLFormularioAsignarTutoradoController implements Initializable {
             return;
         }
         
-        if (tutorSeleccionado.getCargaAcademica() >= 15) {
+        if (tutorSeleccionado.getCargaAcademica() >= 20) {
             Utilidades.mostrarAlertaSimple("Capacidad máxima alcanzada",
                 "El tutor ha alcanzado su capacidad máxima de tutorados. Selecciona otro tutor",
                 Alert.AlertType.WARNING);

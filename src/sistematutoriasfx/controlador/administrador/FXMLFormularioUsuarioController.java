@@ -252,4 +252,10 @@ public class FXMLFormularioUsuarioController implements Initializable {
                     respuesta.get("mensaje").toString(), Alert.AlertType.ERROR);
         }    
     }
+    
+    @FXML
+    private void clicRegresar(ActionEvent event) {
+        Stage stage = (Stage) tfCorreo.getScene().getWindow();
+        stage.close();
+    }
 }

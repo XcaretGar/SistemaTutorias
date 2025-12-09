@@ -59,7 +59,7 @@ public class FXMLActualizarTutorController implements Initializable {
 
     @FXML
     private void clicCancelar(ActionEvent event) {
-        cerrarVentana();
+        clicRegresar();
     }
 
     @FXML
@@ -70,14 +70,14 @@ public class FXMLActualizarTutorController implements Initializable {
         if (exito) {
             Utilidades.mostrarAlertaSimple("Asignación actualizada",
                 "El tutor ha sido cambiado correctamente", Alert.AlertType.INFORMATION);
-            cerrarVentana();
+            clicRegresar();
         } else {
             Utilidades.mostrarAlertaSimple("Error",
                 "No se pudo actualizar la asignación", Alert.AlertType.ERROR);
         }
     }
     
-    private void cerrarVentana() {
+    private void clicRegresar() {
         ((Stage) lbTutorado.getScene().getWindow()).close();
     }
 }

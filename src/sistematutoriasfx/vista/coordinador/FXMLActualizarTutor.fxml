@@ -10,7 +10,7 @@
 
 <AnchorPane id="AnchorPane" prefHeight="361.0" prefWidth="552.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sistematutoriasfx.controlador.coordinador.FXMLActualizarTutorController">
    <children>
-      <Pane prefHeight="361.0" prefWidth="565.0">
+      <Pane prefHeight="380.0" prefWidth="565.0">
          <children>
             <Pane prefHeight="70.0" prefWidth="565.0" style="-fx-background-color: #063596;">
                <children>
@@ -52,8 +52,8 @@
                   <Label fx:id="lbNuevoTutor" layoutX="90.0" layoutY="158.0" />
                </children>
             </Pane>
-            <Button layoutX="429.0" layoutY="247.0" mnemonicParsing="false" onAction="#clicCancelar" prefHeight="17.0" prefWidth="102.0" style="-fx-background-color: #38AB3B;" text="Cancelar" textFill="WHITE" />
-            <Button layoutX="423.0" layoutY="191.0" mnemonicParsing="false" onAction="#clicConfirmarCambio" prefHeight="25.0" prefWidth="114.0" style="-fx-background-color: #38AB3B;" text="Confirmar Cambio" textFill="#fcfcfc" />
+            <Button layoutX="40.0" layoutY="341.0" mnemonicParsing="false" onAction="#clicCancelar" prefHeight="17.0" prefWidth="102.0" style="-fx-background-color: #38AB3B;" text="Regresar" textFill="WHITE" />
+            <Button layoutX="180.0" layoutY="341.0" mnemonicParsing="false" onAction="#clicConfirmarCambio" prefHeight="25.0" prefWidth="114.0" style="-fx-background-color: #38AB3B;" text="Actualizar" textFill="#fcfcfc" />
          </children>
       </Pane>
    </children>

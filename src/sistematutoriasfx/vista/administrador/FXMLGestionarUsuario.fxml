@@ -10,7 +10,7 @@
 
 <AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sistematutoriasfx.controlador.administrador.FXMLGestionarUsuarioController">
    <children>
-      <AnchorPane id="AnchorPane" layoutX="-4.0" prefHeight="410.0" prefWidth="625.0">
+      <AnchorPane id="AnchorPane" layoutX="-4.0" prefHeight="450.0" prefWidth="625.0">
          <children>
             <Pane layoutX="-28.0" layoutY="-21.0" prefHeight="421.0" prefWidth="650.0">
                <children>
@@ -26,11 +26,11 @@
                         </Label>
                      </children>
                   </Pane>
-                  <Button layoutX="470.0" layoutY="151.0" mnemonicParsing="false" onAction="#clicDarBaja" prefHeight="25.0" prefWidth="82.0" style="-fx-background-color: #B52B10;" text="Dar de Baja" textFill="WHITE" />
+                  <Button layoutX="243.0" layoutY="151.0" mnemonicParsing="false" onAction="#clicDarBaja" prefHeight="25.0" prefWidth="82.0" style="-fx-background-color: #38AB3B;" text="Dar de Baja" textFill="WHITE" />
+                  <Button layoutX="475.0" layoutY="151.0" mnemonicParsing="false" onAction="#clicAsignarUsuario" prefHeight="25.0" prefWidth="82.0" style="-fx-background-color: #38AB3B;" text="Asignar" textFill="WHITE" />
                </children>
             </Pane>
-            <Button layoutX="331.0" layoutY="129.0" mnemonicParsing="false" onAction="#clicActualizarUsuario" prefHeight="25.0" prefWidth="82.0" style="-fx-background-color: #E3B629;" text="Actualizar" textFill="WHITE" />
-            <Button layoutX="214.0" layoutY="129.0" mnemonicParsing="false" onAction="#clicAsignarUsuario" prefHeight="25.0" prefWidth="82.0" style="-fx-background-color: #38AB3B;" text="Asignar" textFill="WHITE" />
+            <Button layoutX="331.0" layoutY="129.0" mnemonicParsing="false" onAction="#clicActualizarUsuario" prefHeight="25.0" prefWidth="82.0" style="-fx-background-color: #38AB3B;" text="Actualizar" textFill="WHITE" />
             <TableView fx:id="tvUsuarios" layoutX="19.0" layoutY="177.0" prefHeight="200.0" prefWidth="575.0">
                <columns>
                   <TableColumn fx:id="colNombre" text="Nombre" />
@@ -49,6 +49,7 @@
                   <Font size="16.0" />
                </font>
             </Label>
+            <Button layoutX="25.0" layoutY="400.0" mnemonicParsing="false" onAction="#clicRegresar" prefHeight="25.0" prefWidth="82.0" style="-fx-background-color: #38AB3B;" text="Regresar" textFill="WHITE" />
          </children>
       </AnchorPane>
    </children>

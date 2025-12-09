@@ -58,7 +58,7 @@ public class FXMLDarBajaUsuarioController implements Initializable {
     }
 
     @FXML
-    private void clicCancelar(ActionEvent event) {
+    private void clicRegresar(ActionEvent event) {
         Stage stage = (Stage) lbUsuario.getScene().getWindow();
         stage.close();
     }

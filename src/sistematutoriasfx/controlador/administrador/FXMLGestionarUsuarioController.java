@@ -225,4 +225,10 @@ public class FXMLGestionarUsuarioController implements Initializable, IObservado
     public void configurarVista(Usuario usuario) {
         this.usuarioSesion = usuario;
     }
+    
+    @FXML
+    private void clicRegresar(ActionEvent event) {
+        Stage stage = (Stage) tvUsuarios.getScene().getWindow();
+        stage.close();
+    }
 }
