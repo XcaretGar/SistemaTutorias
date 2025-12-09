@@ -145,6 +145,10 @@ public class FXMLGestionarUsuarioController implements Initializable, IObservado
     private void clicDarBaja(ActionEvent event) {
         Academico academicoSeleccion = tvUsuarios.getSelectionModel().getSelectedItem();
         if (academicoSeleccion != null) {
+            if (academicoSeleccion.getMotivoBaja() != null) {
+                Utilidades.mostrarAlertaSimple("Imposible dar de Baja", "No se puede dar de baja a un usuario que ya está dado de baja", Alert.AlertType.WARNING);
+                return;
+            }
             irDarBaja(academicoSeleccion);
         } else {
             Utilidades.mostrarAlertaSimple("Aviso", 
@@ -216,5 +220,9 @@ public class FXMLGestionarUsuarioController implements Initializable, IObservado
             sortedAcademicos.comparatorProperty().bind(tvUsuarios.comparatorProperty());
             tvUsuarios.setItems(sortedAcademicos);
         }
+    }
+    
+    public void configurarVista(Usuario usuario) {
+        this.usuarioSesion = usuario;
     }
 }

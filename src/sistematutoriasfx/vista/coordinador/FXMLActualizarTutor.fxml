@@ -32,9 +32,9 @@
                   <Font size="16.0" />
                </font>
             </Label>
-            <Pane layoutX="40.0" layoutY="131.0" prefHeight="189.0" prefWidth="346.0" style="-fx-background-color: #FADD73;">
+            <Pane layoutX="40.0" layoutY="131.0" prefHeight="189.0" prefWidth="346.0" style="-fx-background-color: #38AB3B;">
                <children>
-                  <Label layoutX="89.0" layoutY="13.0" text="Confirmar Cambio de Tutor">
+                  <Label layoutX="89.0" layoutY="13.0" text="Confirmar Cambio de Tutor" textFill="WHITE">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -42,17 +42,17 @@
                         <Blend />
                      </effect>
                   </Label>
-                  <Label layoutX="14.0" layoutY="67.0" text="Esta acción modificará la asignación actual" />
-                  <Label layoutX="13.0" layoutY="50.0" text="Está a punto de cambiar el tutor asignado" />
-                  <Label layoutX="13.0" layoutY="109.0" text="Tutorado: " />
-                  <Label layoutX="14.0" layoutY="132.0" text="Tutor Actual:" />
-                  <Label layoutX="13.0" layoutY="158.0" text="Nuevo Tutor:" />
+                  <Label layoutX="14.0" layoutY="67.0" text="Esta acción modificará la asignación actual" textFill="WHITE" />
+                  <Label layoutX="13.0" layoutY="50.0" text="Está a punto de cambiar el tutor asignado" textFill="WHITE" />
+                  <Label layoutX="13.0" layoutY="109.0" text="Tutorado: " textFill="WHITE" />
+                  <Label layoutX="14.0" layoutY="132.0" text="Tutor Actual:" textFill="WHITE" />
+                  <Label layoutX="13.0" layoutY="158.0" text="Nuevo Tutor:" textFill="WHITE" />
                   <Label fx:id="lbTutorado" layoutX="81.0" layoutY="109.0" />
                   <Label fx:id="lbTutorActual" layoutX="92.0" layoutY="132.0" />
                   <Label fx:id="lbNuevoTutor" layoutX="90.0" layoutY="158.0" />
                </children>
             </Pane>
-            <Button layoutX="429.0" layoutY="247.0" mnemonicParsing="false" onAction="#clicCancelar" prefHeight="17.0" prefWidth="102.0" style="-fx-background-color: #B52B10;" text="Cancelar" textFill="WHITE" />
+            <Button layoutX="429.0" layoutY="247.0" mnemonicParsing="false" onAction="#clicCancelar" prefHeight="17.0" prefWidth="102.0" style="-fx-background-color: #38AB3B;" text="Cancelar" textFill="WHITE" />
             <Button layoutX="423.0" layoutY="191.0" mnemonicParsing="false" onAction="#clicConfirmarCambio" prefHeight="25.0" prefWidth="114.0" style="-fx-background-color: #38AB3B;" text="Confirmar Cambio" textFill="#fcfcfc" />
          </children>
       </Pane>

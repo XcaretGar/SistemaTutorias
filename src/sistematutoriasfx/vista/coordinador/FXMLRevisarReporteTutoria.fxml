@@ -10,9 +10,9 @@
 
 <AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sistematutoriasfx.controlador.coordinador.FXMLRevisarReporteTutoriaController">
    <children>
-      <Pane prefHeight="400.0" prefWidth="650.0">
+      <Pane prefHeight="400.0" prefWidth="750.0">
          <children>
-            <Pane prefHeight="69.0" prefWidth="650.0" style="-fx-background-color: #063596;">
+            <Pane prefHeight="69.0" prefWidth="750.0" style="-fx-background-color: #063596;">
                <children>
                   <Label layoutX="30.0" layoutY="25.0" text="Sistema de Gestión de Tutorías" textFill="WHITE">
                      <effect>
@@ -32,19 +32,18 @@
                   <Font size="16.0" />
                </font>
             </Label>
-            <TextField fx:id="tfBuscar" layoutX="33.0" layoutY="126.0" promptText="Buscar" />
-            <TableView fx:id="tvRevisarReportes" layoutX="33.0" layoutY="173.0" prefHeight="200.0" prefWidth="600.0">
+            <TableView fx:id="tvRevisarReportes" layoutX="33.0" layoutY="128.0" prefHeight="200.0" prefWidth="707.0">
               <columns>
-                <TableColumn fx:id="colNombre" prefWidth="75.0" text="Nombre" />
-                <TableColumn fx:id="colApPaterno" prefWidth="101.0" text="Apellido Paterno" />
-                  <TableColumn fx:id="colApMaterno" prefWidth="105.0" text="Apellido Materno" />
-                  <TableColumn fx:id="colFecha" prefWidth="88.0" text="Fecha" />
-                  <TableColumn fx:id="colPeriodo" minWidth="6.0" prefWidth="106.0" text="Periodo" />
-                  <TableColumn fx:id="colNoSesion" minWidth="0.0" prefWidth="61.0" text="Sesión" />
-                  <TableColumn fx:id="colRevisado" minWidth="0.0" prefWidth="63.0" text="Revisado" />
+                <TableColumn fx:id="colPeriodo" prefWidth="75.0" text="Periodo" />
+                <TableColumn fx:id="colFechaSesion" prefWidth="101.0" text="Fecha de Sesión" />
+                  <TableColumn fx:id="colSesion" prefWidth="84.0" text="Sesión" />
+                  <TableColumn fx:id="colEstatus" prefWidth="94.0" text="Estatus" />
+                  <TableColumn fx:id="colAsistentes" minWidth="6.0" prefWidth="92.0" text="Asistentes" />
+                  <TableColumn fx:id="colEnRiesgo" minWidth="0.0" prefWidth="90.0" text="En Riesgo" />
+                  <TableColumn fx:id="colComentarios" minWidth="0.0" prefWidth="170.0" text="Comentarios" />
               </columns>
             </TableView>
-            <Button layoutX="218.0" layoutY="126.0" mnemonicParsing="false" onAction="#clicVerReporte" prefHeight="25.0" prefWidth="82.0" style="-fx-background-color: #38AB3B;" text="Ver Reporte" textFill="WHITE" />
+            <Button layoutX="654.0" layoutY="346.0" mnemonicParsing="false" onAction="#clicVerReporte" prefHeight="25.0" prefWidth="82.0" style="-fx-background-color: #38AB3B;" text="Ver Reporte" textFill="WHITE" />
          </children>
       </Pane>
    </children>

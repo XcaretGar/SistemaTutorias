@@ -18,16 +18,19 @@ public class FechasTutoria {
     private int numSesion;
     private LocalDate fechaSesion;
     private String descripcion;
+    private String nombre;
+
     
     public FechasTutoria() {
     }
     
-    public FechasTutoria(int idFechaTutoria, int idPeriodo, int numSesion, LocalDate fechaSesion, String descripcion) {
+    public FechasTutoria(int idFechaTutoria, int idPeriodo, int numSesion, LocalDate fechaSesion, String descripcion, String nombre) {
         this.idFechaTutoria = idFechaTutoria;
         this.idPeriodo = idPeriodo;
         this.numSesion = numSesion;
         this.fechaSesion = fechaSesion;
         this.descripcion = descripcion;
+        this.nombre = nombre;
     }
     
     // ... getters y setters (sin nombre) ...
@@ -70,6 +73,14 @@ public class FechasTutoria {
     
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
     
     @Override

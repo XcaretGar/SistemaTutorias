@@ -9,6 +9,12 @@ package sistematutoriasfx.modelo.dao;
  * @author Ana Georgina
  */
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -181,5 +187,92 @@ public class ReporteTutoriaDAO {
             if(conexion != null){ try { conexion.close(); } catch (SQLException e) {} }
         }
         return lista;
+    }
+    
+    public static ArrayList<ReporteTutoria> obtenerTodosLosReportes() {
+        ArrayList<ReporteTutoria> lista = new ArrayList<>();
+        try (Connection conexion = ConexionBD.abrirConexion()) {
+            String query = "SELECT r.*, p.nombre AS periodoNombre, f.fechaSesion, f.numSesion " +
+                           "FROM reportetutoria r " +
+                           "INNER JOIN periodoescolar p ON r.idPeriodo = p.idPeriodo " +
+                           "INNER JOIN sesiontutoria s ON r.idSesion = s.idSesion " +
+                           "INNER JOIN fechastutoria f ON s.idFechaTutoria = f.idFechaTutoria";
+
+            PreparedStatement ps = conexion.prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                ReporteTutoria r = new ReporteTutoria();
+                r.setIdReporte(rs.getInt("idReporte"));
+                r.setIdAcademico(rs.getInt("idAcademico"));
+                r.setIdPeriodo(rs.getInt("idPeriodo"));
+                r.setIdSesion(rs.getInt("idSesion"));
+                r.setTotalAsistentes(rs.getInt("totalAsistentes"));
+                r.setTotalEnRiesgo(rs.getInt("totalEnRiesgo"));
+                r.setComentariosGenerales(rs.getString("comentariosGenerales"));
+
+                // Traducción visual
+                String estatusBD = rs.getString("estatus");
+                if (estatusBD.equals("Entregado")) {
+                    r.setEstatus("Sin revisar");
+                } else {
+                    r.setEstatus(estatusBD);
+                }
+
+                r.setFechaEntrega(rs.getString("fechaEntrega"));
+                r.setPeriodoNombre(rs.getString("periodoNombre"));
+                r.setFechaSesion(rs.getString("fechaSesion"));
+                r.setNumSesion(rs.getInt("numSesion"));
+
+                lista.add(r);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return lista;
+    }
+
+    // Marcar como revisado
+    public static boolean marcarComoRevisado(int idReporte) {
+        try (Connection conexion = ConexionBD.abrirConexion()) {
+            String query = "UPDATE reportetutoria SET estatus = 'Revisado' WHERE idReporte = ?";
+            PreparedStatement ps = conexion.prepareStatement(query);
+            ps.setInt(1, idReporte);
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    // Leer contenido del TXT
+    public static String leerReporteTxt(int idReporte) {
+        File archivo = new File("reportes_txt/reporte_" + idReporte + ".txt");
+        if (!archivo.exists()) return "No se encontró el archivo TXT.";
+        StringBuilder contenido = new StringBuilder();
+        try (BufferedReader br = new BufferedReader(new FileReader(archivo))) {
+            String linea;
+            while ((linea = br.readLine()) != null) {
+                contenido.append(linea).append("\n");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return contenido.toString();
+    }
+
+    // Guardar TXT automáticamente (para el tutor)
+    public static boolean guardarReporteTxt(ReporteTutoria reporte, String contenido) {
+        File carpeta = new File("reportes_txt");
+        if (!carpeta.exists()) carpeta.mkdir();
+
+        File archivo = new File(carpeta, "reporte_" + reporte.getIdReporte() + ".txt");
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(archivo))) {
+            writer.write(contenido);
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }

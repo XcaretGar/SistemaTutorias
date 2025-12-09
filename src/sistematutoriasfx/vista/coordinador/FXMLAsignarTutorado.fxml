@@ -43,8 +43,8 @@
                   <TableColumn fx:id="colAsignado" prefWidth="75.0" text="Asignado" />
               </columns>
             </TableView>
-            <Button layoutX="232.0" layoutY="140.0" mnemonicParsing="false" onAction="#clicAsignar" prefHeight="25.0" prefWidth="82.0" style="-fx-background-color: #38AB3B;" text="Asignar" textFill="WHITE" />
-            <Button layoutX="349.0" layoutY="140.0" mnemonicParsing="false" onAction="#clicActualizar" prefHeight="25.0" prefWidth="82.0" style="-fx-background-color: #E3B629;" text="Actualizar" textFill="WHITE" />
+            <Button layoutX="343.0" layoutY="140.0" mnemonicParsing="false" onAction="#clicAsignar" prefHeight="25.0" prefWidth="82.0" style="-fx-background-color: #38AB3B;" text="Asignar" textFill="WHITE" />
+            <Button layoutX="236.0" layoutY="140.0" mnemonicParsing="false" onAction="#clicActualizar" prefHeight="25.0" prefWidth="82.0" style="-fx-background-color: #38AB3B;" text="Actualizar" textFill="WHITE" />
          </children>
       </Pane>
    </children>

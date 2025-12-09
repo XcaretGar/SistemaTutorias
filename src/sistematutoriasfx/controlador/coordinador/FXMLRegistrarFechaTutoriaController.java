@@ -100,6 +100,20 @@ public class FXMLRegistrarFechaTutoriaController implements Initializable, IObse
 
     @FXML
     private void clicEstablecerNuevaFecha(ActionEvent event) {
+        if (cbPeriodo.getValue() == null) {
+            Utilidades.mostrarAlertaSimple("Registrar ", 
+                "Selecciona un periodo escolar antes de registrar una fecha", 
+                Alert.AlertType.WARNING);
+            return;
+        }
+
+        int totalSesiones = (fechas != null) ? fechas.size() : 0;
+        if (totalSesiones >= 3) {
+            Utilidades.mostrarAlertaSimple("Límite alcanzado", 
+                "Solo se permiten 3 sesiones por periodo escolar", 
+                Alert.AlertType.WARNING);
+            return;
+        }
         irFormulario(null);
     }
 

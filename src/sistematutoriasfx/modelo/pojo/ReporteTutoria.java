@@ -4,6 +4,8 @@
  */
 package sistematutoriasfx.modelo.pojo;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Ana Georgina
@@ -123,7 +125,7 @@ public class ReporteTutoria {
     public void setNumSesion(int numSesion) {
         this.numSesion = numSesion;
     }  
-    
+
     @Override
     public String toString() {
         return "Reporte #" + idReporte + " - " + estatus;

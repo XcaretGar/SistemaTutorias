@@ -133,6 +133,10 @@ public class FXMLGestionarTutoradoController implements Initializable, IObservad
     private void clicDarBaja(ActionEvent event) {
         Estudiante estudianteSeleccion = tvTutorados.getSelectionModel().getSelectedItem();
         if (estudianteSeleccion != null) {
+            if (estudianteSeleccion.getMotivoBaja() != null) {
+                Utilidades.mostrarAlertaSimple("Imposible dar de Baja", "No se puede dar de baja a un tutorado que ya está dado de baja", Alert.AlertType.WARNING);
+                return;
+            }
             irDarBaja(estudianteSeleccion);
         } else {
             Utilidades.mostrarAlertaSimple("Aviso", 

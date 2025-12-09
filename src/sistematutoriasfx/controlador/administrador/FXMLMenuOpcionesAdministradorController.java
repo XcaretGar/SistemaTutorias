@@ -73,8 +73,10 @@ public class FXMLMenuOpcionesAdministradorController implements Initializable {
     @FXML
     private void clicGestionarUsuario(ActionEvent event) {
         try {
-            Parent vista = FXMLLoader.load(
-                    SistemaTutoriasFx.class.getResource("/sistematutoriasfx/vista/administrador/FXMLGestionarUsuario.fxml")); 
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/sistematutoriasfx/vista/administrador/FXMLGestionarUsuario.fxml"));
+            Parent vista = loader.load();
+            FXMLGestionarUsuarioController controlador = loader.getController();
+            controlador.configurarVista(this.usuarioSesion);
             Scene escenaGestionarUsuario = new Scene(vista);
             Stage stAdmin = new Stage();
             stAdmin.setScene(escenaGestionarUsuario);
@@ -84,7 +86,7 @@ public class FXMLMenuOpcionesAdministradorController implements Initializable {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-    }  
+    } 
     
     @FXML
     private void clicCerrarSesion(ActionEvent event) {
