@@ -13,6 +13,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import sistematutoriasfx.modelo.dao.ReporteTutoriaDAO;
@@ -79,17 +80,48 @@ public class FXMLRevisarReporteTutoriaController implements Initializable {
             return;
         }
 
-        String contenido = ReporteTutoriaDAO.leerReporteTxt(seleccionado.getIdReporte());
+        StringBuilder sb = new StringBuilder();
+        sb.append("========================================\n");
+        sb.append("    REPORTE DE TUTORÍA\n");
+        sb.append("========================================\n\n");
+
+        sb.append("INFORMACIÓN GENERAL:\n");
+        sb.append("----------------------------------------\n");
+        sb.append("Período:          ").append(seleccionado.getPeriodoNombre()).append("\n");
+        sb.append("Fecha de Sesión:  ").append(seleccionado.getFechaSesion()).append("\n");
+        sb.append("Número de Sesión: ").append(seleccionado.getNumSesion()).append("\n");
+        sb.append("Estatus:          ").append(seleccionado.getEstatus()).append("\n");
+        sb.append("Fecha de Entrega: ").append(seleccionado.getFechaEntrega()).append("\n\n");
+
+        sb.append("ESTADÍSTICAS DE ASISTENCIA:\n");
+        sb.append("----------------------------------------\n");
+        sb.append("Total de Asistentes:  ").append(seleccionado.getTotalAsistentes()).append("\n");
+        sb.append("Alumnos en Riesgo:    ").append(seleccionado.getTotalEnRiesgo()).append("\n\n");
+
+        sb.append("COMENTARIOS GENERALES:\n");
+        sb.append("----------------------------------------\n");
+        String comentarios = seleccionado.getComentariosGenerales();
+        sb.append((comentarios != null && !comentarios.isEmpty()) ? comentarios : "Sin comentarios").append("\n");
+
+        sb.append("\n========================================\n");
+        sb.append("Generado: ").append(java.time.LocalDateTime.now()
+                .format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"))).append("\n");
+        sb.append("========================================\n");
+
+        // Mostrar el contenido en un Alert con TextArea
+        TextArea textArea = new TextArea(sb.toString());
+        textArea.setEditable(false);
+        textArea.setWrapText(true);
 
         Alert alerta = new Alert(Alert.AlertType.INFORMATION);
         alerta.setTitle("Reporte de Tutoría");
         alerta.setHeaderText("Contenido del reporte #" + seleccionado.getIdReporte());
-        alerta.setContentText(contenido);
+        alerta.getDialogPane().setContent(textArea);
         alerta.showAndWait();
 
         boolean actualizado = ReporteTutoriaDAO.marcarComoRevisado(seleccionado.getIdReporte());
         if (actualizado) {
-            cargarReportes();
+            cargarReportes(); 
         }
     }
 
@@ -99,5 +131,5 @@ public class FXMLRevisarReporteTutoriaController implements Initializable {
         alerta.setHeaderText(null);
         alerta.setContentText(mensaje);
         alerta.showAndWait();
-    }  
+    }
 }
