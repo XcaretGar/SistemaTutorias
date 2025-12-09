@@ -64,15 +64,12 @@ public class FXMLGestionarProblematicaController implements Initializable {
     public void configurarEscena(Usuario usuario) {
         this.usuarioSesion = usuario;
         
-        // 1. Obtenemos el académico logueado
         this.academicoSesion = AcademicoDAO.obtenerAcademicoPorIdUsuario(usuario.getIdUsuario());
         
         if(this.academicoSesion == null) {
             Utilidades.mostrarAlertaSimple("Error", "No se encontró información del tutor asociado al usuario.", Alert.AlertType.ERROR);
             return;
         }
-        
-        // 2. Cargamos la tabla con los datos reales
         cargarTabla();
     }
 
@@ -98,14 +95,11 @@ public class FXMLGestionarProblematicaController implements Initializable {
     private void cargarTabla() {
         if(academicoSesion == null) return;
         
-        // --- CORRECCIÓN DINÁMICA ---
         // 1. Definimos el periodo actual (En tu base de datos es el 2)
         int idPeriodoActual = 2; 
         
-        // 2. Buscamos el reporte asociado a este tutor y periodo
         int idReporteActual = ReporteTutoriaDAO.obtenerIdReporteActual(academicoSesion.getIdAcademico(), idPeriodoActual);
         
-        // 3. Si no hay reporte (id es 0), no hay problemáticas que cargar
         if (idReporteActual == 0) {
             // Puedes mostrar una lista vacía o un mensaje en consola
             tvReportes.setItems(FXCollections.observableArrayList());
@@ -113,7 +107,6 @@ public class FXMLGestionarProblematicaController implements Initializable {
             return;
         }
         
-        // 4. Si hay reporte, cargamos sus problemáticas
         ArrayList<Problematica> listaDB = ProblematicaDAO.obtenerProblematicasPorReporte(idReporteActual);
         listaProblematicas = FXCollections.observableArrayList(listaDB);
         tvReportes.setItems(listaProblematicas);
@@ -177,13 +170,11 @@ public class FXMLGestionarProblematicaController implements Initializable {
             FXMLFormularioProblematicaController controlador = loader.getController();
             controlador.inicializarTutor(academicoSesion.getIdAcademico());
             
-            // Si hay objeto (Modificar o Consultar), cargamos datos
             if (problematica != null) {
                 controlador.inicializarEdicion(problematica);
             }
             
-            // SI ES MODO CONSULTA, BLOQUEAMOS TODO
-            if ("CONSULTAR".equalsIgnoreCase(modo)) {
+            if ("Consultar".equalsIgnoreCase(modo)) {
                 controlador.configurarModoConsulta();
             }
             
@@ -191,11 +182,10 @@ public class FXMLGestionarProblematicaController implements Initializable {
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setScene(scene);
-            stage.setTitle(modo + " Problemática"); // Título dinámico
+            stage.setTitle(modo + " Problemática"); 
             stage.showAndWait();
             
-            // Recargar tabla solo si NO fue consulta (porque en consulta no cambia nada)
-            if (!"CONSULTAR".equalsIgnoreCase(modo)) {
+            if (!"Consultar".equalsIgnoreCase(modo)) {
                 cargarTabla();
             }
             

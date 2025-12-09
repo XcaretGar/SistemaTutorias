@@ -119,7 +119,7 @@ public class FXMLFormularioProblematicaController implements Initializable {
             return;
         }
         
-        // A. Definimos el periodo actual 
+        // Definimos el periodo actual 
         int idPeriodoActual = 2; 
         
  
