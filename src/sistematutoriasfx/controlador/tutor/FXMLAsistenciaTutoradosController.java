@@ -10,7 +10,7 @@ package sistematutoriasfx.controlador.tutor;
  * @author Ana Georgina
  */
 
-/*import java.io.IOException;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -168,7 +168,7 @@ public class FXMLAsistenciaTutoradosController implements Initializable {
             if(seleccion != null) {
                 FechasTutoria fechaTemp = new FechasTutoria();
                 fechaTemp.setIdFechaTutoria(seleccion.getIdFechaTutoria());
-                fechaTemp.setFechaSesion(seleccion.getFecha());
+                fechaTemp.setFechaSesion(java.time.LocalDate.parse(seleccion.getFecha())); 
                 fechaTemp.setIdPeriodo(seleccion.getIdPeriodo());
 
                 abrirFormulario(fechaTemp, false); // false = NO es consulta
@@ -189,7 +189,7 @@ public class FXMLAsistenciaTutoradosController implements Initializable {
             if(seleccion != null) {
                 FechasTutoria fechaTemp = new FechasTutoria();
                 fechaTemp.setIdFechaTutoria(seleccion.getIdFechaTutoria());
-                fechaTemp.setFechaSesion(seleccion.getFecha());
+                fechaTemp.setFechaSesion(java.time.LocalDate.parse(seleccion.getFecha())); // ✅ Correcto
                 fechaTemp.setIdPeriodo(seleccion.getIdPeriodo());
 
                 abrirFormulario(fechaTemp, true); // ✅ true = SÍ es consulta
@@ -279,4 +279,4 @@ public class FXMLAsistenciaTutoradosController implements Initializable {
             Utilidades.mostrarAlertaSimple("Error", "No se pudo abrir la ventana de asistencia.", Alert.AlertType.ERROR);
         }
     }
-}*/
+}

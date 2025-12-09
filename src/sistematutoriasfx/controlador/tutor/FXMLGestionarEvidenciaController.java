@@ -41,7 +41,7 @@ import sistematutoriasfx.modelo.pojo.PeriodoEscolar;
 import sistematutoriasfx.modelo.pojo.Usuario;
 import utilidad.Utilidades;
 
-/*public class FXMLGestionarEvidenciaController implements Initializable {
+public class FXMLGestionarEvidenciaController implements Initializable {
 
     @FXML 
     private ComboBox<PeriodoEscolar> cbPeriodo;
@@ -110,7 +110,7 @@ import utilidad.Utilidades;
         cbFechaSesion.valueProperty().addListener((obs, oldVal, newVal) -> {
             if(newVal != null) {
                 // ✅ Mostrar la fecha seleccionada en el label azul
-                lbFechaMostrada.setText(newVal.getFechaSesion());
+                lbFechaMostrada.setText(newVal.getFechaSesion().toString());
 
                 // Buscar el reporte asociado a esta fecha
                 if(academicoSesion != null) {
@@ -221,4 +221,4 @@ import utilidad.Utilidades;
             Utilidades.mostrarAlertaSimple("Error", "No se pudo abrir el formulario.", Alert.AlertType.ERROR);
         }
     }
-}*/
+}

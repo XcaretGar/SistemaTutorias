@@ -41,7 +41,7 @@ import sistematutoriasfx.modelo.pojo.ReporteTutoria;
 import sistematutoriasfx.modelo.pojo.Usuario;
 import utilidad.Utilidades;
 
-/*public class FXMLGestionarReporteTutoriaController implements Initializable {
+public class FXMLGestionarReporteTutoriaController implements Initializable {
 
     @FXML private ComboBox<PeriodoEscolar> cbPeriodo;
     @FXML private ComboBox<FechasTutoria> cbFechaSesion;
@@ -106,7 +106,7 @@ import utilidad.Utilidades;
         // ✅ Al cambiar fecha, mostrar fecha y filtrar
         cbFechaSesion.valueProperty().addListener((obs, oldVal, newVal) -> {
             if(newVal != null) {
-                lbFechaMostrada.setText(newVal.getFechaSesion());
+                lbFechaMostrada.setText(newVal.getFechaSesion().toString());
             } else {
                 lbFechaMostrada.setText("");
             }
@@ -312,9 +312,9 @@ import utilidad.Utilidades;
                         }
                         
                         if(est != null) {
-                            writer.write(String.format("%-12s %-30s %-10s %-10s\n",
+                            writer.write(String.format("%-12s %-40s %-10s %-10s\n",  
                                 est.getMatricula(),
-                                est.getNombreEstudiante(),
+                                est.getNombreCompleto(),
                                 asist.isAsistio() ? "Asistió" : "Falta",
                                 asist.isRiesgoDetectado() ? "En Riesgo" : "Normal"
                             ));
@@ -353,4 +353,4 @@ import utilidad.Utilidades;
             }
         }
     }
-}*/
+}

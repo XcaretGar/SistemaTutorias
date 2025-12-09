@@ -26,7 +26,8 @@ public class Estudiante {
     // (No se guardan en BD, son solo para la pantalla)
     private javafx.scene.control.CheckBox cbAsistencia; 
     private javafx.scene.control.CheckBox cbRiesgo;
-
+    
+    
     // Constructor actualizado
     public Estudiante() {
         this.cbAsistencia = new javafx.scene.control.CheckBox();
@@ -150,4 +151,5 @@ public class Estudiante {
     public void setCbRiesgo(CheckBox cbRiesgo) {
         this.cbRiesgo = cbRiesgo;
     }
+    
 }

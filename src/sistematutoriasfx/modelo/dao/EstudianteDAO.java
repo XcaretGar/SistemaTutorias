@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import javafx.scene.control.CheckBox;
 import sistematutoriasfx.modelo.pojo.Estudiante;
 import sistematutoriasfx.modeloo.ConexionBD;
 
@@ -141,49 +142,53 @@ public class EstudianteDAO {
         return resultado;
     }
     
-    // Método NUEVO para el CU4 Registrar Asistencia
     public static ArrayList<Estudiante> obtenerEstudiantesPorTutor(int idAcademico, int idPeriodo) {
-        ArrayList<Estudiante> estudiantes = new ArrayList<>();
+        ArrayList<Estudiante> lista = new ArrayList<>();
         Connection conexion = null;
+
         try {
             conexion = ConexionBD.abrirConexion();
-            
-            // JOIN para traer SOLO los asignados al tutor en ese periodo
-            String query = "SELECT e.idEstudiante, e.matricula, e.nombreEstudiante, e.apellidoPaterno, e.apellidoMaterno, e.correoInstitucional, e.idProgramaEducativo " +
+
+            // ✅ MODIFICAR: Concatenar nombre completo en la query
+            String query = "SELECT e.*, " +
+                           "CONCAT(e.nombreEstudiante, ' ', e.apellidoPaterno, ' ', " +
+                           "COALESCE(e.apellidoMaterno, '')) AS nombreCompleto " +
                            "FROM estudiante e " +
                            "INNER JOIN asignaciontutor a ON e.idEstudiante = a.idEstudiante " +
-                           "WHERE a.idAcademico = ? AND a.idPeriodo = ? AND e.estatus != 'Baja'";
-            
+                           "WHERE a.idAcademico = ? AND a.idPeriodo = ?";
+
             PreparedStatement ps = conexion.prepareStatement(query);
             ps.setInt(1, idAcademico);
             ps.setInt(2, idPeriodo);
             ResultSet rs = ps.executeQuery();
-            
-            while (rs.next()) {
-                Estudiante estudiante = new Estudiante();
-                estudiante.setIdEstudiante(rs.getInt("idEstudiante"));
-                estudiante.setMatricula(rs.getString("matricula"));
-                estudiante.setNombreEstudiante(rs.getString("nombreEstudiante"));
-                estudiante.setApellidoPaterno(rs.getString("apellidoPaterno"));
-                estudiante.setApellidoMaterno(rs.getString("apellidoMaterno"));
-                estudiante.setCorreoInstitucional(rs.getString("correoInstitucional"));
-                estudiante.setIdProgramaEducativo(rs.getInt("idProgramaEducativo"));
-                
-                // NOTA: No necesitamos cargar estatus ni motivoBaja aquí, solo datos básicos para la lista
-                
-                // Inicializamos los checkboxes (desmarcados)
-                estudiante.getCbAsistencia().setSelected(false);
-                estudiante.getCbRiesgo().setSelected(false);
-                
-                estudiantes.add(estudiante);
+
+            while(rs.next()) {
+                Estudiante est = new Estudiante();
+                est.setIdEstudiante(rs.getInt("idEstudiante"));
+                est.setMatricula(rs.getString("matricula"));
+
+                // ✅ OPCIÓN 1: Usar el nombre completo concatenado
+                est.setNombreEstudiante(rs.getString("nombreCompleto"));
+
+                // También guarda los campos individuales si los necesitas
+                // est.setApellidoPaterno(rs.getString("apellidoPaterno"));
+                // est.setApellidoMaterno(rs.getString("apellidoMaterno"));
+
+                // Crear CheckBoxes
+                est.setCbAsistencia(new CheckBox());
+                est.setCbRiesgo(new CheckBox());
+
+                lista.add(est);
             }
+
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            if(conexion != null){
+            if(conexion != null) {
                 try { conexion.close(); } catch (SQLException e) { e.printStackTrace(); }
             }
         }
-        return estudiantes;
+
+        return lista;
     }
 }

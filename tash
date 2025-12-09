@@ -1,0 +1,47 @@
+[33mfb6a586[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m Correciones
+[33m8cfcc81[m Se agregaron los POJOS Y DAOS de Problematica y sus fxml
+[33m04194b8[m Ya se arreglaron los botones de las asistencias, al igual que se ajustaron los filtros de búsqueda y se le agregaron las fechas abajo del label de fechasesion, además ya exporta en un .txt el reporte AJUUAAAAAA!!!!! :DDD
+[33m5392588[m Corrección de clases y modifiqué el combo box porque no jalaba al actualizar
+[33m8961737[m Añadí un nuevo pojo y DAO Modifiqué la bd porque faltaba una tabla Terminé las clases de fechas de tutorías
+[33mfa93acd[m CU asignar tutorado terminado y modifiqué otra vez el DAO de académico y asignacionTutor
+[33m6463e31[m Modifiqué asignar tutores porque no se reflejaban todos sus datos Cree nuevos DAO para la relación de académico y tutor
+[33m01963af[m Creación de asistencia...
+[33m446694d[m Terminando correciones de dar de baja, no se refleja el motivo aún
+[33me6c3f49[m Preparando el caso 3 de Reporte de Tutoria, pero primero necesito hacer el caso de uso de lista de asistencia :O
+[33m3b3eab8[m Avances de los formularios, agregué nuevos pojos, DAO y academicoImp
+[33m9379c4a[m Merge branch 'main' of https://github.com/XcaretGar/SistemaTutorias
+[33m0f0c013[m Modifiqué las clases de administrador, ya casi por acabarlas, falta enlazar los formularios
+[33m8dcd942[m AHORA SI, VAMOS POR EL SEGUNDO CASO LLETTSSS GOOOO (estoy muerta por dentro)
+[33m29e3799[m Creé la clase ReporteTutoria y su DAO, además de hacer una carpeta de evidencias_subidas
+[33m8d69c6d[m Se creó el fxml para el CU de GestionarEvidencia y su controller, además de crear la clase Evidencia y el formulario, leettss goooo
+[33m6dc9927[m Merge branch 'main' of https://github.com/XcaretGar/SistemaTutori
+[33mdfe5c2f[m Caso de Uso gestionar tutorado terminado
+[33mb61a5be[m Ahora sí ya funciona el CU de Registrar/Actualizar horario
+[33m8aa9342[m Corregir el registrar horario tutor
+[33mcf996f3[m Actualización de FXML para que la ventana pueda registrar y actualizar los horarios.
+[33m7683b5d[m Actualización de FXML para que la ventana pueda registrar y actualizar los horarios.
+[33m77bea22[m Terminé los apartados de registrar y actualizar tutorado
+[33m419e6d2[m Terminé las clases Formularios Añadí en pojo a ProgramaEducativo para poder obtener sus atributos
+[33m995bad5[m 
+[33m83c1d78[m 
+[33m509f99f[m Corrección de el EstudianteDao y EstudianteImp
+[33m40d8618[m 
+[33m7bff851[m Clases para entrar al gestionar terminadas Implementación del EstudianteImp, Utilidades, IObservador, Respuesta
+[33m2967172[m Modificación en los registros del login Acceso a los menús de opciones de cada actor
+[33mbb845b1[m Implementación de DAO y pojos
+[33m3f0caba[m Diseño de nuevos fxml y eliminación de varios de ellos
+[33m8f46bbb[m Se corrigió el login para que se acceda desde usuariorol de la BD
+[33m660b721[m Orden de fxml y controllers de acuerdo a su paquete correspondiente
+[33maa15f3d[m Conflictos resueltos en private.xml, project.properties y FXMLInicioSesion.fxml
+[33mb640f6b[m Cambié diseños de los fxml Creé nuevos paquetes para mejor organización de cada actor Añadí nuevos fxml de coordinador y administrador
+[33mba29d69[m Corrección de librería MySQL en carpeta libs Ya hice el menú principal de tutor y puse el CU de Registrar :D O sea, su ventana y ya registra correctamente en la BD ;) Ya ahorita le sigo :S
+[33md50aa7c[m Corrección de librería MySQL en carpeta libs
+[33m89f2bbc[m Cambié diseño del login
+[33m1d4f2c8[m Borré el paquete de recurso
+[33mc60e84c[m Agregué el código de ConexionBD y eliminé las clases de pojo y DAO para que estén como en la BD. Están Rol y Usuario. :D! Otro commit: puse el paquete de controlador y vista, para los fxml y vistas YA QUEDÓ EL LOGIINN EAAA :3
+[33m93a32c6[m Agregué el código de ConexionBD y eliminé las clases de pojo y DAO para que estén como en la BD. Están Rol y Usuario. :D! Otro commit: puse el paquete de controlador y vista, para los fxml y vistas
+[33m883abe1[m Agregué el código de ConexionBD y eliminé las clases de pojo y DAO para que estén como en la BD. Están Rol y Usuario. :D! Otro commit: puse el paquete de controlador y vista, para los fxml y vistas
+[33m035f28d[m Agregué el código de ConexionBD y eliminé las clases de pojo y DAO para que estén como en la BD. Están Rol y Usuario. :D!
+[33mcb19399[m Merge branch 'main' of https://github.com/XcaretGar/SistemaTutorias
+[33m214812b[m Primer commit
+[33m33a017d[m Initial commit
