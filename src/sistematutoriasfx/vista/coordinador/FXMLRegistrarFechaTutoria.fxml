@@ -8,11 +8,9 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0"
-            xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="sistematutoriasfx.controlador.coordinador.FXMLRegistrarFechaTutoriaController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="590.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sistematutoriasfx.controlador.coordinador.FXMLRegistrarFechaTutoriaController">
    <children>
-      <Pane prefHeight="407.0" prefWidth="600.0">
+      <Pane prefHeight="440.0" prefWidth="590.0">
          <children>
             <!-- Cabecera azul -->
             <Pane prefHeight="70.0" prefWidth="650.0" style="-fx-background-color: #063596;">
@@ -37,12 +35,8 @@
                </font>
             </Label>
 
-            <Button layoutX="29.0" layoutY="123.0" mnemonicParsing="false"
-                    onAction="#clicEstablecerNuevaFecha" prefHeight="25.0" prefWidth="153.0"
-                    style="-fx-background-color: #38AB3B;" text="Establecer Nueva Fecha" textFill="WHITE" />
-            <Button layoutX="226.0" layoutY="123.0" mnemonicParsing="false"
-                    onAction="#clicActualizarFecha" prefHeight="25.0" prefWidth="110.0"
-                    style="-fx-background-color: #E3B629;" text="Actualizar Fecha" textFill="WHITE" />
+            <Button layoutX="150.0" layoutY="123.0" mnemonicParsing="false" onAction="#clicEstablecerNuevaFecha" prefHeight="25.0" prefWidth="88.0" style="-fx-background-color: #38AB3B;" text="Registrar" textFill="WHITE" />
+            <Button layoutX="34.0" layoutY="123.0" mnemonicParsing="false" onAction="#clicActualizarFecha" prefHeight="25.0" prefWidth="88.0" style="-fx-background-color: #38AB3B;" text="Actualizar " textFill="WHITE" />
 
             <Label layoutX="35.0" layoutY="160.0" text="Periodo Escolar">
                <font>
@@ -59,8 +53,7 @@
                   <Font size="13.0" />
                </font>
             </Label>
-            <TableView fx:id="tvFechasTutoria" layoutX="35.0" layoutY="220.0"
-                       prefHeight="162.0" prefWidth="454.0">
+            <TableView fx:id="tvFechasTutoria" layoutX="35.0" layoutY="220.0" prefHeight="162.0" prefWidth="495.0">
               <columns>
                 <TableColumn fx:id="colSesion" prefWidth="75.0" text="Sesión" />
                 <TableColumn fx:id="colPeriodo" prefWidth="118.0" text="Periodo" />
@@ -68,6 +61,7 @@
                 <TableColumn fx:id="colDescripcion" minWidth="8.0" prefWidth="149.0" text="Descripción" />
               </columns>
             </TableView>
+            <Button layoutX="38.0" layoutY="401.0" mnemonicParsing="false" onAction="#clicRegresar" prefHeight="25.0" prefWidth="82.0" style="-fx-background-color: #38AB3B;" text="Regresar" textFill="WHITE" />
          </children>
       </Pane>
    </children>

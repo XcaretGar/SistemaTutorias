@@ -149,7 +149,9 @@ public class FXMLFormularioAsignarTutoradoController implements Initializable {
         }  
     }
     
-    private void cerrarVentana() {
-        ((Stage) lbNombreCompleto.getScene().getWindow()).close();
+    @FXML
+    private void clicRegresar(ActionEvent event) {
+        Stage stage = (Stage) tvTutores.getScene().getWindow();
+        stage.close();
     }
 }

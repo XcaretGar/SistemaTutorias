@@ -190,4 +190,10 @@ public class FXMLAsignarTutoradoController implements Initializable, IObservador
             tvTutorados.setItems(sortedEstudiante);
         }
     }
+    
+    @FXML
+    private void clicRegresar(ActionEvent event) {
+        Stage stage = (Stage) tvTutorados.getScene().getWindow();
+        stage.close();
+    }
 }

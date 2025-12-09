@@ -27,7 +27,7 @@
                      </children>
                   </Pane>
                   <Button layoutX="243.0" layoutY="151.0" mnemonicParsing="false" onAction="#clicDarBaja" prefHeight="25.0" prefWidth="82.0" style="-fx-background-color: #38AB3B;" text="Dar de Baja" textFill="WHITE" />
-                  <Button layoutX="475.0" layoutY="151.0" mnemonicParsing="false" onAction="#clicAsignarUsuario" prefHeight="25.0" prefWidth="82.0" style="-fx-background-color: #38AB3B;" text="Asignar" textFill="WHITE" />
+                  <Button layoutX="475.0" layoutY="151.0" mnemonicParsing="false" onAction="#clicAsignarUsuario" prefHeight="25.0" prefWidth="82.0" style="-fx-background-color: #38AB3B;" text="Registrar" textFill="WHITE" />
                </children>
             </Pane>
             <Button layoutX="331.0" layoutY="129.0" mnemonicParsing="false" onAction="#clicActualizarUsuario" prefHeight="25.0" prefWidth="82.0" style="-fx-background-color: #38AB3B;" text="Actualizar" textFill="WHITE" />

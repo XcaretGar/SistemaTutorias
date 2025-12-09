@@ -48,7 +48,7 @@
                   <Font size="18.0" />
                </font>
             </Button>
-            <Label layoutX="282.0" layoutY="171.0" text="Asignar estudiantes a tutorados" textFill="WHITE" />
+            <Label layoutX="282.0" layoutY="171.0" text="Asignar estudiantes a tutores" textFill="WHITE" />
             <Button layoutX="215.0" layoutY="221.0" mnemonicParsing="false" onAction="#clicRegistrarFechaTutoria" prefHeight="71.0" prefWidth="302.0" style="-fx-background-color: #417C9E;" text="Registrar Fecha de Tutoría" textFill="WHITE">
                <effect>
                   <Blend />

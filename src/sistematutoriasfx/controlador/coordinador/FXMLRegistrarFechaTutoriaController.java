@@ -155,4 +155,10 @@ public class FXMLRegistrarFechaTutoriaController implements Initializable, IObse
             cargarFechasPorPeriodo(cbPeriodo.getValue().getIdPeriodo());
         }
     }
+    
+    @FXML
+    private void clicRegresar(ActionEvent event) {
+        Stage stage = (Stage) tvFechasTutoria.getScene().getWindow();
+        stage.close();
+    }
 }

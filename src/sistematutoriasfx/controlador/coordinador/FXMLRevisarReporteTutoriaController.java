@@ -16,6 +16,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 import sistematutoriasfx.modelo.dao.ReporteTutoriaDAO;
 import sistematutoriasfx.modelo.pojo.ReporteTutoria;
 
@@ -131,5 +132,11 @@ public class FXMLRevisarReporteTutoriaController implements Initializable {
         alerta.setHeaderText(null);
         alerta.setContentText(mensaje);
         alerta.showAndWait();
+    }
+    
+    @FXML
+    private void clicRegresar(ActionEvent event) {
+        Stage stage = (Stage) tvRevisarReportes.getScene().getWindow();
+        stage.close();
     }
 }

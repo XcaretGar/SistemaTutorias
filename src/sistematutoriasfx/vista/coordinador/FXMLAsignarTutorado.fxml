@@ -10,7 +10,7 @@
 
 <AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sistematutoriasfx.controlador.coordinador.FXMLAsignarTutoradoController">
    <children>
-      <Pane layoutX="-6.0" prefHeight="420.0" prefWidth="650.0">
+      <Pane layoutX="-6.0" prefHeight="450.0" prefWidth="650.0">
          <children>
             <Pane layoutX="6.0" prefHeight="71.0" prefWidth="650.0" style="-fx-background-color: #063596;">
                <children>
@@ -45,6 +45,7 @@
             </TableView>
             <Button layoutX="343.0" layoutY="140.0" mnemonicParsing="false" onAction="#clicAsignar" prefHeight="25.0" prefWidth="82.0" style="-fx-background-color: #38AB3B;" text="Asignar" textFill="WHITE" />
             <Button layoutX="236.0" layoutY="140.0" mnemonicParsing="false" onAction="#clicActualizar" prefHeight="25.0" prefWidth="82.0" style="-fx-background-color: #38AB3B;" text="Actualizar" textFill="WHITE" />
+            <Button layoutX="37.0" layoutY="404.0" mnemonicParsing="false" onAction="#clicRegresar" prefHeight="25.0" prefWidth="82.0" style="-fx-background-color: #38AB3B;" text="Regresar" textFill="WHITE" />
          </children>
       </Pane>
    </children>
