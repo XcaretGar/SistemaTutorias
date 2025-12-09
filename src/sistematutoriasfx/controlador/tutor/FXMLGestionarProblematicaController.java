@@ -30,12 +30,12 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import sistematutoriasfx.modelo.dao.AcademicoDAO;
 import sistematutoriasfx.modelo.dao.ProblematicaDAO;
+import sistematutoriasfx.modelo.dao.ReporteTutoriaDAO; // IMPORTANTE: Importar este DAO
 import sistematutoriasfx.modelo.pojo.Academico;
 import sistematutoriasfx.modelo.pojo.Problematica;
 import sistematutoriasfx.modelo.pojo.Usuario;
@@ -43,164 +43,172 @@ import utilidad.Utilidades;
 
 public class FXMLGestionarProblematicaController implements Initializable {
 
-    @FXML private TableView<Problematica> tvReportes; // Se llama tvReportes en tu FXML
+    @FXML private TableView<Problematica> tvReportes;
     @FXML private TableColumn<Problematica, String> colMatricula;
     @FXML private TableColumn<Problematica, String> colNombreEstudiante;
-    @FXML private TableColumn<Problematica, String> colProgramaEducativo;
+    @FXML private TableColumn<Problematica, String> colProgramaEducativo; // Si la tienes en la vista
     @FXML private TableColumn<Problematica, String> colTitulo;
     @FXML private TableColumn<Problematica, String> colDescripcion;
-    
-    private TextField tfBusquedaNombre;
+    @FXML private Label lbFechaMostrada;
     @FXML private Label lbEstatusProblematica;
 
     private Usuario usuarioSesion;
     private Academico academicoSesion;
     private ObservableList<Problematica> listaProblematicas;
-    private FilteredList<Problematica> listaFiltrada;
-    @FXML
-    private Label lbFechaMostrada;
+    
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        configurarTabla();
+    }
 
     public void configurarEscena(Usuario usuario) {
         this.usuarioSesion = usuario;
+        
+        // 1. Obtenemos el académico logueado
         this.academicoSesion = AcademicoDAO.obtenerAcademicoPorIdUsuario(usuario.getIdUsuario());
-        if(this.academicoSesion != null) {
-            cargarTabla();
+        
+        if(this.academicoSesion == null) {
+            Utilidades.mostrarAlertaSimple("Error", "No se encontró información del tutor asociado al usuario.", Alert.AlertType.ERROR);
+            return;
         }
+        
+        // 2. Cargamos la tabla con los datos reales
+        cargarTabla();
     }
 
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        configurarColumnas();
-        configurarFiltro();
-        configurarSeleccionTabla();
-    }
-    
-    private void configurarColumnas() {
+    private void configurarTabla() {
+        colMatricula.setCellValueFactory(new PropertyValueFactory<>("matricula"));
         colNombreEstudiante.setCellValueFactory(new PropertyValueFactory<>("nombreEstudiante"));
+        colProgramaEducativo.setCellValueFactory(new PropertyValueFactory<>("programaEducativo"));
         colTitulo.setCellValueFactory(new PropertyValueFactory<>("titulo"));
         colDescripcion.setCellValueFactory(new PropertyValueFactory<>("descripcion"));
         
-        // Configuración especial para columnas que no están directas en el POJO Problematica
-        // Si tu POJO no tiene getMatricula(), ponemos un valor por defecto o tendríamos que hacer un JOIN extra
-        colMatricula.setCellValueFactory(cellData -> new SimpleStringProperty("---")); 
-        colProgramaEducativo.setCellValueFactory(cellData -> new SimpleStringProperty("---"));
-        
-        // Nota: Para ver Matrícula y Programa real, necesitas agregar esos campos al POJO Problematica
-        // y llenarlos en el DAO con el JOIN a Estudiante y ProgramaEducativo.
-    }
-    
-    private void cargarTabla() {
-        if(academicoSesion != null) {
-            // Cargar problemáticas. 
-            // Nota: Usamos el método obtenerProblematicasPorReporte del DAO. 
-            // Idealmente deberías tener obtenerProblematicasPorTutor para ver todas.
-            // Aquí simulamos cargar las del reporte 1 para que veas datos.
-            ArrayList<Problematica> lista = ProblematicaDAO.obtenerProblematicasPorReporte(1);
-            
-            listaProblematicas = FXCollections.observableArrayList(lista);
-            listaFiltrada = new FilteredList<>(listaProblematicas, p -> true);
-            tvReportes.setItems(listaFiltrada);
-        }
-    }
-    
-    private void configurarFiltro() {
-        tfBusquedaNombre.textProperty().addListener((observable, oldValue, newValue) -> {
-            listaFiltrada.setPredicate(problema -> {
-                if (newValue == null || newValue.isEmpty()) return true;
-                String lower = newValue.toLowerCase();
-                return problema.getNombreEstudiante().toLowerCase().contains(lower);
-            });
-        });
-    }
-    
-    private void configurarSeleccionTabla() {
-        tvReportes.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
-            if (newVal != null) {
-                lbEstatusProblematica.setText("Estatus: " + newVal.getEstatus());
-            } else {
-                lbEstatusProblematica.setText("Estatus: ---");
+        // Listener para actualizar la etiqueta de estatus al seleccionar una fila
+        tvReportes.getSelectionModel().selectedItemProperty().addListener(
+            (observable, oldValue, newValue) -> {
+                if(newValue != null) {
+                    lbEstatusProblematica.setText("Estatus: " + newValue.getEstatus());
+                } else {
+                    lbEstatusProblematica.setText("Estatus: ---");
+                }
             }
-        });
+        );
+    }
+
+    private void cargarTabla() {
+        if(academicoSesion == null) return;
+        
+        // --- CORRECCIÓN DINÁMICA ---
+        // 1. Definimos el periodo actual (En tu base de datos es el 2)
+        int idPeriodoActual = 2; 
+        
+        // 2. Buscamos el reporte asociado a este tutor y periodo
+        int idReporteActual = ReporteTutoriaDAO.obtenerIdReporteActual(academicoSesion.getIdAcademico(), idPeriodoActual);
+        
+        // 3. Si no hay reporte (id es 0), no hay problemáticas que cargar
+        if (idReporteActual == 0) {
+            // Puedes mostrar una lista vacía o un mensaje en consola
+            tvReportes.setItems(FXCollections.observableArrayList());
+            System.out.println("Este tutor no tiene reporte asignado para el periodo " + idPeriodoActual);
+            return;
+        }
+        
+        // 4. Si hay reporte, cargamos sus problemáticas
+        ArrayList<Problematica> listaDB = ProblematicaDAO.obtenerProblematicasPorReporte(idReporteActual);
+        listaProblematicas = FXCollections.observableArrayList(listaDB);
+        tvReportes.setItems(listaProblematicas);
     }
 
     @FXML
     private void clicRegistrar(ActionEvent event) {
-        abrirFormulario(null); // Null indica Nuevo Registro
+        abrirFormulario("Registrar", null);
     }
 
     @FXML
     private void clicModificar(ActionEvent event) {
-        Problematica seleccion = tvReportes.getSelectionModel().getSelectedItem();
-        if(seleccion != null) {
-            abrirFormulario(seleccion); // Pasamos objeto para Editar
-        } else {
-            Utilidades.mostrarAlertaSimple("Selección requerida", "Selecciona una problemática para modificar.", Alert.AlertType.WARNING);
+        Problematica seleccionada = tvReportes.getSelectionModel().getSelectedItem();
+        if(seleccionada == null) {
+            Utilidades.mostrarAlertaSimple("Atención", "Selecciona una problemática para modificar.", Alert.AlertType.WARNING);
+            return;
         }
+        abrirFormulario("Modificar", seleccionada);
     }
-    
-    @FXML private void clicConsultar(ActionEvent event) { 
-        // Reutilizamos modificar por ahora, o podrías abrir en modo solo lectura
-        clicModificar(event); 
+
+    @FXML
+    private void clicConsultar(ActionEvent event) {
+        Problematica seleccionada = tvReportes.getSelectionModel().getSelectedItem();
+        if(seleccionada == null) {
+            Utilidades.mostrarAlertaSimple("Atención", "Selecciona una problemática para consultar.", Alert.AlertType.WARNING);
+            return;
+        }
+        abrirFormulario("Consultar", seleccionada);
     }
 
     @FXML
     private void clicEliminar(ActionEvent event) {
-        Problematica seleccion = tvReportes.getSelectionModel().getSelectedItem();
-        if(seleccion != null) {
-            Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
-            confirmacion.setTitle("Confirmar eliminación");
-            confirmacion.setHeaderText("¿Estás seguro de eliminar esta problemática?");
-            confirmacion.setContentText("Título: " + seleccion.getTitulo());
-            
-            Optional<ButtonType> resultado = confirmacion.showAndWait();
-            if(resultado.isPresent() && resultado.get() == ButtonType.OK) {
-                boolean exito = ProblematicaDAO.eliminarProblematica(seleccion.getIdProblematica());
-                if(exito) {
-                    Utilidades.mostrarAlertaSimple("Éxito", "Eliminado correctamente.", Alert.AlertType.INFORMATION);
-                    cargarTabla();
-                    lbEstatusProblematica.setText("Estatus: ---");
-                } else {
-                    Utilidades.mostrarAlertaSimple("Error", "No se pudo eliminar.", Alert.AlertType.ERROR);
-                }
+        Problematica seleccionada = tvReportes.getSelectionModel().getSelectedItem();
+        if(seleccionada == null) {
+            Utilidades.mostrarAlertaSimple("Atención", "Selecciona una problemática para eliminar.", Alert.AlertType.WARNING);
+            return;
+        }
+        
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmar eliminación");
+        alert.setHeaderText("¿Deseas eliminar la problemática seleccionada?");
+        alert.setContentText("Esta acción no se puede deshacer.");
+        
+        Optional<ButtonType> result = alert.showAndWait();
+        if(result.isPresent() && result.get() == ButtonType.OK){
+            boolean exito = ProblematicaDAO.eliminarProblematica(seleccionada.getIdProblematica());
+            if(exito){
+                Utilidades.mostrarAlertaSimple("Éxito", "Problemática eliminada correctamente.", Alert.AlertType.INFORMATION);
+                cargarTabla();
+            } else {
+                Utilidades.mostrarAlertaSimple("Error", "No se pudo eliminar la problemática.", Alert.AlertType.ERROR);
             }
-        } else {
-            Utilidades.mostrarAlertaSimple("Selección requerida", "Selecciona una problemática.", Alert.AlertType.WARNING);
         }
     }
 
-    @FXML
-    private void clicRegresar(ActionEvent event) {
-        ((Stage) tfBusquedaNombre.getScene().getWindow()).close();
-    }
-    
-    private void abrirFormulario(Problematica problemaEdicion) {
+    private void abrirFormulario(String modo, Problematica problematica) {
         try {
-            // Cargar el FXML del FORMULARIO
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/sistematutoriasfx/vista/tutor/FXMLFormularioProblematica.fxml"));
             Parent root = loader.load();
             
             FXMLFormularioProblematicaController controlador = loader.getController();
-            
-            // Siempre inicializamos el tutor para que pueda buscar alumnos
             controlador.inicializarTutor(academicoSesion.getIdAcademico());
             
-            // Si es edición, cargamos los datos
-            if(problemaEdicion != null) {
-                controlador.inicializarEdicion(problemaEdicion);
+            // Si hay objeto (Modificar o Consultar), cargamos datos
+            if (problematica != null) {
+                controlador.inicializarEdicion(problematica);
+            }
+            
+            // SI ES MODO CONSULTA, BLOQUEAMOS TODO
+            if ("CONSULTAR".equalsIgnoreCase(modo)) {
+                controlador.configurarModoConsulta();
             }
             
             Scene scene = new Scene(root);
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setScene(scene);
-            stage.setTitle(problemaEdicion == null ? "Registrar Problemática" : "Modificar Problemática");
+            stage.setTitle(modo + " Problemática"); // Título dinámico
             stage.showAndWait();
             
-            cargarTabla(); // Recargar tabla al cerrar
+            // Recargar tabla solo si NO fue consulta (porque en consulta no cambia nada)
+            if (!"CONSULTAR".equalsIgnoreCase(modo)) {
+                cargarTabla();
+            }
             
         } catch (IOException ex) {
             ex.printStackTrace();
-            Utilidades.mostrarAlertaSimple("Error", "No se pudo abrir el formulario.", Alert.AlertType.ERROR);
+            Utilidades.mostrarAlertaSimple("Error", "No se pudo cargar la ventana.", Alert.AlertType.ERROR);
         }
+    }
+
+    @FXML
+    private void clicRegresar(ActionEvent event) {
+        // Cierra la ventana actual
+        Stage stage = (Stage) tvReportes.getScene().getWindow();
+        stage.close();
     }
 }

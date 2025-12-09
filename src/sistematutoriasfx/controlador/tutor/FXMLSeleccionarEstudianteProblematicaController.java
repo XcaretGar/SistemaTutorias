@@ -13,7 +13,6 @@ package sistematutoriasfx.controlador.tutor;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -29,19 +28,17 @@ import utilidad.Utilidades;
 public class FXMLSeleccionarEstudianteProblematicaController implements Initializable {
 
     @FXML private TableView<Estudiante> tvEstudiantes;
-    @FXML private TableColumn colMatricula;
-    @FXML private TableColumn colNombre;
+    @FXML private TableColumn<Estudiante, String> colMatricula;
+    @FXML private TableColumn<Estudiante, String> colNombre;
 
     private int idAcademico;
     private FXMLFormularioProblematicaController controladorPadre;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        colMatricula.setCellValueFactory(new PropertyValueFactory("matricula"));
-        // Asegúrate de tener getNombreCompleto() en tu POJO Estudiante
-        colNombre.setCellValueFactory(new PropertyValueFactory("nombreCompleto")); 
+        colMatricula.setCellValueFactory(new PropertyValueFactory<>("matricula"));
+        colNombre.setCellValueFactory(new PropertyValueFactory<>("nombreCompleto")); 
         
-        // Doble clic para seleccionar rápido
         tvEstudiantes.setOnMouseClicked(event -> {
             if(event.getClickCount() == 2 && tvEstudiantes.getSelectionModel().getSelectedItem() != null){
                 clicSeleccionar(null);
@@ -52,33 +49,31 @@ public class FXMLSeleccionarEstudianteProblematicaController implements Initiali
     public void inicializar(int idAcademico, FXMLFormularioProblematicaController padre) {
         this.idAcademico = idAcademico;
         this.controladorPadre = padre;
-        cargarEstudiantes();
+        cargarAlumnos();
     }
 
-    private void cargarEstudiantes() {
-        // Carga los alumnos del tutor del periodo 1 (o pásalo como parámetro)
-        ObservableList<Estudiante> lista = FXCollections.observableArrayList(
-            EstudianteDAO.obtenerEstudiantesPorTutor(idAcademico, 1)
-        );
-        tvEstudiantes.setItems(lista);
+    private void cargarAlumnos() {
+        int idPeriodoActual = 2; 
+        
+        System.out.println("Cargando alumnos para Tutor ID: " + idAcademico + " Periodo: " + idPeriodoActual);
+        
+        tvEstudiantes.setItems(FXCollections.observableArrayList(
+            EstudianteDAO.obtenerEstudiantesPorTutor(idAcademico, idPeriodoActual)
+        ));
     }
 
     @FXML
     private void clicSeleccionar(ActionEvent event) {
-        Estudiante seleccion = tvEstudiantes.getSelectionModel().getSelectedItem();
-        if (seleccion != null) {
-            // ¡AQUÍ ESTÁ LA MAGIA! Le mandamos el alumno a la ventana de atrás
-            controladorPadre.setEstudianteSeleccionado(seleccion);
+        Estudiante seleccionado = tvEstudiantes.getSelectionModel().getSelectedItem();
+        if(seleccionado != null){
+            controladorPadre.setEstudianteSeleccionado(seleccionado);
             cerrarVentana();
         } else {
-            Utilidades.mostrarAlertaSimple("Selección", "Selecciona un estudiante.", Alert.AlertType.WARNING);
+            Utilidades.mostrarAlertaSimple("Selección", "Elige un estudiante.", Alert.AlertType.WARNING);
         }
     }
 
-    @FXML
-    private void clicCancelar(ActionEvent event) {
-        cerrarVentana();
-    }
+    @FXML private void clicCancelar(ActionEvent event) { cerrarVentana(); }
     
     private void cerrarVentana() {
         ((Stage) tvEstudiantes.getScene().getWindow()).close();

@@ -53,7 +53,6 @@ public class ReporteTutoriaDAO {
         return resultado;
     }
 
-    // 2. ACTUALIZAR
     public static boolean actualizarReporte(ReporteTutoria reporte) {
         boolean resultado = false;
         Connection conexion = null;
@@ -102,7 +101,6 @@ public class ReporteTutoriaDAO {
         return resultado;
     }
 
-    // 3. OBTENER POR SESIÓN (Para el formulario)
     public static ReporteTutoria obtenerReportePorSesion(int idAcademico, int idFechaTutoria) {
         ReporteTutoria reporte = null;
         Connection conexion = null;
@@ -136,19 +134,16 @@ public class ReporteTutoriaDAO {
         return reporte;
     }
     
-    // 4. OBTENER ID (Auxiliar)
     public static int obtenerIdReporte(int idAcademico, int idFechaTutoria) {
         ReporteTutoria r = obtenerReportePorSesion(idAcademico, idFechaTutoria);
         return (r != null) ? r.getIdReporte() : 0;
     }
 
-    // 5. OBTENER LISTA PARA TABLA
     public static ArrayList<ReporteTutoria> obtenerReportesPorTutor(int idAcademico) {
         ArrayList<ReporteTutoria> lista = new ArrayList<>();
         Connection conexion = null;
         try {
             conexion = ConexionBD.abrirConexion();
-            // JOIN TRIPLE para sacar nombres bonitos
             String query = "SELECT r.*, p.nombre AS periodoNombre, f.fechaSesion, f.numSesion "
                          + "FROM reportetutoria r "
                          + "INNER JOIN periodoescolar p ON r.idPeriodo = p.idPeriodo "
@@ -162,21 +157,18 @@ public class ReporteTutoriaDAO {
 
             while (rs.next()) {
                 ReporteTutoria r = new ReporteTutoria();
-
-                // ✅ CAMPOS REALES DE LA BASE DE DATOS (ESTOS FALTABAN)
                 r.setIdReporte(rs.getInt("idReporte"));
                 r.setIdAcademico(rs.getInt("idAcademico"));
-                r.setIdPeriodo(rs.getInt("idPeriodo"));        // ✅ CRÍTICO PARA EL FILTRO
-                r.setIdSesion(rs.getInt("idSesion"));          // ✅ NECESARIO PARA EXPORTAR
+                r.setIdPeriodo(rs.getInt("idPeriodo"));        
+                r.setIdSesion(rs.getInt("idSesion"));         
                 r.setTotalAsistentes(rs.getInt("totalAsistentes"));
                 r.setTotalEnRiesgo(rs.getInt("totalEnRiesgo"));
                 r.setComentariosGenerales(rs.getString("comentariosGenerales"));
                 r.setEstatus(rs.getString("estatus"));
-                r.setFechaEntrega(rs.getString("fechaEntrega")); // ✅ PARA MOSTRAR EN REPORTE
+                r.setFechaEntrega(rs.getString("fechaEntrega"));
 
-                // ✅ CAMPOS VIRTUALES (Para mostrar en la tabla)
                 r.setPeriodoNombre(rs.getString("periodoNombre"));
-                r.setFechaSesion(rs.getString("fechaSesion"));  // ✅ CRÍTICO PARA EL FILTRO
+                r.setFechaSesion(rs.getString("fechaSesion")); 
                 r.setNumSesion(rs.getInt("numSesion"));
 
                 lista.add(r);
@@ -274,5 +266,28 @@ public class ReporteTutoriaDAO {
             e.printStackTrace();
             return false;
         }
+    }
+
+    public static int obtenerIdReporteActual(int idAcademico, int idPeriodo) {
+        int idReporte = 0;
+        Connection conexionBD = null;
+        try {
+            conexionBD = ConexionBD.abrirConexion();
+            if (conexionBD != null) {
+                String consulta = "SELECT idReporte FROM reportetutoria WHERE idAcademico = ? AND idPeriodo = ?";
+                PreparedStatement prepararSentencia = conexionBD.prepareStatement(consulta);
+                prepararSentencia.setInt(1, idAcademico);
+                prepararSentencia.setInt(2, idPeriodo);
+                ResultSet resultado = prepararSentencia.executeQuery();
+                if (resultado.next()) {
+                    idReporte = resultado.getInt("idReporte");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try { if (conexionBD != null) conexionBD.close(); } catch (SQLException e) { e.printStackTrace(); }
+        }
+        return idReporte;
     }
 }

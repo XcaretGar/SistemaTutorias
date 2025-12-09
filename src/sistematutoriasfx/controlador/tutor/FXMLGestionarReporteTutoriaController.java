@@ -67,7 +67,7 @@ public class FXMLGestionarReporteTutoriaController implements Initializable {
 
     private Usuario usuarioSesion;
     private Academico academicoSesion;
-    private ObservableList<ReporteTutoria> listaOriginalReportes; // ✅ NUEVO
+    private ObservableList<ReporteTutoria> listaOriginalReportes;
 
     public void configurarEscena(Usuario usuario) {
         this.usuarioSesion = usuario;
@@ -99,7 +99,6 @@ public class FXMLGestionarReporteTutoriaController implements Initializable {
     }
     
     private void configurarListeners() {
-        // ✅ Al cambiar periodo, cargar fechas y filtrar
         cbPeriodo.valueProperty().addListener((obs, oldVal, newVal) -> {
             if(newVal != null) {
                 cbFechaSesion.setItems(FXCollections.observableArrayList(
@@ -113,7 +112,6 @@ public class FXMLGestionarReporteTutoriaController implements Initializable {
             }
         });
         
-        // ✅ Al cambiar fecha, mostrar fecha y filtrar
         cbFechaSesion.valueProperty().addListener((obs, oldVal, newVal) -> {
             if(newVal != null) {
                 lbFechaMostrada.setText(newVal.getFechaSesion().toString());
@@ -129,7 +127,6 @@ public class FXMLGestionarReporteTutoriaController implements Initializable {
             ArrayList<ReporteTutoria> lista = ReporteTutoriaDAO.obtenerReportesPorTutor(academicoSesion.getIdAcademico());
             listaOriginalReportes = FXCollections.observableArrayList(lista);
 
-            // ✅ CAMBIO: Mostrar TODOS los reportes al cargar inicialmente
             tvReportes.setItems(listaOriginalReportes);
         }
     }
@@ -196,7 +193,7 @@ public class FXMLGestionarReporteTutoriaController implements Initializable {
             stage.showAndWait();
             
             cargarTabla();
-            filtrarTabla(); // ✅ Aplicar filtros después de recargar
+            filtrarTabla(); 
             
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -265,7 +262,6 @@ public class FXMLGestionarReporteTutoriaController implements Initializable {
         exportarReporteATXT(seleccion);
     }
     
-    // ✅ NUEVO: Exportar reporte a TXT
     private void exportarReporteATXT(ReporteTutoria reporte) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Guardar Reporte");

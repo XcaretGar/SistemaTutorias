@@ -85,7 +85,6 @@ public class FXMLFormularioReporteTutoriaController implements Initializable {
         cargarCombos();
         configurarListeners();
         
-        // ✅ Asegurar que los campos estén deshabilitados para edición manual
         tfTotalAsistentes.setEditable(false);
         tfTotalRiesgo.setEditable(false);
     }
@@ -105,7 +104,6 @@ public class FXMLFormularioReporteTutoriaController implements Initializable {
             }
         });
         
-        // ✅ NUEVO: Al seleccionar fecha, cargar automáticamente los totales
         cbFechaSesionReporte.valueProperty().addListener((obs, oldVal, newVal) -> {
             if(newVal != null) {
                 cargarTotalesDeAsistencia();
@@ -119,7 +117,6 @@ public class FXMLFormularioReporteTutoriaController implements Initializable {
         ));
     }
 
-    // ✅ NUEVO MÉTODO: Calcular totales desde listaasistencia
     private void cargarTotalesDeAsistencia() {
         if(cbFechaSesionReporte.getValue() == null) {
             return;
@@ -145,7 +142,6 @@ public class FXMLFormularioReporteTutoriaController implements Initializable {
             return;
         }
         
-        // ✅ Calcular totales
         int totalAsistieron = 0;
         int totalEnRiesgo = 0;
         
@@ -158,7 +154,6 @@ public class FXMLFormularioReporteTutoriaController implements Initializable {
             }
         }
         
-        // ✅ Actualizar campos automáticamente
         tfTotalAsistentes.setText(String.valueOf(totalAsistieron));
         tfTotalRiesgo.setText(String.valueOf(totalEnRiesgo));
         
@@ -175,7 +170,6 @@ public class FXMLFormularioReporteTutoriaController implements Initializable {
 
     @FXML
     private void clicGuardar(ActionEvent event) {
-        // 1. Validaciones
         if (cbPeriodoReporte.getValue() == null || cbFechaSesionReporte.getValue() == null) {
             Utilidades.mostrarAlertaSimple("Faltan datos", 
                 "Por favor selecciona el periodo y la fecha de sesión.", 
@@ -183,7 +177,6 @@ public class FXMLFormularioReporteTutoriaController implements Initializable {
             return;
         }
         
-        // ✅ Validar que haya asistencia registrada
         int asistentes = Integer.parseInt(tfTotalAsistentes.getText());
         if(asistentes == 0 && !esEdicion) {
             Utilidades.mostrarAlertaSimple("Sin asistencia", 
@@ -197,18 +190,17 @@ public class FXMLFormularioReporteTutoriaController implements Initializable {
             ReporteTutoria reporte = new ReporteTutoria();
             reporte.setComentariosGenerales(taComentarios.getText());
             
-            // ✅ Tomar los valores calculados automáticamente
             reporte.setTotalAsistentes(Integer.parseInt(tfTotalAsistentes.getText()));
             reporte.setTotalEnRiesgo(Integer.parseInt(tfTotalRiesgo.getText()));
             
             boolean exito;
             
             if(esEdicion) {
-                // --- ACTUALIZAR ---
+                // ACTUALIZAR
                 reporte.setIdReporte(reporteEdicion.getIdReporte());
                 exito = ReporteTutoriaDAO.actualizarReporte(reporte);
             } else {
-                // --- REGISTRAR NUEVO ---
+                // REGISTRAR NUEVO
                 reporte.setIdAcademico(idAcademico);
                 reporte.setIdPeriodo(cbPeriodoReporte.getValue().getIdPeriodo());
                 

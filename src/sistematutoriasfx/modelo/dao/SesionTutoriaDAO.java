@@ -83,11 +83,9 @@ public class SesionTutoriaDAO {
         try {
             conexion = ConexionBD.abrirConexion();
 
-            // ✅ MODIFICADO: Agregamos el conteo de total de alumnos
             String query = "SELECT s.*, p.nombre AS periodoNombre, ft.fechaSesion, ft.numSesion, " +
                            "(SELECT COUNT(*) FROM listaasistencia l WHERE l.idSesion = s.idSesion AND l.asistio = 1) AS totalAsistentes, " +
                            "(SELECT COUNT(*) FROM listaasistencia l WHERE l.idSesion = s.idSesion AND l.riesgoDetectado = 1) AS totalRiesgo, " +
-                           // ✅ NUEVA LÍNEA: Contar total de alumnos asignados
                            "(SELECT COUNT(*) FROM asignaciontutor WHERE idAcademico = ? AND idPeriodo = s.idPeriodo) AS totalAlumnos " +
                            "FROM sesiontutoria s " +
                            "INNER JOIN periodoescolar p ON s.idPeriodo = p.idPeriodo " +
@@ -95,8 +93,8 @@ public class SesionTutoriaDAO {
                            "WHERE s.idAcademico = ?";
 
             PreparedStatement ps = conexion.prepareStatement(query);
-            ps.setInt(1, idAcademico); // ✅ Para el subquery de totalAlumnos
-            ps.setInt(2, idAcademico); // Para el WHERE principal
+            ps.setInt(1, idAcademico); 
+            ps.setInt(2, idAcademico); 
             ResultSet rs = ps.executeQuery();
 
             while(rs.next()){

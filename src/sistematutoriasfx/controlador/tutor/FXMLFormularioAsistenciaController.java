@@ -51,7 +51,6 @@ public class FXMLFormularioAsistenciaController implements Initializable {
     private int idSesionReal;
     private boolean modoConsulta = false;
 
-    // ✅ MÉTODO PRINCIPAL DE INICIALIZACIÓN
     public void inicializarAsistencia(int idAcademico, FechasTutoria fecha, boolean soloConsulta) {
         this.idAcademico = idAcademico;
         this.fechaSesion = fecha;
@@ -65,12 +64,10 @@ public class FXMLFormularioAsistenciaController implements Initializable {
         
         cargarAlumnos();
         
-        // ✅ Cargar datos previos si existen
         if(idSesionReal > 0) {
             cargarAsistenciaPrevia();
         }
         
-        // ✅ Si es modo consulta, deshabilitar edición
         if(modoConsulta) {
             deshabilitarEdicion();
         }
@@ -145,16 +142,15 @@ public class FXMLFormularioAsistenciaController implements Initializable {
         }
     }
 
-    // ✅ NUEVO MÉTODO: Cargar asistencia guardada previamente
     private void cargarAsistenciaPrevia() {
         java.util.ArrayList<ListaAsistencia> asistenciaPrevia = 
             ListaAsistenciaDAO.obtenerAsistenciaPorSesion(idSesionReal);
         
         if(asistenciaPrevia == null || asistenciaPrevia.isEmpty()) {
-            return; // No hay datos previos
+            return; 
         }
         
-        // Recorrer la tabla y marcar los CheckBox según los datos guardados
+        // Recorrer la tabla y marcar los CheckBox
         for (Estudiante est : tvAlumnos.getItems()) {
             for (ListaAsistencia asist : asistenciaPrevia) {
                 if (est.getIdEstudiante() == asist.getIdEstudiante()) {
@@ -166,7 +162,6 @@ public class FXMLFormularioAsistenciaController implements Initializable {
         }
     }
 
-    // ✅ NUEVO MÉTODO: Deshabilitar edición para modo consulta
     private void deshabilitarEdicion() {
         // Deshabilitar CheckBox
         for (Estudiante est : tvAlumnos.getItems()) {
@@ -177,7 +172,6 @@ public class FXMLFormularioAsistenciaController implements Initializable {
                 est.getCbRiesgo().setDisable(true);
             }
         }
-        
         // Ocultar botones
         if(btnGuardar != null) btnGuardar.setVisible(false);
         if(btnCancelar != null) btnCancelar.setVisible(false);
@@ -185,7 +179,6 @@ public class FXMLFormularioAsistenciaController implements Initializable {
 
     @FXML
     private void clicGuardar(ActionEvent event) {
-        // ✅ VALIDACIÓN: Verificar que la tabla NO esté vacía
         if(tvAlumnos.getItems().isEmpty()) {
             Utilidades.mostrarAlertaSimple("Tabla vacía", 
                 "No hay estudiantes asignados a este periodo.\n" +
@@ -193,8 +186,6 @@ public class FXMLFormularioAsistenciaController implements Initializable {
                 Alert.AlertType.WARNING);
             return;
         }
-        
-        // ✅ VALIDACIÓN: Verificar que idSesionReal sea válido
         if(idSesionReal <= 0) {
             Utilidades.mostrarAlertaSimple("Error de sesión", 
                 "No se encontró una sesión válida para esta fecha.", 

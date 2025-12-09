@@ -94,7 +94,6 @@ public class FXMLFormularioEvidenciaController implements Initializable {
 
     @FXML
     public void clicGuardar(ActionEvent event) {
-        // 1. Validaciones
         String nombreUsuario = tfNombreEvidencia.getText();
         if (nombreUsuario.isEmpty()) {
             lbError.setText("Por favor asigna un nombre a la evidencia.");
@@ -112,7 +111,6 @@ public class FXMLFormularioEvidenciaController implements Initializable {
             boolean exito = false;
             String rutaFinalBD = ""; 
 
-            // 2. Lógica de Copiado de Archivo (Físico)
             if (archivoSeleccionado != null) {
                 // Creamos la carpeta si no existe
                 String carpetaDestino = "evidencias_subidas/";
@@ -128,27 +126,23 @@ public class FXMLFormularioEvidenciaController implements Initializable {
                 // Copiamos el archivo
                 Files.copy(archivoSeleccionado.toPath(), destino.toPath(), StandardCopyOption.REPLACE_EXISTING);
                 
-                rutaFinalBD = destino.getPath(); // Esta ruta es la que va a la BD
+                rutaFinalBD = destino.getPath();
             } else if (esEdicion) {
                 // Si editamos pero no cambiamos el archivo, mantenemos la ruta vieja
                 rutaFinalBD = evidenciaEdicion.getRutaArchivo();
             }
-
-            // 3. Preparar objeto para el DAO
             Evidencia evidenciaGuardar = new Evidencia();
             evidenciaGuardar.setNombreArchivo(nombreUsuario);
             evidenciaGuardar.setRutaArchivo(rutaFinalBD);
             evidenciaGuardar.setIdReporte(idReporteActual);
 
-            // 4. Llamar al DAO
+            // Llamar al DAO
             if (esEdicion) {
                 evidenciaGuardar.setIdEvidencia(evidenciaEdicion.getIdEvidencia());
                 exito = EvidenciaDAO.actualizarEvidencia(evidenciaGuardar);
             } else {
                 exito = EvidenciaDAO.registrarEvidencia(evidenciaGuardar);
             }
-
-            // 5. Finalizar
             if (exito) {
                 Utilidades.mostrarAlertaSimple("Operación exitosa", "La evidencia se ha guardado correctamente.", Alert.AlertType.INFORMATION);
                 cerrarVentana();

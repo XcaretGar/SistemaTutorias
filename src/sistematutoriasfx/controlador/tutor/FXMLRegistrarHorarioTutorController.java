@@ -45,7 +45,6 @@ public class FXMLRegistrarHorarioTutorController implements Initializable {
     private Usuario usuarioSesion;
     private Academico academicoSesion;
 
-    // Método llamado desde el Menú Principal
     public void configurarEscena(Usuario usuario) {
         this.usuarioSesion = usuario;
         this.academicoSesion = AcademicoDAO.obtenerAcademicoPorIdUsuario(usuario.getIdUsuario());

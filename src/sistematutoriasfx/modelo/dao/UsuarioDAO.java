@@ -20,7 +20,6 @@ import sistematutoriasfx.modelo.pojo.Usuario;
 
 public class UsuarioDAO {
 
-    // 1. Verifica si el usuario existe 
     public static Usuario verificarSesion(String username, String password) {
         Usuario usuarioVerificado = null;
         Connection conexion = null;
@@ -47,7 +46,6 @@ public class UsuarioDAO {
         return usuarioVerificado;
     }
     
-    // 2. Obtiene la lista de roles asignados a ese usuario
     public static ArrayList<Rol> obtenerRolesDeUsuario(int idUsuario) {
         ArrayList<Rol> roles = new ArrayList<>();
         Connection conexion = null;

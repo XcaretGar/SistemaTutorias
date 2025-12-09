@@ -56,21 +56,17 @@ public class FXMLFormularioHorarioController implements Initializable {
     private boolean esEdicion = false; 
     private SesionTutoria sesionEdicion; 
     
-    // Recibe el ID del tutor desde la tabla
     public void inicializarTutor(int idAcademicoRecibido){
         this.idAcademico = idAcademicoRecibido;
     }
 
-    // Recibe la sesión a editar desde la tabla
     public void inicializarSesionEdicion(SesionTutoria sesion) {
         this.esEdicion = true;
         this.sesionEdicion = sesion;
         
-        // 1. Llenar campos de texto
         tfLugar.setText(sesion.getLugar());
         taComentarios.setText(sesion.getComentarios());
         
-        // 2. Seleccionar Periodo
         for (PeriodoEscolar p : cbPeriodo.getItems()) {
             if (p.getIdPeriodo() == sesion.getIdPeriodo()) {
                 cbPeriodo.setValue(p);
@@ -78,7 +74,6 @@ public class FXMLFormularioHorarioController implements Initializable {
             }
         }
         
-        // 3. Cargar fechas y seleccionar la correcta
         cargarFechasOficiales(sesion.getIdPeriodo());
         for (FechasTutoria f : cbFechaBase.getItems()) {
             if (f.getIdFechaTutoria() == sesion.getIdFechaTutoria()) {
@@ -87,7 +82,7 @@ public class FXMLFormularioHorarioController implements Initializable {
             }
         }
         
-        // 4. Desglosar la hora
+        // Desglosar la hora
         try {
             String[] partes = sesion.getHora().split(":");
             int h = Integer.parseInt(partes[0]);
@@ -151,7 +146,6 @@ public class FXMLFormularioHorarioController implements Initializable {
 
     @FXML
     private void clicGuardar(ActionEvent event) {
-        // Validar vacíos
         if(cbPeriodo.getValue() == null || cbFechaBase.getValue() == null ||
            cbHora.getValue() == null || cbMinutos.getValue() == null || cbAmPm.getValue() == null || 
            tfLugar.getText().isEmpty()){
@@ -179,12 +173,11 @@ public class FXMLFormularioHorarioController implements Initializable {
         boolean exito;
         
         if (esEdicion) {
-            // ACTUALIZAR
             // Le pasamos el ID de la sesión original para que el DAO sepa cuál editar
             sesion.setIdSesion(this.sesionEdicion.getIdSesion());
             exito = SesionTutoriaDAO.actualizarSesion(sesion);
         } else {
-            // REGISTRAR
+            // Registrar
             exito = SesionTutoriaDAO.registrarSesion(sesion);
         }
         

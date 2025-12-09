@@ -12,9 +12,9 @@ package sistematutoriasfx.modelo.pojo;
 public class Evidencia {
     private int idEvidencia;
     private int idReporte; // FK hacia ReporteTutoria
-    private String nombreArchivo; // Ej: "Lista_Asistencia_Marzo.pdf"
-    private String rutaArchivo;   // Ej: "C:/SistemaTutorias/Evidencias/Lista_Asistencia_Marzo.pdf"
-    private String fechaSubida;   // Fecha en que se subió
+    private String nombreArchivo; 
+    private String rutaArchivo;   
+    private String fechaSubida;   
 
     public Evidencia() {
     }

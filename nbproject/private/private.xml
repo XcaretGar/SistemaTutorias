@@ -4,17 +4,16 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/Ana%20Georgina/OneDrive/Documentos/NetBeansProjects/SistemaTutorias/src/sistematutoriasfx/SistemaTutoriasFx.java</file>
+            <file>file:/C:/Users/Ana%20Georgina/OneDrive/Documentos/NetBeansProjects/SistemaTutorias/src/sistematutoriasfx/modelo/dao/ProblematicaDAO.java</file>
+            <file>file:/C:/Users/Ana%20Georgina/OneDrive/Documentos/NetBeansProjects/SistemaTutorias/src/sistematutoriasfx/modelo/pojo/Problematica.java</file>
+            <file>file:/C:/Users/Ana%20Georgina/OneDrive/Documentos/NetBeansProjects/SistemaTutorias/src/sistematutoriasfx/vista/tutor/FXMLGestionarProblematica.fxml</file>
+            <file>file:/C:/Users/Ana%20Georgina/OneDrive/Documentos/NetBeansProjects/SistemaTutorias/src/sistematutoriasfx/vista/tutor/FXMLSeleccionarEstudianteProblematica.fxml</file>
+            <file>file:/C:/Users/Ana%20Georgina/OneDrive/Documentos/NetBeansProjects/SistemaTutorias/src/sistematutoriasfx/vista/tutor/FXMLFormularioProblematica.fxml</file>
             <file>file:/C:/Users/Ana%20Georgina/OneDrive/Documentos/NetBeansProjects/SistemaTutorias/src/sistematutoriasfx/modeloo/ConexionBD.java</file>
-            <file>file:/C:/Users/Ana%20Georgina/OneDrive/Documentos/NetBeansProjects/SistemaTutorias/src/sistematutoriasfx/controlador/tutor/FXMLAsistenciaTutoradosController.java</file>
-            <file>file:/C:/Users/Ana%20Georgina/OneDrive/Documentos/NetBeansProjects/SistemaTutorias/src/sistematutoriasfx/controlador/tutor/FXMLFormularioAsistenciaController.java</file>
+            <file>file:/C:/Users/Ana%20Georgina/OneDrive/Documentos/NetBeansProjects/SistemaTutorias/src/sistematutoriasfx/controlador/tutor/FXMLGestionarProblematicaController.java</file>
             <file>file:/C:/Users/Ana%20Georgina/OneDrive/Documentos/NetBeansProjects/SistemaTutorias/src/sistematutoriasfx/modelo/dao/EstudianteDAO.java</file>
-            <file>file:/C:/Users/Ana%20Georgina/OneDrive/Documentos/NetBeansProjects/SistemaTutorias/src/sistematutoriasfx/modelo/pojo/Estudiante.java</file>
-            <file>file:/C:/Users/Ana%20Georgina/OneDrive/Documentos/NetBeansProjects/SistemaTutorias/src/sistematutoriasfx/modelo/dao/SesionTutoriaDAO.java</file>
-            <file>file:/C:/Users/Ana%20Georgina/OneDrive/Documentos/NetBeansProjects/SistemaTutorias/src/sistematutoriasfx/modelo/dao/AcademicoDAO.java</file>
-            <file>file:/C:/Users/Ana%20Georgina/OneDrive/Documentos/NetBeansProjects/SistemaTutorias/src/sistematutoriasfx/modelo/pojo/Academico.java</file>
-            <file>file:/C:/Users/Ana%20Georgina/OneDrive/Documentos/NetBeansProjects/SistemaTutorias/src/sistematutoriasfx/vista/tutor/FXMLFormularioAsistencia.fxml</file>
-            <file>file:/C:/Users/Ana%20Georgina/OneDrive/Documentos/NetBeansProjects/SistemaTutorias/src/sistematutoriasfx/vista/tutor/FXMLAsistenciaTutorados.fxml</file>
-            <file>file:/C:/Users/Ana%20Georgina/OneDrive/Documentos/NetBeansProjects/SistemaTutorias/src/sistematutoriasfx/vista/tutor/FXMLIntento33.fxml</file>
+            <file>file:/C:/Users/Ana%20Georgina/OneDrive/Documentos/NetBeansProjects/SistemaTutorias/src/sistematutoriasfx/controlador/tutor/FXMLFormularioProblematicaController.java</file>
+            <file>file:/C:/Users/Ana%20Georgina/OneDrive/Documentos/NetBeansProjects/SistemaTutorias/src/sistematutoriasfx/controlador/tutor/FXMLGestionarReporteTutoriaController.java</file>
         </group>
     </open-files>
 </project-private>

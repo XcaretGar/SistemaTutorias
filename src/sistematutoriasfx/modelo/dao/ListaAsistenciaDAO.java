@@ -72,8 +72,6 @@ public class ListaAsistenciaDAO {
         return resultado;
     }
     
-    // Método opcional: Borrar asistencia previa de una sesión
-    // Útil si el tutor se equivocó y quiere volver a pasar lista (limpiar y re-insertar)
     public static boolean eliminarAsistenciaPorSesion(int idSesion) {
         boolean resultado = false;
         Connection conexion = null;

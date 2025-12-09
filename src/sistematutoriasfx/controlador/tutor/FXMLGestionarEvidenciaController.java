@@ -95,7 +95,7 @@ public class FXMLGestionarEvidenciaController implements Initializable {
                 // Limpiar tabla y resetear ID
                 tvEvidencias.getItems().clear();
                 idReporteActual = 0;
-                // ✅ Limpiar la fecha mostrada
+                // Limpiar la fecha mostrada
                 lbFechaMostrada.setText("");
             } else {
                 // Si se deselecciona el periodo, limpiar todo
@@ -109,7 +109,7 @@ public class FXMLGestionarEvidenciaController implements Initializable {
         // Listener para el ComboBox de Fecha de Sesión
         cbFechaSesion.valueProperty().addListener((obs, oldVal, newVal) -> {
             if(newVal != null) {
-                // ✅ Mostrar la fecha seleccionada en el label azul
+                // Mostrar la fecha seleccionada en el label azul
                 lbFechaMostrada.setText(newVal.getFechaSesion().toString());
 
                 // Buscar el reporte asociado a esta fecha
