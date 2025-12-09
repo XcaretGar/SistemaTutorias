@@ -1,11 +1,67 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.text.*?>
 <?import java.lang.*?>
 <?import java.util.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sistematutoriasfx.controlador.tutor.FXMLFormularioProblematicaController">
-    
+<AnchorPane id="AnchorPane" prefHeight="550.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sistematutoriasfx.controlador.tutor.FXMLFormularioProblematicaController">
+   <children>
+      <Pane prefHeight="550.0" prefWidth="600.0" style="-fx-background-color: white;">
+         <children>
+            <Pane prefHeight="70.0" prefWidth="600.0" style="-fx-background-color: #063596;">
+               <children>
+                  <Label layoutX="30.0" layoutY="25.0" text="Sistema de Gestión de Tutorías" textFill="WHITE">
+                     <font><Font size="16.0" /></font>
+                     <effect><Blend /></effect>
+                  </Label>
+               </children>
+            </Pane>
+
+            <Label layoutX="30.0" layoutY="90.0" text="Ingresar Problemática">
+               <font><Font size="18.0" /></font>
+               <effect><Blend /></effect>
+            </Label>
+
+            <Label layoutX="73.0" layoutY="226.0" text="Título de la problemática" />
+            <ComboBox fx:id="cbEstatus" layoutX="341.0" layoutY="247.0" prefHeight="30.0" prefWidth="107.0" />
+            <Label fx:id="lbFechaMostrada" layoutX="300.0" layoutY="195.0" text="" textFill="#063596">
+               <font><Font name="System Bold" size="12.0" /></font>
+            </Label>
+
+            <Label layoutX="72.0" layoutY="289.0" text="Descripción de la problemática:" />
+            <HBox alignment="CENTER_LEFT" layoutX="50.0" layoutY="250.0" spacing="5.0" />
+            <TextArea fx:id="taDescripcion" layoutX="69.0" layoutY="317.0" prefHeight="120.0" prefWidth="463.0" promptText="Indicaciones para los alumnos..." text="Describa la problematica del tutorado..." wrapText="true" />
+
+            <Button fx:id="btnGuardar" layoutX="448.0" layoutY="462.0" mnemonicParsing="false" onAction="#clicGuardar" prefHeight="30.0" prefWidth="77.0" style="-fx-background-color: #38AB3B;" text="Guardar" textFill="WHITE">
+               <font><Font size="14.0" /></font>
+               <effect><Blend /></effect>
+            </Button>
+            
+            <Button fx:id="btnCancelar" layoutX="356.0" layoutY="462.0" mnemonicParsing="false" onAction="#clicCancelar" prefHeight="30.0" prefWidth="77.0" style="-fx-background-color: #d9534f;" text="Cancelar" textFill="WHITE">
+               <font><Font size="14.0" /></font>
+               <effect><Blend /></effect>
+            </Button>
+            <TextField fx:id="tfTituloProblematica" layoutX="69.0" layoutY="249.0" prefHeight="25.0" prefWidth="229.0" />
+            <Label layoutX="347.0" layoutY="226.0" text="Estatus:" />
+            <Button layoutX="78.0" layoutY="462.0" mnemonicParsing="false" onAction="#clicRegresar" prefHeight="30.0" prefWidth="77.0" style="-fx-background-color: #7f8c8d;" text="Regresar" textFill="WHITE">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Button>
+            <Button fx:id="btnBuscarAlumno" layoutX="396.0" layoutY="165.0" mnemonicParsing="false" onAction="#clicBuscarAlumno" prefHeight="30.0" prefWidth="132.0" style="-fx-background-color: #417C9E;" text="Buscar alumno" textFill="WHITE">
+              </Button>
+            <TextField fx:id="tfEstudianteSeleccionado" editable="false" layoutX="68.0" layoutY="165.0" prefHeight="30.0" prefWidth="307.0" promptText="Clic en buscar para seleccionar..." style="-fx-background-color: #e9ecef;" />
+            <Label layoutX="73.0" layoutY="140.0" text="Estudiante:">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+
+         </children>
+      </Pane>
+   </children>
 </AnchorPane>

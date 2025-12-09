@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="500.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sistematutoriasfx.controlador.tutor.FXMLSeleccionarEstudianteProblematicaController">
+   <children>
+      <Pane prefHeight="70.0" prefWidth="600.0" style="-fx-background-color: #063596;">
+         <children>
+            <Label layoutX="31.0" layoutY="23.0" text="Sistema de Gestión de Tutorías" textFill="WHITE">
+               <effect>
+                  <Blend />
+               </effect>
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      
+      <Label fx:id="lbFechaMostrada" layoutX="273.0" layoutY="199.0" text="" textFill="#063596">
+         <font><Font name="System Bold" size="12.0" /></font>
+      </Label>
+      
+      <Button layoutX="314.0" layoutY="338.0" mnemonicParsing="false" onAction="#clicCancelar" prefHeight="29.0" prefWidth="101.0" style="-fx-background-color: #7f8c8d;" text="Cancelar" textFill="WHITE">
+         <font><Font size="13.0" /></font>
+      </Button>
+      <Label layoutX="41.0" layoutY="89.0" text="Seleccionar estudiante...">
+         <effect>
+            <Blend />
+         </effect>
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Button layoutX="428.0" layoutY="338.0" mnemonicParsing="false" onAction="#clicSeleccionar" prefHeight="29.0" prefWidth="101.0" style="-fx-background-color: #38AB3B;" text="Seleccionar" textFill="WHITE">
+         <font>
+            <Font size="13.0" />
+         </font>
+      </Button>
+      <TableView fx:id="tvEstudiantes" layoutX="55.0" layoutY="130.0" prefHeight="191.0" prefWidth="491.0">
+         <columns>
+            <TableColumn fx:id="colMatricula" prefWidth="138.0" text="Matrícula" />
+            <TableColumn fx:id="colNombre" prefWidth="352.0" text="Nombre del Estudiante" />
+         </columns>
+      </TableView>
+
+   </children>
+</AnchorPane>

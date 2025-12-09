@@ -18,7 +18,7 @@ import sistematutoriasfx.modeloo.ConexionBD;
  * @author JOANA XCARET
  */
 public class EstudianteDAO {
-    
+      
     public static ArrayList<Estudiante> obtenerEstudiantes() {
         ArrayList<Estudiante> estudiantes = new ArrayList<>();
         Connection conexion = null;

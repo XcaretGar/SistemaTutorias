@@ -38,10 +38,10 @@
             <Label layoutX="50.0" layoutY="230.0" text="Hora de Inicio:" />
             <HBox alignment="CENTER_LEFT" layoutX="50.0" layoutY="250.0" spacing="5.0">
                <children>
-                  <ComboBox fx:id="cbHora" prefHeight="30.0" prefWidth="70.0" promptText="10" />
+                  <ComboBox fx:id="cbHora" prefHeight="30.0" prefWidth="70.0" />
                   <Label text=":"><font><Font size="14.0" /></font></Label>
-                  <ComboBox fx:id="cbMinutos" prefHeight="30.0" prefWidth="70.0" promptText="00" />
-                  <ComboBox fx:id="cbAmPm" prefHeight="30.0" prefWidth="70.0" promptText="AM" />
+                  <ComboBox fx:id="cbMinutos" prefHeight="30.0" prefWidth="70.0" />
+                  <ComboBox fx:id="cbAmPm" prefHeight="30.0" prefWidth="70.0" />
                </children>
             </HBox>
 

@@ -42,7 +42,6 @@ public class FXMLPrincipalTutorController implements Initializable {
         // TODO
     }    
 
-    // Método para recibir el usuario del Login y buscar su nombre real
     public void configurarVista(Usuario usuario) {
         this.usuarioSesion = usuario;
         this.academicoSesion = AcademicoDAO.obtenerAcademicoPorIdUsuario(usuario.getIdUsuario());
@@ -61,7 +60,6 @@ public class FXMLPrincipalTutorController implements Initializable {
             Parent root = loader.load();
             
             FXMLRegistrarHorarioTutorController controlador = loader.getController();
-            
             controlador.configurarEscena(this.usuarioSesion);
             
             Scene scene = new Scene(root);
@@ -102,8 +100,8 @@ public class FXMLPrincipalTutorController implements Initializable {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/sistematutoriasfx/vista/tutor/FXMLGestionarReporteTutoria.fxml"));
             Parent root = loader.load();
+            
             FXMLGestionarReporteTutoriaController controlador = loader.getController();
-
             controlador.configurarEscena(this.usuarioSesion);
 
             Scene scene = new Scene(root);
@@ -123,8 +121,8 @@ public class FXMLPrincipalTutorController implements Initializable {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/sistematutoriasfx/vista/tutor/FXMLAsistenciaTutorados.fxml"));
             Parent root = loader.load();
+            
             FXMLAsistenciaTutoradosController controlador = loader.getController();
-
             controlador.configurarEscena(this.usuarioSesion);
 
             Scene scene = new Scene(root);
@@ -158,6 +156,23 @@ public class FXMLPrincipalTutorController implements Initializable {
 
     @FXML
     private void clicProblematica(ActionEvent event) {
-        //AQUI SE AGREGA EL FXML
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/sistematutoriasfx/vista/tutor/FXMLGestionarProblematica.fxml"));
+            Parent root = loader.load();
+
+            FXMLGestionarProblematicaController controlador = loader.getController();
+            controlador.configurarEscena(this.usuarioSesion);
+
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setScene(scene);
+            stage.setTitle("Gestión de Problemáticas");
+            stage.showAndWait();
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            Utilidades.mostrarAlertaSimple("Error", "No se pudo abrir la gestión de problemáticas.", javafx.scene.control.Alert.AlertType.ERROR);
+        }
     }
 }

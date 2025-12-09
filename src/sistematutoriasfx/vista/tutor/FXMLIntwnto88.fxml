@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="500.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sistematutoriasfx.controlador.tutor.FXMLSeleccionarEstudianteController">
+   <children>
+      <Pane prefHeight="50.0" prefWidth="500.0" style="-fx-background-color: #063596;">
+         <children>
+            <Label layoutX="20.0" layoutY="13.0" text="Seleccionar Estudiante" textFill="WHITE">
+               <font><Font name="System Bold" size="16.0" /></font>
+            </Label>
+         </children>
+      </Pane>
+
+      <Label layoutX="20.0" layoutY="70.0" text="Doble clic para seleccionar:">
+          <font><Font size="14.0" /></font>
+      </Label>
+
+      <TableView fx:id="tvEstudiantes" layoutX="20.0" layoutY="100.0" prefHeight="230.0" prefWidth="460.0">
+        <columns>
+          <TableColumn fx:id="colMatricula" prefWidth="120.0" text="Matrícula" />
+          <TableColumn fx:id="colNombre" prefWidth="320.0" text="Nombre Completo" />
+        </columns>
+      </TableView>
+
+      <Button layoutX="380.0" layoutY="350.0" mnemonicParsing="false" onAction="#clicCancelar" prefHeight="30.0" prefWidth="100.0" style="-fx-background-color: #7f8c8d;" text="Cancelar" textFill="WHITE">
+          <cursor><Cursor fx:constant="HAND" /></cursor>
+      </Button>
+      
+      <Button layoutX="270.0" layoutY="350.0" mnemonicParsing="false" onAction="#clicSeleccionar" prefHeight="30.0" prefWidth="100.0" style="-fx-background-color: #38AB3B;" text="Seleccionar" textFill="WHITE">
+          <font><Font name="System Bold" size="12.0" /></font>
+          <cursor><Cursor fx:constant="HAND" /></cursor>
+      </Button>
+   </children>
+</AnchorPane>

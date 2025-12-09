@@ -127,7 +127,7 @@ public class FXMLAsistenciaTutoradosController implements Initializable {
             // tvListaAsistencia.setItems(listaOriginalSesiones); 
 
             // ✅ AHORA: La tabla empieza VACÍA hasta que selecciones filtros
-            tvListaAsistencia.setItems(FXCollections.observableArrayList());
+            //tvListaAsistencia.setItems(FXCollections.observableArrayList());
     }
 }
     

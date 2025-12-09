@@ -22,6 +22,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
@@ -43,17 +44,26 @@ import utilidad.Utilidades;
 
 public class FXMLGestionarReporteTutoriaController implements Initializable {
 
-    @FXML private ComboBox<PeriodoEscolar> cbPeriodo;
-    @FXML private ComboBox<FechasTutoria> cbFechaSesion;
-    @FXML private Label lbFechaMostrada; // ✅ NUEVO
+    @FXML
+    private ComboBox<PeriodoEscolar> cbPeriodo;
+    @FXML
+    private ComboBox<FechasTutoria> cbFechaSesion;
+    @FXML private Label lbFechaMostrada; 
     @FXML private TableView<ReporteTutoria> tvReportes;
-    @FXML private TableColumn colPeriodo;
-    @FXML private TableColumn colFechaSesion; 
-    @FXML private TableColumn colSesion;
-    @FXML private TableColumn colEstatus;
-    @FXML private TableColumn colAsistentes;
-    @FXML private TableColumn colEnRiesgo;
-    @FXML private TableColumn colComentarios;
+    @FXML
+    private TableColumn colPeriodo;
+    @FXML
+    private TableColumn colFechaSesion; 
+    @FXML
+    private TableColumn colSesion;
+    @FXML
+    private TableColumn colEstatus;
+    @FXML
+    private TableColumn colAsistentes;
+    @FXML
+    private TableColumn colEnRiesgo;
+    @FXML
+    private TableColumn colComentarios;
 
     private Usuario usuarioSesion;
     private Academico academicoSesion;
@@ -241,7 +251,7 @@ public class FXMLGestionarReporteTutoriaController implements Initializable {
         }
     }
     
-    @FXML 
+    @FXML
     private void clicExportar(ActionEvent event) {
         ReporteTutoria seleccion = tvReportes.getSelectionModel().getSelectedItem();
         
@@ -353,4 +363,5 @@ public class FXMLGestionarReporteTutoriaController implements Initializable {
             }
         }
     }
+
 }

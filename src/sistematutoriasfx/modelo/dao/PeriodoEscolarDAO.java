@@ -20,26 +20,31 @@ import sistematutoriasfx.modelo.pojo.PeriodoEscolar;
 public class PeriodoEscolarDAO {
     
     public static ArrayList<PeriodoEscolar> obtenerPeriodos() {
-        ArrayList<PeriodoEscolar> periodos = new ArrayList<>();
+        ArrayList<PeriodoEscolar> lista = new ArrayList<>();
         Connection conexion = null;
+
         try {
             conexion = ConexionBD.abrirConexion();
-            String query = "SELECT * FROM PeriodoEscolar ORDER BY nombre DESC";
+            String query = "SELECT * FROM PeriodoEscolar WHERE CURDATE() BETWEEN fechaInicio AND fechaFin";
             PreparedStatement ps = conexion.prepareStatement(query);
             ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
+
+            if (rs.next()) {
                 PeriodoEscolar periodo = new PeriodoEscolar();
                 periodo.setIdPeriodo(rs.getInt("idPeriodo"));
                 periodo.setNombre(rs.getString("nombre"));
                 periodo.setFechaInicio(rs.getString("fechaInicio"));
                 periodo.setFechaFin(rs.getString("fechaFin"));
-                periodos.add(periodo);
+                lista.add(periodo); 
             }
+
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            if(conexion != null){ try { conexion.close(); } catch (SQLException e) { e.printStackTrace(); } }
+            if (conexion != null) {
+                try { conexion.close(); } catch (SQLException e) { e.printStackTrace(); }
+            }
         }
-        return periodos;
+        return lista; 
     }
 }
