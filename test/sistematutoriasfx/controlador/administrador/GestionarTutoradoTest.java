@@ -24,12 +24,12 @@ public class GestionarTutoradoTest {
         // ARRANGE 
         String nombre = "Carlos";
         String matricula = "S21012345";
-        String correo = "carlos.ramos@uv.mx";
+        String correo = "carlos.ramos@estudiantes.uv.mx";
         
         // Validaciones
         boolean nombreValido = nombre != null && !nombre.isEmpty();
         boolean matriculaValida = matricula != null && matricula.startsWith("S") && matricula.length() == 9;
-        boolean correoValido = correo != null && correo.contains("@uv.mx");
+        boolean correoValido = correo != null && correo.contains("@estudiantes.uv.mx");
         
         // ASSERT
         assertTrue("El nombre debe estar lleno", nombreValido);
@@ -45,29 +45,33 @@ public class GestionarTutoradoTest {
     
     /**
      * ============================================================
-     * CASO DE PRUEBA 2: VALIDAR MOTIVO DE BAJA PARA TUTORADO
+     * CASO DE PRUEBA 2: VALIDAR MOTIVO DE BAJA NO ESTÉ VACÍO
      * ============================================================
      */
     @Test
     public void testValidarMotivoBajaTutorado() {
         System.out.println("\n========================================");
-        System.out.println("PRUEBA 2: VALIDAR MOTIVO DE BAJA");
+        System.out.println("PRUEBA 2: VALIDAR MOTIVO DE BAJA NO VACÍO");
         System.out.println("========================================");
         
         // ARRANGE
-        String motivoValido = "Abandono de estudios por motivos personales";
-        String motivoInvalido = "Abandono";
+        String motivoValido = "Abandono de estudios";
+        String motivoVacio = "";
+        String motivoNull = null;
         
         // Validaciones
-        boolean motivoValidoOk = motivoValido.length() >= 10;
-        boolean motivoInvalidoOk = motivoInvalido.length() < 10;
+        boolean motivoValidoOk = motivoValido != null && !motivoValido.isEmpty();
+        boolean motivoVacioOk = motivoVacio != null && !motivoVacio.isEmpty();
+        boolean motivoNullOk = motivoNull != null && !motivoNull.isEmpty();
         
         // ASSERT
-        assertTrue("El motivo válido debe tener mínimo 10 caracteres", motivoValidoOk);
-        assertTrue("El motivo corto debe ser rechazado", motivoInvalidoOk);
+        assertTrue("El motivo con texto debe ser válido", motivoValidoOk);
+        assertFalse("El motivo vacío debe ser rechazado", motivoVacioOk);
+        assertFalse("El motivo null debe ser rechazado", motivoNullOk);
         
-        System.out.println("Motivo válido: '" + motivoValido + "' (" + motivoValido.length() + " chars) → ACEPTADO");
-        System.out.println("Motivo inválido: '" + motivoInvalido + "' (" + motivoInvalido.length() + " chars) → RECHAZADO");
+        System.out.println("Motivo válido: '" + motivoValido + "' → ACEPTADO");
+        System.out.println("Motivo vacío: '" + motivoVacio + "' → RECHAZADO");
+        System.out.println("Motivo null: null → RECHAZADO");
         System.out.println("La validación de motivo funciona correctamente.");
     }
     

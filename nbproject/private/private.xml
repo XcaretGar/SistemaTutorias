@@ -70,6 +70,17 @@
             <file>file:/D:/Escritorio/Xcaret%20Uni/5to%20Semestre/Principios%20Construcción/SistemaTutorias/test/sistematutoriasfx/controlador/administrador/GestionarUsuarioTest.java</file>
             <file>file:/D:/Escritorio/Xcaret%20Uni/5to%20Semestre/Principios%20Construcción/SistemaTutorias/test/sistematutoriasfx/controlador/administrador/GestionarTutoradoTest.java</file>
             <file>file:/D:/Escritorio/Xcaret%20Uni/5to%20Semestre/Principios%20Construcción/SistemaTutorias/test/sistematutoriasfx/controlador/coordinador/AsignarTutoradoTest.java</file>
+            <file>file:/D:/Escritorio/Xcaret%20Uni/5to%20Semestre/Principios%20Construcción/SistemaTutorias/test/sistematutoriasfx/controlador/coordinador/RegistrarFechaTutoriaTest.java</file>
+            <file>file:/D:/Escritorio/Xcaret%20Uni/5to%20Semestre/Principios%20Construcción/SistemaTutorias/test/sistematutoriasfx/controlador/coordinador/RevisarReporteTutoriaTest.java</file>
+            <file>file:/D:/Escritorio/Xcaret%20Uni/5to%20Semestre/Principios%20Construcción/SistemaTutorias/src/sistematutoriasfx/controlador/tutor/FXMLFormularioAsistenciaController.java</file>
+            <file>file:/D:/Escritorio/Xcaret%20Uni/5to%20Semestre/Principios%20Construcción/SistemaTutorias/test/sistematutoriasfx/controlador/tutor/RegistrarHorarioTutoriaTest.java</file>
+            <file>file:/D:/Escritorio/Xcaret%20Uni/5to%20Semestre/Principios%20Construcción/SistemaTutorias/src/sistematutoriasfx/controlador/tutor/FXMLGestionarProblematicaController.java</file>
+            <file>file:/D:/Escritorio/Xcaret%20Uni/5to%20Semestre/Principios%20Construcción/SistemaTutorias/test/sistematutoriasfx/controlador/tutor/RegistrarAsistenciaTutoradoTest.java</file>
+            <file>file:/D:/Escritorio/Xcaret%20Uni/5to%20Semestre/Principios%20Construcción/SistemaTutorias/src/sistematutoriasfx/controlador/tutor/FXMLFormularioProblematicaController.java</file>
+            <file>file:/D:/Escritorio/Xcaret%20Uni/5to%20Semestre/Principios%20Construcción/SistemaTutorias/src/sistematutoriasfx/controlador/tutor/FXMLSeleccionarEstudianteProblematicaController.java</file>
+            <file>file:/D:/Escritorio/Xcaret%20Uni/5to%20Semestre/Principios%20Construcción/SistemaTutorias/test/sistematutoriasfx/controlador/tutor/GestionarProblematicaTutoradoTest.java</file>
+            <file>file:/D:/Escritorio/Xcaret%20Uni/5to%20Semestre/Principios%20Construcción/SistemaTutorias/test/sistematutoriasfx/controlador/tutor/GestionarEvidenciaTutoriaTest.java</file>
+            <file>file:/D:/Escritorio/Xcaret%20Uni/5to%20Semestre/Principios%20Construcción/SistemaTutorias/test/sistematutoriasfx/controlador/tutor/GestionarReporteTutoriaTest.java</file>
         </group>
     </open-files>
 </project-private>
