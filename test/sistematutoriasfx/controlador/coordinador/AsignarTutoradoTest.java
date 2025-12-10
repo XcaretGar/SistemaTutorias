@@ -3,22 +3,28 @@ package sistematutoriasfx.controlador.coordinador;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+/**
+ * Pruebas unitarias para el Caso de Uso: ASIGNAR TUTORADOS
+ * 
+ * @author JOANA XCARET
+ */
+
 public class AsignarTutoradoTest {
 
     /**
      * ============================================================
-     * PRUEBA 1: VALIDAR CAPACIDAD MÁXIMA TUTOR
+     * CASO DE PRUEBA 13: VALIDAR CAPACIDAD MÁXIMA TUTOR
      * ============================================================
      */
     @Test
     public void testValidarCapacidadTutor_CargaMaxima_BloquearAsignacion() {
         System.out.println("\n========================================");
-        System.out.println("PRUEBA 1: VALIDAR CAPACIDAD MÁXIMA TUTOR");
+        System.out.println("PRUEBA 13: VALIDAR CAPACIDAD MÁXIMA TUTOR");
         System.out.println("========================================");
 
         // ARRANGE
         int capacidadMaxima = 20;
-        int cargaActual = 20; // igual a la capacidad, no mayor
+        int cargaActual = 20; 
         int espaciosDisponibles = Math.max(capacidadMaxima - cargaActual, 0);
 
         // ASSERT
@@ -33,13 +39,13 @@ public class AsignarTutoradoTest {
 
     /**
      * ============================================================
-     * PRUEBA 2: VALIDAR ASIGNACIÓN DE TUTOR
+     * CASO DE PRUEBA 14: VALIDAR ASIGNACIÓN DE TUTOR
      * ============================================================
      */
     @Test
     public void testValidarAsignacionTutor() {
         System.out.println("\n========================================");
-        System.out.println("PRUEBA 2: VALIDAR ASIGNACIÓN DE TUTOR");
+        System.out.println("PRUEBA 14: VALIDAR ASIGNACIÓN DE TUTOR");
         System.out.println("========================================");
 
         int capacidadMaxima = 20;
@@ -56,13 +62,13 @@ public class AsignarTutoradoTest {
 
     /**
      * ============================================================
-     * PRUEBA 3: ACTUALIZAR TUTOR ASIGNADO
+     * CASO DE PRUEBA 15: ACTUALIZAR TUTOR ASIGNADO
      * ============================================================
      */
     @Test
     public void testActualizarTutorAsignado() {
         System.out.println("\n========================================");
-        System.out.println("PRUEBA 3: ACTUALIZAR TUTOR ASIGNADO");
+        System.out.println("PRUEBA 15: ACTUALIZAR TUTOR ASIGNADO");
         System.out.println("========================================");
 
         int tutorActualId = 3;
@@ -74,6 +80,6 @@ public class AsignarTutoradoTest {
         System.out.println("Tutor actual ID: " + tutorActualId);
         System.out.println("Nuevo tutor ID: " + nuevoTutorId);
         System.out.println("¿Es un tutor diferente? " + !esMismoTutor);
-        System.out.println("Cambio válido → puede proceder.");
+        System.out.println("Cambio válido  puede proceder");
     }
 }
